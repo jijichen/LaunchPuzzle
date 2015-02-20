@@ -99,7 +99,7 @@
 						<key>type</key>
 						<string>CCBFile</string>
 						<key>value</key>
-						<string>Level.ccb</string>
+						<string>GameScene.ccb</string>
 					</dict>
 				</array>
 				<key>selected</key>

@@ -6,19 +6,19 @@
 //  Copyright (c) 2015 Apportable. All rights reserved.
 //
 
-#import "Level.h"
+#import "GameScene.h"
 #import <math.h>
 
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
 
-@interface Level()
+@interface GameScene()
 
 -(void) resetPlate;
 
 @end
 
-@implementation Level {
+@implementation GameScene {
     CCNode* _plate;
     CCNode* _contentNode;
     CCPhysicsNode* _physicsNode;
@@ -104,9 +104,9 @@ const double epsilon = 0.0000001f;
     timeEnd = timeCurrent;
     
     if (launchStarted && timeEnd != prevTime) {
-        CGPoint forceDirection = [Level getDirection:prevTouchLocation to: touchEndLocation];
+        CGPoint forceDirection = [GameScene getDirection:prevTouchLocation to: touchEndLocation];
         double velocity =
-            [Level distanceBetween:prevTouchLocation and:touchEndLocation] / (double)(timeEnd - prevTime);
+            [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double)(timeEnd - prevTime);
         
         
         CGPoint launchForceVec = ccpMult(forceDirection, initialForce * velocity);

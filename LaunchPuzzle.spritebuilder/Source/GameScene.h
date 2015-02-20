@@ -8,7 +8,7 @@
 
 #import "CCNode.h"
 
-@interface Level : CCNode <CCPhysicsCollisionDelegate>
+@interface GameScene : CCNode <CCPhysicsCollisionDelegate>
 
 /**
  Get normalized directio vector from two points
