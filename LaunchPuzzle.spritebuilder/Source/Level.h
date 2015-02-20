@@ -10,5 +10,14 @@
 
 @interface Level : CCNode <CCPhysicsCollisionDelegate>
 
+/**
+ Get normalized directio vector from two points
+ */
++(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2;
+
+/**
+ Get distance scalar between two points
+ */
++(double) distanceBetween:(CGPoint)p1 and:(CGPoint)p2;
 
 @end

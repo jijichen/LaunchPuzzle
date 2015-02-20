@@ -14,8 +14,7 @@ const double epsilon = 0.0000001f;
 
 @interface Level()
 
--(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2;
--(double) distanceBetween:(CGPoint)p1 and:(CGPoint)p2;
+-(void) resetPlate;
 
 @end
 
@@ -24,19 +23,22 @@ const double epsilon = 0.0000001f;
     CCNode* _contentNode;
     CCPhysicsNode* _physicsNode;
     
-    CGPoint touchStartLocation;
+    CGPoint originalPlatePosition;
+    CGPoint prevTouchLocation;
     CGPoint touchEndLocation;
     CCTime timeCurrent;
-    CCTime timeStart;
+    CCTime prevTime;
     CCTime timeEnd;
     Boolean launchStarted;
 }
+
 
 - (id)init
 {
     self = [super init];
     if (self) {
         //[self schedule:@selector(update:)];
+        [self schedule:@selector(checkBoundary:) interval:(CCTime) 1];
         timeCurrent = (CCTime)0;
     }
     return self;
@@ -46,27 +48,41 @@ const double epsilon = 0.0000001f;
     timeCurrent += delta;
 }
 
+-(void)checkBoundary:(CCTime)delta {
+    if (!CGRectContainsPoint([self boundingBox], _plate.position)) {
+        [self resetPlate];
+    }
+}
+
+-(void)resetPlate {
+    _plate.physicsBody.velocity = CGPointMake(0, 0);
+    _plate.position = originalPlatePosition;
+}
+
 // is called when CCB file has completed loading
 - (void)didLoadFromCCB {
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     
+    originalPlatePosition = _plate.position;
     _physicsNode.debugDraw = true;
     _physicsNode.collisionDelegate = self;
 }
 
+
+// -----------------------------------------------------------------------------
+// UI touch to launch
+// -----------------------------------------------------------------------------
 -(void) touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event
-//-(void) touchBegan:(CCTouch *)touch withEvent:(CCTouchEvent *)event
 {
-    touchStartLocation = [touch locationInNode:_contentNode];
-    timeStart = timeCurrent;
+    prevTouchLocation = [touch locationInNode:_contentNode];
+    prevTime = timeCurrent;
     
-    if (CGRectContainsPoint([_plate boundingBox], touchStartLocation))
+    if (!launchStarted && CGRectContainsPoint([_plate boundingBox], prevTouchLocation))
     {
         launchStarted = true;
         [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
-        // move the mouseJointNode to the touch position
-        _plate.position = touchStartLocation;
+        //_plate.position = touchStartLocation;
     }
 }
 
@@ -75,10 +91,10 @@ const double epsilon = 0.0000001f;
     CGPoint touchLocation = [touch locationInNode:_contentNode];
     
     if (launchStarted){
-        [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
-        _plate.position = touchLocation;
-        touchStartLocation = touchLocation;
-        timeStart = timeCurrent;
+        //[_plate.physicsBody setVelocity:CGPointMake(0, 0)];
+        //_plate.position = touchLocation;
+        prevTouchLocation = touchLocation;
+        prevTime = timeCurrent;
     }
 }
 
@@ -87,19 +103,26 @@ const double epsilon = 0.0000001f;
     touchEndLocation = [touch locationInNode:_contentNode];
     timeEnd = timeCurrent;
     
-    if (launchStarted && timeEnd != timeStart) {
-        CGPoint forceDirection = [self getDirection:touchStartLocation to: touchEndLocation];
-        double velocity = [self distanceBetween:touchStartLocation and:touchEndLocation] / (double)(timeEnd - timeStart);
+    if (launchStarted && timeEnd != prevTime) {
+        CGPoint forceDirection = [Level getDirection:prevTouchLocation to: touchEndLocation];
+        double velocity =
+            [Level distanceBetween:prevTouchLocation and:touchEndLocation] / (double)(timeEnd - prevTime);
         
         
         CGPoint launchForceVec = ccpMult(forceDirection, initialForce * velocity);
+        NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
         launchStarted = false;
     }
   
 }
-     
--(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2
+// -----------------------------------------------------------------------------
+
+
+// -----------------------------------------------------------------------------
+// Level Uitility class funcitons
+// -----------------------------------------------------------------------------
++(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2
 {
     double length = [self distanceBetween:p1 and:p2];
     double xdiff = p2.x - p1.x;
@@ -112,7 +135,7 @@ const double epsilon = 0.0000001f;
     return CGPointMake(xdiff / length, ydiff / length);
 }
 
--(double) distanceBetween:(CGPoint)p1 and:(CGPoint)p2
++(double) distanceBetween:(CGPoint)p1 and:(CGPoint)p2
 {
     double xdiff = p2.x - p1.x;
     double ydiff = p2.y - p1.y;
@@ -120,4 +143,6 @@ const double epsilon = 0.0000001f;
     
     return length;
 }
+// -----------------------------------------------------------------------------
+
 @end
