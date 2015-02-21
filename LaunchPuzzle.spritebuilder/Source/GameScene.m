@@ -10,6 +10,7 @@
 #import "GameScene.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
+#import "Tool.h"
 
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
@@ -26,6 +27,7 @@ const double epsilon = 0.0000001f;
     CCPhysicsNode* _physicsNode;
     CCNode* _levelNode;
     CCNode* _target;
+    CCNode* _toolBox;
     
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
@@ -35,6 +37,7 @@ const double epsilon = 0.0000001f;
     CCTime timeEnd;
     Boolean launchStarted;
 }
+
 
 // -----------------------------------------------------------------------------
 // Initialize and loading
@@ -64,8 +67,15 @@ const double epsilon = 0.0000001f;
 
 - (void)loadLevel:(NSString*)levelName {
     Level* levelToLoad = (Level *)[CCBReader load:levelName];
-    NSLog(@"property stick_count : %d ", levelToLoad.countToolStick);
     [_physicsNode addChild:levelToLoad];
+    
+    //Initialize Tool box
+    if (levelToLoad.countToolStick > 0) {
+        ToolType type = Stick;
+        
+        
+    }
+    
 }
 
 // -----------------------------------------------------------------------------
