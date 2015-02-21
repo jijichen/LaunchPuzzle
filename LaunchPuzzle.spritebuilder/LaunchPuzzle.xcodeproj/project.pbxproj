@@ -64,6 +64,10 @@
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		A16C637F1A96A8BD008C1BA7 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C637E1A96A8BD008C1BA7 /* GameScene.m */; };
+		A1C1C0E41A9813BE0084EC93 /* Plate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C1C0E31A9813BE0084EC93 /* Plate.m */; };
+		A1C1C0E91A9813CE0084EC93 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C1C0E81A9813CE0084EC93 /* Target.m */; };
+		A1F6C3681A98B8C6008C2390 /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F6C3671A98B8C6008C2390 /* Tool.m */; };
+		A1F6C3711A98C1AD008C2390 /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F6C3701A98C1AD008C2390 /* Level.m */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
 		B71F5913188484E7003F4D28 /* iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5909188484E7003F4D28 /* iPad.png */; };
@@ -176,6 +180,14 @@
 		927F61BF196C771E000F43EF /* LaunchPuzzle Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LaunchPuzzle Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A16C637D1A96A8BD008C1BA7 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = Source/GameScene.h; sourceTree = "<group>"; };
 		A16C637E1A96A8BD008C1BA7 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameScene.m; path = Source/GameScene.m; sourceTree = "<group>"; };
+		A1C1C0E21A9813BE0084EC93 /* Plate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plate.h; path = Source/Plate.h; sourceTree = "<group>"; };
+		A1C1C0E31A9813BE0084EC93 /* Plate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Plate.m; path = Source/Plate.m; sourceTree = "<group>"; };
+		A1C1C0E71A9813CE0084EC93 /* Target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Target.h; path = Source/Target.h; sourceTree = "<group>"; };
+		A1C1C0E81A9813CE0084EC93 /* Target.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Target.m; path = Source/Target.m; sourceTree = "<group>"; };
+		A1F6C3661A98B8C6008C2390 /* Tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tool.h; path = Source/Tool.h; sourceTree = "<group>"; };
+		A1F6C3671A98B8C6008C2390 /* Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Tool.m; path = Source/Tool.m; sourceTree = "<group>"; };
+		A1F6C36F1A98C1AD008C2390 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		A1F6C3701A98C1AD008C2390 /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Level.m; sourceTree = "<group>"; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
 		B71F5908188484E7003F4D28 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old@2x.png"; path = "Icons/iPad-old@2x.png"; sourceTree = "<group>"; };
 		B71F5909188484E7003F4D28 /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPad.png; path = Icons/iPad.png; sourceTree = "<group>"; };
@@ -325,6 +337,7 @@
 				7A40362119DDF08C007B6E8F /* iOS */,
 				7A40362219DDF090007B6E8F /* Android */,
 				7A9791C019E6FAC5001FFC4D /* Mac */,
+				D352B48019EC608A00829775 /* MetalShaders */,
 			);
 			name = Platforms;
 			sourceTree = "<group>";
@@ -442,9 +455,16 @@
 				7A40362019DDEF0D007B6E8F /* Platforms */,
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
-				D352B48019EC608A00829775 /* MetalShaders */,
+				A1F6C36F1A98C1AD008C2390 /* Level.h */,
+				A1F6C3701A98C1AD008C2390 /* Level.m */,
+				A1C1C0E21A9813BE0084EC93 /* Plate.h */,
+				A1C1C0E31A9813BE0084EC93 /* Plate.m */,
+				A1C1C0E71A9813CE0084EC93 /* Target.h */,
+				A1C1C0E81A9813CE0084EC93 /* Target.m */,
 				A16C637D1A96A8BD008C1BA7 /* GameScene.h */,
 				A16C637E1A96A8BD008C1BA7 /* GameScene.m */,
+				A1F6C3661A98B8C6008C2390 /* Tool.h */,
+				A1F6C3671A98B8C6008C2390 /* Tool.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -823,8 +843,12 @@
 			files = (
 				B73789871807631A0076A88C /* main.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,
+				A1F6C3711A98C1AD008C2390 /* Level.m in Sources */,
+				A1F6C3681A98B8C6008C2390 /* Tool.m in Sources */,
+				A1C1C0E91A9813CE0084EC93 /* Target.m in Sources */,
 				A16C637F1A96A8BD008C1BA7 /* GameScene.m in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
+				A1C1C0E41A9813BE0084EC93 /* Plate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 Apportable. All rights reserved.
 //
 
-#import "GameScene.h"
 #import <math.h>
+#import "GameScene.h"
+#import "CCPhysics+ObjectiveChipmunk.h"
+#import "Level.h"
 
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
@@ -22,6 +24,8 @@ const double epsilon = 0.0000001f;
     CCNode* _plate;
     CCNode* _contentNode;
     CCPhysicsNode* _physicsNode;
+    CCNode* _levelNode;
+    CCNode* _target;
     
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
@@ -32,7 +36,9 @@ const double epsilon = 0.0000001f;
     Boolean launchStarted;
 }
 
-
+// -----------------------------------------------------------------------------
+// Initialize and loading
+// -----------------------------------------------------------------------------
 - (id)init
 {
     self = [super init];
@@ -44,8 +50,34 @@ const double epsilon = 0.0000001f;
     return self;
 }
 
+// is called when CCB file has completed loading
+- (void)didLoadFromCCB {
+    // tell this scene to accept touches
+    self.userInteractionEnabled = TRUE;
+    
+    originalPlatePosition = _plate.position;
+    _physicsNode.debugDraw = false;
+    _physicsNode.collisionDelegate = self;
+    [_physicsNode.space setDamping:1.0f];
+    [self loadLevel:@"Levels/level1"];
+}
+
+- (void)loadLevel:(NSString*)levelName {
+    Level* levelToLoad = (Level *)[CCBReader load:levelName];
+    NSLog(@"property stick_count : %d ", levelToLoad.countToolStick);
+    [_physicsNode addChild:levelToLoad];
+}
+
+// -----------------------------------------------------------------------------
+// Update and state check
+// -----------------------------------------------------------------------------
 -(void)update:(CCTime)delta {
     timeCurrent += delta;
+    
+//    if (CGRectIntersectsRect(_target.boundingBox, _plate.boundingBox)) {
+//        NSLog(@"Collision happed");
+//        [self removeChild:_target cleanup:YES];
+//    }
 }
 
 -(void)checkBoundary:(CCTime)delta {
@@ -56,19 +88,19 @@ const double epsilon = 0.0000001f;
 
 -(void)resetPlate {
     _plate.physicsBody.velocity = CGPointMake(0, 0);
+    _plate.physicsNode.rotation = 0.0f;
     _plate.position = originalPlatePosition;
 }
 
-// is called when CCB file has completed loading
-- (void)didLoadFromCCB {
-    // tell this scene to accept touches
-    self.userInteractionEnabled = TRUE;
-    
-    originalPlatePosition = _plate.position;
-    _physicsNode.debugDraw = true;
-    _physicsNode.collisionDelegate = self;
+-(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB{
+    [[_physicsNode space] addPostStepBlock:^{
+        [self targetRemoved:nodeA];
+    } key:nodeA];
 }
 
+-(void) targetRemoved:(CCNode *)target {
+    [target removeFromParent];
+}
 
 // -----------------------------------------------------------------------------
 // UI touch to launch
@@ -116,8 +148,6 @@ const double epsilon = 0.0000001f;
     }
   
 }
-// -----------------------------------------------------------------------------
-
 
 // -----------------------------------------------------------------------------
 // Level Uitility class funcitons
@@ -143,6 +173,5 @@ const double epsilon = 0.0000001f;
     
     return length;
 }
-// -----------------------------------------------------------------------------
 
 @end
