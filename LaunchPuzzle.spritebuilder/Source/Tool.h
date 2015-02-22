@@ -7,14 +7,10 @@
 //
 
 #import "CCSprite.h"
-typedef NS_ENUM(NSInteger, ToolType) {
-    Stick,
-    Triangle,
-    Spring
-};
+#import "Constants.h"
 
 @interface Tool : CCSprite
 
-@property ToolType toolType;
+@property enum ToolType toolType;
 
 @end

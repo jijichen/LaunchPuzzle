@@ -16,9 +16,9 @@
     
     dispatch_once(&onceToken, ^{
         dict = @{
-                 [NSNumber numberWithInt:Stick]: @"Sprites/tool_stick.ccb",
-                 [NSNumber numberWithInt:Triangle]: @"Sprites/tool_triangle.ccb",
-                 [NSNumber numberWithInt:Spring]: @"Sprites/tool_spring.ccb"
+                 [NSNumber numberWithInt:Stick]: @"Sprites/tool_stick",
+                 [NSNumber numberWithInt:Triangle]: @"Sprites/tool_triangle",
+                 [NSNumber numberWithInt:Spring]: @"Sprites/tool_spring"
         };
     });
     

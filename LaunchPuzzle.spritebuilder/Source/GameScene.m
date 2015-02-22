@@ -11,6 +11,7 @@
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
 #import "Tool.h"
+#import "Constants.h"
 
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
@@ -70,12 +71,23 @@ const double epsilon = 0.0000001f;
     [_physicsNode addChild:levelToLoad];
     
     //Initialize Tool box
+    NSMutableArray* toolsToLoad = [[NSMutableArray alloc] init];
+    NSMutableArray* toolsCount = [[NSMutableArray alloc] init];
     if (levelToLoad.countToolStick > 0) {
-        ToolType type = Stick;
-        
-        
+        NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:Stick]];
+        CCNode* stick = [CCBReader load:ccbName];
+        [toolsToLoad addObject:stick];
+        [toolsCount addObject:[NSNumber numberWithInt:levelToLoad.countToolStick]];
     }
     
+    for (int i = 0; i < [toolsToLoad count]; i++) {
+        CCNode* toolToAdd = [toolsToLoad objectAtIndex:i];
+        toolToAdd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
+                                                    CCPositionReferenceCornerBottomLeft);
+        toolToAdd.position = CGPointMake(0.1 * (i + 1), 0.5);
+        [_toolBox addChild:toolToAdd];
+        
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -91,7 +103,7 @@ const double epsilon = 0.0000001f;
 }
 
 -(void)checkBoundary:(CCTime)delta {
-    if (!CGRectContainsPoint([self boundingBox], _plate.position)) {
+    if (!CGRectContainsPoint([_contentNode boundingBox], _plate.position)) {
         [self resetPlate];
     }
 }

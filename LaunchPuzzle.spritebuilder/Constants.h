@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+enum ToolType {
+    Stick,Triangle,Spring
+};
 
 @interface Constants : NSObject
 
-//Tool types
-enum ToolType {
-  Stick,Triangle,Spring
-};
 +(NSDictionary*)getTypeToCCBNameDict;
 
 @end
