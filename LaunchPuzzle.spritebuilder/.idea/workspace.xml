@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f7f6bf7-3c67-4594-9717-69db7d725ebf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/LaunchPuzzle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/LaunchPuzzle_Android.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/LaunchPuzzle_Mac.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LaunchPuzzle.xcodeproj/xcshareddata/xcschemes/LaunchPuzzle Android.xcscheme" afterPath="$PROJECT_DIR$/LaunchPuzzle.xcodeproj/xcshareddata/xcschemes/LaunchPuzzle Android.xcscheme" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LaunchPuzzle.xcodeproj/xcshareddata/xcschemes/LaunchPuzzle Mac.xcscheme" afterPath="$PROJECT_DIR$/LaunchPuzzle.xcodeproj/xcshareddata/xcschemes/LaunchPuzzle Mac.xcscheme" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LaunchPuzzle.xcodeproj/xcshareddata/xcschemes/LaunchPuzzle.xcscheme" afterPath="$PROJECT_DIR$/LaunchPuzzle.xcodeproj/xcshareddata/xcschemes/LaunchPuzzle.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LaunchPuzzle.spritebuilder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -48,7 +44,7 @@
       <file leaf-file-name="GameScene.m" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Source/GameScene.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.3387096" vertical-offset="2355" max-vertical-offset="3630">
+            <state vertical-scroll-proportion="-0.11290322" vertical-offset="285" max-vertical-offset="3630">
               <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
               <folding />
             </state>
@@ -334,7 +330,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Source/GameScene.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3387096" vertical-offset="2355" max-vertical-offset="3630">
+        <state vertical-scroll-proportion="-0.11290322" vertical-offset="285" max-vertical-offset="3630">
           <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
           <folding />
         </state>
