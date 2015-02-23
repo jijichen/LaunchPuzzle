@@ -101,6 +101,7 @@
 		BC5399DA1A44DCC90063F482 /* GLActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D51A44DCC90063F482 /* GLActivityKit.framework */; };
 		BC5399DB1A44DCC90063F482 /* JavaFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D61A44DCC90063F482 /* JavaFoundation.framework */; };
 		BC5399DC1A44DCC90063F482 /* JavaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D71A44DCC90063F482 /* JavaKit.framework */; };
+		E25CBCBBD28310556420AB24 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -234,6 +235,8 @@
 		BC5399D61A44DCC90063F482 /* JavaFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaFoundation.framework; path = "../../../../Library/Application Support/Developer/Shared/Xcode/Platforms/Android.platform/Developer/SDKs/SBAndroid.sdk/System/Library/Frameworks/JavaFoundation.framework"; sourceTree = "<group>"; };
 		BC5399D71A44DCC90063F482 /* JavaKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaKit.framework; path = "../../../../Library/Application Support/Developer/Shared/Xcode/Platforms/Android.platform/Developer/SDKs/SBAndroid.sdk/System/Library/Frameworks/JavaKit.framework"; sourceTree = "<group>"; };
 		D352B48019EC608A00829775 /* MetalShaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MetalShaders; path = Source/MetalShaders; sourceTree = "<group>"; };
+		E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
+		E25CB4AD1FDD22C460A932CF /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +486,7 @@
 				A1F6C3701A98C1AD008C2390 /* Level.m */,
 				A16C637D1A96A8BD008C1BA7 /* GameScene.h */,
 				A16C637E1A96A8BD008C1BA7 /* GameScene.m */,
+				E25CBFDF4128F9289E1A8ABD /* CCNode+SFGestureRecognizers */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -580,6 +584,15 @@
 				B73789861807631A0076A88C /* Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E25CBFDF4128F9289E1A8ABD /* CCNode+SFGestureRecognizers */ = {
+			isa = PBXGroup;
+			children = (
+				E25CB4AD1FDD22C460A932CF /* CCNode+SFGestureRecognizers.h */,
+				E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */,
+			);
+			path = "CCNode+SFGestureRecognizers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -869,6 +882,7 @@
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
 				A1C1C0E41A9813BE0084EC93 /* Plate.m in Sources */,
 				A1F6C3741A98E506008C2390 /* Constants.m in Sources */,
+				E25CBCBBD28310556420AB24 /* CCNode+SFGestureRecognizers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -73,7 +73,6 @@ const double epsilon = 0.0000001f;
     [self loadLevel:@"Levels/level1"];
 }
 
-
 - (void)loadLevel:(NSString*)levelName {
     Level* levelToLoad = (Level *)[CCBReader load:levelName];
     [_physicsNode addChild:levelToLoad];
@@ -165,6 +164,10 @@ const double epsilon = 0.0000001f;
     }
 }
 
+
+-(void) ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+
+}
 -(void) touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event
 {
     CGPoint touchLocation = [touch locationInNode:_contentNode];
@@ -202,7 +205,7 @@ const double epsilon = 0.0000001f;
 }
 
 // -----------------------------------------------------------------------------
-// Level Uitility class funcitons
+// Level Utility class functions
 // -----------------------------------------------------------------------------
 + (Tool *)loadToolByType:(enum ToolType) type {
     NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:type]];
