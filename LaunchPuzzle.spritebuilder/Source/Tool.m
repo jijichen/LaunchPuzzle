@@ -7,6 +7,7 @@
 //
 
 #import "Tool.h"
+#import "UITouch+CC.h"
 
 @implementation Tool
 
@@ -14,6 +15,7 @@
 {
     self = [super init];
     if (self) {
+        self.inToolBox = true;
         self.userInteractionEnabled = YES;
         self.isTouchEnabled = YES;
         UIRotationGestureRecognizer* rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
@@ -32,4 +34,22 @@
         aRotationGestureRecognizer.rotation = 0;
     }
 }
+
+
+-(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    CGPoint touchLoc = [touch locationInNode:self.parent];
+
+//    // Log touch location
+//    CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
+//
+//    // Move our sprite to touch location
+//    CCActionMoveTo *actionMove = [CCActionMoveTo action];
+//    [self runAction:actionMove];
+}
+
+-(void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    CGPoint touchLoc = [touch locationInNode:self.parent];
+    self.position = touchLoc;
+}
+
 @end

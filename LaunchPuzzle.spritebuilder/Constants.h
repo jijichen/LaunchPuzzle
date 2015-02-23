@@ -15,4 +15,6 @@ enum ToolType {
 
 +(NSDictionary*)getTypeToCCBNameDict;
 
++(NSDictionary*)getTypeToImgNameDict;
+
 @end

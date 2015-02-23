@@ -10,9 +10,7 @@
 #import "GameScene.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
-#import "Tool.h"
 #import "ToolBox.h"
-#import "Constants.h"
 
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
@@ -84,14 +82,14 @@ const double epsilon = 0.0000001f;
     
     toolCountArr = [[NSArray alloc] initWithObjects:_toolCount1, _toolCount2, _toolCount3,nil];
     if (levelToLoad.countToolStick > 0) {
-        Tool *stick;
-        stick = [GameScene loadToolByType:Stick];
+        Tool *stick = [GameScene loadToolByType:Stick];
+        stick.userInteractionEnabled = NO;
         [_toolBox.toolsToLoad addObject:stick];
         [_toolBox.toolsCount addObject:[NSNumber numberWithInt:levelToLoad.countToolStick]];
     }
     
     for (int i = 0; i < [_toolBox.toolsToLoad count]; i++) {
-        CCNode* toolToAdd = [_toolBox.toolsToLoad objectAtIndex:i];
+        Tool* toolToAdd = [_toolBox.toolsToLoad objectAtIndex:i];
         toolToAdd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
                                                     CCPositionReferenceCornerBottomRight);
         toolToAdd.position = CGPointMake(0.05 + 0.3 * (i + 1), 0.5);
@@ -158,16 +156,13 @@ const double epsilon = 0.0000001f;
         Tool* toolTouched = [_toolBox checkTouch:touch];
         if (toolTouched != nil) {
             toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
+            toolToPlace.inToolBox = false;
             toolToPlace.position = [touch locationInNode:_contentNode];
             [_physicsNode addChild:toolToPlace];
         }
     }
 }
 
-
--(void) ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-
-}
 -(void) touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event
 {
     CGPoint touchLocation = [touch locationInNode:_contentNode];
@@ -212,6 +207,11 @@ const double epsilon = 0.0000001f;
     Tool* tool = (Tool*)[CCBReader load:ccbName];
     tool.toolType = type;
     return tool;
+}
+
++ (CCSprite *)loadToolSpriteByType:(enum ToolType) type {
+    NSString* imageName = [[Constants getTypeToImgNameDict] objectForKey:[NSNumber numberWithInt:type]];
+    return [CCSprite spriteWithImageNamed:imageName];
 }
 
 +(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2

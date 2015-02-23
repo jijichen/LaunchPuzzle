@@ -8,6 +8,7 @@
 
 #import "CCNode.h"
 #import "Tool.h"
+
 @interface ToolBox : CCNode
 
 - (Tool*) checkTouch:(CCTouch*) touch;
