@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LaunchPuzzle Mac" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="LaunchPuzzle" TARGET_NAME="LaunchPuzzle Mac" CONFIG_NAME="Debug" SCHEME_NAME="LaunchPuzzle Mac" RUN_TARGET_PROJECT_NAME="LaunchPuzzle" RUN_TARGET_NAME="LaunchPuzzle Mac" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+    <envs />
+    <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+      <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+    </EXTENSION>
+    <method />
+  </configuration>
+</component>
