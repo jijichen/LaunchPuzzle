@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>4</integer>
+	<integer>1</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -18,7 +18,7 @@
 	<key>currentSequenceId</key>
 	<integer>0</integer>
 	<key>docDimensionsType</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>fileType</key>
 	<string>CocosBuilder</string>
 	<key>fileVersion</key>
@@ -78,8 +78,8 @@
 				<string>Size</string>
 				<key>value</key>
 				<array>
-					<real>300</real>
-					<real>50</real>
+					<real>0.0</real>
+					<real>0.0</real>
 					<integer>0</integer>
 					<integer>0</integer>
 				</array>
@@ -91,7 +91,7 @@
 				<string>Point</string>
 				<key>value</key>
 				<array>
-					<real>1</real>
+					<real>0.0</real>
 					<real>0.0</real>
 				</array>
 			</dict>
@@ -122,13 +122,13 @@
 			<key>ext</key>
 			<string>phone</string>
 			<key>height</key>
-			<integer>50</integer>
+			<integer>0</integer>
 			<key>name</key>
 			<string>Phone</string>
 			<key>scale</key>
 			<real>1</real>
 			<key>width</key>
-			<integer>300</integer>
+			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>centeredOrigin</key>
@@ -136,13 +136,13 @@
 			<key>ext</key>
 			<string>tablet phonehd</string>
 			<key>height</key>
-			<integer>50</integer>
+			<integer>0</integer>
 			<key>name</key>
 			<string>Tablet</string>
 			<key>scale</key>
 			<real>2</real>
 			<key>width</key>
-			<integer>300</integer>
+			<integer>0</integer>
 		</dict>
 	</array>
 	<key>sequences</key>
@@ -185,8 +185,8 @@
 		</dict>
 	</array>
 	<key>stageBorder</key>
-	<integer>1</integer>
+	<integer>3</integer>
 	<key>stageColor</key>
-	<integer>0</integer>
+	<integer>2</integer>
 </dict>
 </plist>

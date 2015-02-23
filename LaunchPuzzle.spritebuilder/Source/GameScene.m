@@ -11,6 +11,7 @@
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
 #import "Tool.h"
+#import "ToolBox.h"
 #import "Constants.h"
 
 const float initialForce = 5.0f;
@@ -28,7 +29,10 @@ const double epsilon = 0.0000001f;
     CCPhysicsNode* _physicsNode;
     CCNode* _levelNode;
     CCNode* _target;
-    CCNode* _toolBox;
+    ToolBox* _toolBox;
+    CCLabelTTF* _toolCount1;
+    CCLabelTTF* _toolCount2;
+    CCLabelTTF* _toolCount3;
     
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
@@ -37,6 +41,8 @@ const double epsilon = 0.0000001f;
     CCTime prevTime;
     CCTime timeEnd;
     Boolean launchStarted;
+    NSArray* toolCountArr;
+    Tool* toolToPlace;
 }
 
 
@@ -50,6 +56,7 @@ const double epsilon = 0.0000001f;
         //[self schedule:@selector(update:)];
         [self schedule:@selector(checkBoundary:) interval:(CCTime) 1];
         timeCurrent = (CCTime)0;
+        toolToPlace = nil;
     }
     return self;
 }
@@ -66,27 +73,38 @@ const double epsilon = 0.0000001f;
     [self loadLevel:@"Levels/level1"];
 }
 
+
 - (void)loadLevel:(NSString*)levelName {
     Level* levelToLoad = (Level *)[CCBReader load:levelName];
     [_physicsNode addChild:levelToLoad];
     
     //Initialize Tool box
-    NSMutableArray* toolsToLoad = [[NSMutableArray alloc] init];
-    NSMutableArray* toolsCount = [[NSMutableArray alloc] init];
+    _toolBox.toolsToLoad = [[NSMutableArray alloc] init];
+    _toolBox.toolsCount = [[NSMutableArray alloc] init];
+
+    
+    toolCountArr = [[NSArray alloc] initWithObjects:_toolCount1, _toolCount2, _toolCount3,nil];
     if (levelToLoad.countToolStick > 0) {
-        NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:Stick]];
-        CCNode* stick = [CCBReader load:ccbName];
-        [toolsToLoad addObject:stick];
-        [toolsCount addObject:[NSNumber numberWithInt:levelToLoad.countToolStick]];
+        Tool *stick;
+        stick = [GameScene loadToolByType:Stick];
+        [_toolBox.toolsToLoad addObject:stick];
+        [_toolBox.toolsCount addObject:[NSNumber numberWithInt:levelToLoad.countToolStick]];
     }
     
-    for (int i = 0; i < [toolsToLoad count]; i++) {
-        CCNode* toolToAdd = [toolsToLoad objectAtIndex:i];
+    for (int i = 0; i < [_toolBox.toolsToLoad count]; i++) {
+        CCNode* toolToAdd = [_toolBox.toolsToLoad objectAtIndex:i];
         toolToAdd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
-                                                    CCPositionReferenceCornerBottomLeft);
-        toolToAdd.position = CGPointMake(0.1 * (i + 1), 0.5);
+                                                    CCPositionReferenceCornerBottomRight);
+        toolToAdd.position = CGPointMake(0.05 + 0.3 * (i + 1), 0.5);
+        toolToAdd.anchorPoint = CGPointMake(0.0, 0.5);
+        toolToAdd.scale = 0.7f;
         [_toolBox addChild:toolToAdd];
         
+        CCLabelTTF* labelForTool = [toolCountArr objectAtIndex:i];
+
+        [labelForTool setString:[NSString stringWithFormat:@"X %d",
+                                 [(NSNumber*)[_toolBox.toolsCount objectAtIndex:i] intValue]]];
+        labelForTool.visible = true;
     }
 }
 
@@ -137,6 +155,13 @@ const double epsilon = 0.0000001f;
         launchStarted = true;
         [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
         //_plate.position = touchStartLocation;
+    } else if (!launchStarted ) {
+        Tool* toolTouched = [_toolBox checkTouch:touch];
+        if (toolTouched != nil) {
+            toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
+            toolToPlace.position = [touch locationInNode:_contentNode];
+            [_physicsNode addChild:toolToPlace];
+        }
     }
 }
 
@@ -149,6 +174,8 @@ const double epsilon = 0.0000001f;
         //_plate.position = touchLocation;
         prevTouchLocation = touchLocation;
         prevTime = timeCurrent;
+    } else if (toolToPlace != nil) {
+        toolToPlace.position = touchLocation;
     }
 }
 
@@ -167,6 +194,9 @@ const double epsilon = 0.0000001f;
         NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
         launchStarted = false;
+    } else if (toolToPlace != nil) {
+        //toolToPlace.physicsBody = [CCPhysicsBody bodyWithRect:toolToPlace.boundingBox cornerRadius:0.0];
+        toolToPlace = nil;
     }
   
 }
@@ -174,6 +204,13 @@ const double epsilon = 0.0000001f;
 // -----------------------------------------------------------------------------
 // Level Uitility class funcitons
 // -----------------------------------------------------------------------------
++ (Tool *)loadToolByType:(enum ToolType) type {
+    NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:type]];
+    Tool* tool = (Tool*)[CCBReader load:ccbName];
+    tool.toolType = type;
+    return tool;
+}
+
 +(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2
 {
     double length = [self distanceBetween:p1 and:p2];

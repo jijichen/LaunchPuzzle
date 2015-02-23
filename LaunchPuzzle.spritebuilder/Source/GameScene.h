@@ -7,6 +7,8 @@
 //
 
 #import "CCNode.h"
+#import "Constants.h"
+#import "Tool.h"
 
 @interface GameScene : CCNode <CCPhysicsCollisionDelegate>
 
@@ -20,4 +22,8 @@
  */
 +(double) distanceBetween:(CGPoint)p1 and:(CGPoint)p2;
 
+/**
+ Load a tool by its type.
+ */
++ (Tool *)loadToolByType:(enum ToolType) type;
 @end
