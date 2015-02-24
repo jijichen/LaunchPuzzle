@@ -28,9 +28,6 @@ const double epsilon = 0.0000001f;
     CCNode* _levelNode;
     CCNode* _target;
     ToolBox* _toolBox;
-    CCLabelTTF* _toolCount1;
-    CCLabelTTF* _toolCount2;
-    CCLabelTTF* _toolCount3;
     
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
@@ -39,8 +36,12 @@ const double epsilon = 0.0000001f;
     CCTime prevTime;
     CCTime timeEnd;
     Boolean launchStarted;
-    NSArray* toolCountArr;
     Tool* toolToPlace;
+
+    //Code connection redundancy due to cocos2d owner
+    CCLabelTTF* _toolCount1;
+    CCLabelTTF* _toolCount2;
+    CCLabelTTF* _toolCount3;
 }
 
 
@@ -75,34 +76,7 @@ const double epsilon = 0.0000001f;
     Level* levelToLoad = (Level *)[CCBReader load:levelName];
     [_physicsNode addChild:levelToLoad];
     
-    //Initialize Tool box
-    _toolBox.toolsToLoad = [[NSMutableArray alloc] init];
-    _toolBox.toolsCount = [[NSMutableArray alloc] init];
-
-    
-    toolCountArr = [[NSArray alloc] initWithObjects:_toolCount1, _toolCount2, _toolCount3,nil];
-    if (levelToLoad.countToolStick > 0) {
-        Tool *stick = [GameScene loadToolByType:Stick];
-        stick.userInteractionEnabled = NO;
-        [_toolBox.toolsToLoad addObject:stick];
-        [_toolBox.toolsCount addObject:[NSNumber numberWithInt:levelToLoad.countToolStick]];
-    }
-    
-    for (int i = 0; i < [_toolBox.toolsToLoad count]; i++) {
-        Tool* toolToAdd = [_toolBox.toolsToLoad objectAtIndex:i];
-        toolToAdd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
-                                                    CCPositionReferenceCornerBottomRight);
-        toolToAdd.position = CGPointMake(0.05 + 0.3 * (i + 1), 0.5);
-        toolToAdd.anchorPoint = CGPointMake(0.0, 0.5);
-        toolToAdd.scale = 0.7f;
-        [_toolBox addChild:toolToAdd];
-        
-        CCLabelTTF* labelForTool = [toolCountArr objectAtIndex:i];
-
-        [labelForTool setString:[NSString stringWithFormat:@"X %d",
-                                 [(NSNumber*)[_toolBox.toolsCount objectAtIndex:i] intValue]]];
-        labelForTool.visible = true;
-    }
+    [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
 }
 
 // -----------------------------------------------------------------------------

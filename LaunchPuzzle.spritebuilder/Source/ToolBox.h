@@ -9,11 +9,21 @@
 #import "CCNode.h"
 #import "Tool.h"
 
+@class Level;
+
 @interface ToolBox : CCNode
 
 - (Tool*) checkTouch:(CCTouch*) touch;
 
 @property NSMutableArray* toolsToLoad;
+
 @property NSMutableArray* toolsCount;
+
+- (void)loadWithLevel:(Level *)level andLabels:(CCLabelTTF *)labels :(CCLabelTTF *)param :(CCLabelTTF *)param1 :(void *)param2;
+
+
+
+- (void)loadWithLevel:(Level *)level l1:(CCLabelTTF *)l1 l2:(CCLabelTTF *)l2 l3:(CCLabelTTF *)l3;
+
 
 @end
