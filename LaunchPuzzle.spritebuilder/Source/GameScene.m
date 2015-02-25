@@ -188,6 +188,10 @@ const double epsilon = 0.0000001f;
 // -----------------------------------------------------------------------------
 + (Tool *)loadToolByType:(enum ToolType) type {
     NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:type]];
+
+    if (ccbName == nil) {
+        [NSException raise:@"Failed load tool" format:@"Failed to load tool by type %d", type];
+    }
     Tool* tool = (Tool*)[CCBReader load:ccbName];
     tool.toolType = type;
     return tool;

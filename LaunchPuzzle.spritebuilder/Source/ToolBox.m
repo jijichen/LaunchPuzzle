@@ -36,7 +36,7 @@
 - (Tool*) checkTouch:(CCTouch*) touch {
 
     CGPoint touchLocation = [touch locationInNode:self];
-    for (int i = 0; i < [toolCountArr count]; ++i) {
+    for (int i = 0; i < [_toolsToLoad count]; ++i) {
         Tool* tool = [_toolsToLoad objectAtIndex:i];
         if (CGRectContainsPoint([tool boundingBox], touchLocation)) {
             int oldCount = [[_toolsCount objectAtIndex:i] intValue];
@@ -68,12 +68,20 @@
     self.toolsToLoad = [[NSMutableArray alloc] init];
     self.toolsCount = [[NSMutableArray alloc] init];
 
+    //Load three kinds of tools
     toolCountArr = [[NSArray alloc] initWithObjects:l1,l2,l3,nil];
     if (level.countToolStick > 0) {
         Tool *stick = [GameScene loadToolByType:Stick];
         stick.userInteractionEnabled = NO;
         [self.toolsToLoad addObject:stick];
         [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolStick]];
+    }
+
+    if (level.countToolTri > 0) {
+        Tool *tri = [GameScene loadToolByType:Triangle];
+        tri.userInteractionEnabled = NO;
+        [self.toolsToLoad addObject:tri];
+        [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolTri]];
     }
 
     for (int i = 0; i < [self.toolsToLoad count]; i++) {
