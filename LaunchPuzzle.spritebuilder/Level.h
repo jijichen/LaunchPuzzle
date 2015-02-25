@@ -11,5 +11,5 @@
 @interface Level : CCScene
 
 @property int countToolStick;
-
+@property int countToolTri;
 @end

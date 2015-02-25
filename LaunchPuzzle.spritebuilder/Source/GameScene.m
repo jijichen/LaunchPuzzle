@@ -92,7 +92,13 @@ const double epsilon = 0.0000001f;
 }
 
 -(void)checkBoundary:(CCTime)delta {
-    if (!CGRectContainsPoint([_contentNode boundingBox], _plate.position)) {
+//    //CCLOG(@"content boung : %f %f", [_contentNode boundingBox].size.width,[_contentNode boundingBox].size.height );
+//    //CCLOG(@"plate position: %f %f", _plate.position.x , _plate.position.y);
+//    if (!CGRectContainsPoint([_contentNode boundingBox], _plate.position)) {
+//        [self resetPlate];
+//    }
+
+    if (_plate.position.x > 1.0 || _plate.position.y > 1.0) {
         [self resetPlate];
     }
 }
