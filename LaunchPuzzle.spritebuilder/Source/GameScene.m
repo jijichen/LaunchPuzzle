@@ -36,6 +36,7 @@ const double epsilon = 0.0000001f;
     CCTime prevTime;
     CCTime timeEnd;
     Boolean launchStarted;
+    Boolean launchGoing;
     Tool* toolToPlace;
 
     //Code connection redundancy due to cocos2d owner
@@ -70,6 +71,8 @@ const double epsilon = 0.0000001f;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
     [self loadLevel:@"Levels/level1"];
+
+    _plate.userInteractionEnabled = true;
 }
 
 - (void)loadLevel:(NSString*)levelName {
@@ -84,22 +87,19 @@ const double epsilon = 0.0000001f;
 // -----------------------------------------------------------------------------
 -(void)update:(CCTime)delta {
     timeCurrent += delta;
-    
-//    if (CGRectIntersectsRect(_target.boundingBox, _plate.boundingBox)) {
-//        NSLog(@"Collision happed");
-//        [self removeChild:_target cleanup:YES];
-//    }
 }
 
 -(void)checkBoundary:(CCTime)delta {
-//    //CCLOG(@"content boung : %f %f", [_contentNode boundingBox].size.width,[_contentNode boundingBox].size.height );
-//    //CCLOG(@"plate position: %f %f", _plate.position.x , _plate.position.y);
-//    if (!CGRectContainsPoint([_contentNode boundingBox], _plate.position)) {
-//        [self resetPlate];
-//    }
-
     if (_plate.position.x > 1.0 || _plate.position.y > 1.0) {
         [self resetPlate];
+    }
+
+    if (launchGoing) {
+        CGFloat velocityScalar = pow(_plate.physicsBody.velocity.x, 2.0) + pow(_plate.physicsBody.velocity.y, 2.0);
+        if (velocityScalar <= 16) {
+            launchGoing = false;
+            [self resetPlate];
+        }
     }
 }
 
@@ -107,6 +107,7 @@ const double epsilon = 0.0000001f;
     _plate.physicsBody.velocity = CGPointMake(0, 0);
     _plate.physicsNode.rotation = 0.0f;
     _plate.position = originalPlatePosition;
+    _plate.userInteractionEnabled = YES;
 }
 
 -(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB{
@@ -127,7 +128,8 @@ const double epsilon = 0.0000001f;
     prevTouchLocation = [touch locationInNode:_contentNode];
     prevTime = timeCurrent;
     
-    if (!launchStarted && CGRectContainsPoint([_plate boundingBox], prevTouchLocation))
+    if (_plate.userInteractionEnabled && !launchStarted
+            && CGRectContainsPoint([_plate boundingBox], prevTouchLocation))
     {
         launchStarted = true;
         [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
@@ -147,7 +149,7 @@ const double epsilon = 0.0000001f;
 {
     CGPoint touchLocation = [touch locationInNode:_contentNode];
     
-    if (launchStarted){
+    if (_plate.userInteractionEnabled && launchStarted){
         //[_plate.physicsBody setVelocity:CGPointMake(0, 0)];
         //_plate.position = touchLocation;
         prevTouchLocation = touchLocation;
@@ -162,7 +164,7 @@ const double epsilon = 0.0000001f;
     touchEndLocation = [touch locationInNode:_contentNode];
     timeEnd = timeCurrent;
     
-    if (launchStarted && timeEnd != prevTime) {
+    if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
         CGPoint forceDirection = [GameScene getDirection:prevTouchLocation to: touchEndLocation];
         double velocity =
             [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double)(timeEnd - prevTime);
@@ -172,6 +174,8 @@ const double epsilon = 0.0000001f;
         NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
         launchStarted = false;
+        launchGoing = true;
+        [_plate setUserInteractionEnabled:NO];
     } else if (toolToPlace != nil) {
         //toolToPlace.physicsBody = [CCPhysicsBody bodyWithRect:toolToPlace.boundingBox cornerRadius:0.0];
         toolToPlace = nil;
