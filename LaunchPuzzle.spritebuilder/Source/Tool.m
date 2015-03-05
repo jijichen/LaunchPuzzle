@@ -19,8 +19,14 @@
         self.userInteractionEnabled = YES;
         self.isTouchEnabled = YES;
         UIRotationGestureRecognizer* rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
+        UITapGestureRecognizer* tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(handleTap:)];
+        tapRec.numberOfTapsRequired = 2;
+        
         [rotRec setDelegate:self];
+        [tapRec setDelegate:self];
         [self addGestureRecognizer:rotRec];
+        [self addGestureRecognizer:tapRec];
     }
     return self;
 }
@@ -34,6 +40,16 @@
         aRotationGestureRecognizer.rotation = 0;
     }
 }
+
+- (void)handleTap:(UITapGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        [self removeFromParent];
+    }
+}
+
+
 
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
