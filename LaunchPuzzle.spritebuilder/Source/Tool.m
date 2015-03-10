@@ -63,18 +63,16 @@
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLoc = [touch locationInNode:self.parent];
-
-//    // Log touch location
-//    CCLOG(@"Move sprite to @ %@",NSStringFromCGPoint(touchLoc));
-//
-//    // Move our sprite to touch location
-//    CCActionMoveTo *actionMove = [CCActionMoveTo action];
-//    [self runAction:actionMove];
+    self.physicsBody.collisionMask = @[];
 }
 
 -(void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     CGPoint touchLoc = [touch locationInNode:self.parent];
     self.position = touchLoc;
+}
+
+-(void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    self.physicsBody.collisionMask = nil;
 }
 
 @end
