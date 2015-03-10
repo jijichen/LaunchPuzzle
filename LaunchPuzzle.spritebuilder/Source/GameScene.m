@@ -74,6 +74,7 @@ const double epsilon = 0.0000001f;
     //Load level to game scene
     [self loadLevel:@"Levels/level1"];
 
+    //Enable plate interaction
     _plate.userInteractionEnabled = true;
 }
 
@@ -92,7 +93,8 @@ const double epsilon = 0.0000001f;
 }
 
 -(void)checkBoundary:(CCTime)delta {
-    if (_plate.position.x > 1.0 || _plate.position.y > 1.0) {
+    NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
+    if (_plate.position.x > 1.0 || _plate.position.y > 1.0 || _plate.position.x < 0 || _plate.position.y < 0) {
         [self resetPlate];
     }
 
@@ -123,7 +125,7 @@ const double epsilon = 0.0000001f;
 }
 
 // -----------------------------------------------------------------------------
-// UI touch to launch
+// UI touch to launch or place tool
 // -----------------------------------------------------------------------------
 -(void) touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event
 {

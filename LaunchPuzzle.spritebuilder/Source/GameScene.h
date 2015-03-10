@@ -13,7 +13,7 @@
 @interface GameScene : CCNode <CCPhysicsCollisionDelegate>
 
 /**
- Get normalized directio vector from two points
+ Get normalized direction vector from two points
  */
 +(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2;
 
