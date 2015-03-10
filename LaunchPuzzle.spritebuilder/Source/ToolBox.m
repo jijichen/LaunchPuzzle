@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Apportable. All rights reserved.
 //
 
+#import <SSZipArchive/unzip.h>
 #import "ToolBox.h"
 #import "Level.h"
 #import "GameScene.h"
@@ -14,53 +15,26 @@
     NSMutableArray* toolCountArr;
 };
 
-// -----------------------------------------------------------------------------
-// UI touch to launch
-// -----------------------------------------------------------------------------
--(void) touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event
-{
-    NSLog(@"Touch begin");
-}
-
--(void) touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event
-{
-    NSLog(@"Touch Moving");
-
-}
-
--(void) touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event
-{
-    NSLog(@"Touch end");
-}
-
 - (Tool*) checkTouch:(CCTouch*) touch {
-
     CGPoint touchLocation = [touch locationInNode:self];
     for (int i = 0; i < [_toolsToLoad count]; ++i) {
         Tool* tool = [_toolsToLoad objectAtIndex:i];
         if (CGRectContainsPoint([tool boundingBox], touchLocation)) {
+            //If the touch location is within a tool
             int oldCount = [[_toolsCount objectAtIndex:i] intValue];
             if (oldCount == 0) {
+                //Check tool count
                 return nil;
             }
 
+            //Reduce the tool count, get the tool return it.
             int newCount = oldCount - 1;
             _toolsCount[i] = [NSNumber numberWithInt:newCount];
-            CCLabelTTF * labelToChange = [toolCountArr objectAtIndex:i];
-            [labelToChange setString:[NSString stringWithFormat:@"X %d",
-                                                                newCount]];
-            if ([[_toolsCount objectAtIndex:i] integerValue] == 0) {
-                [labelToChange setVisible:false];
-                [tool setVisible:false];
-            }
+            [self refreshLabels:i to:[_toolsCount[i] intValue]];
             return tool;
         }
     }
     return nil;
-}
-
-- (void)loadWithLevel:(Level *)level andLabels:(CCLabelTTF *)labels :(CCLabelTTF *)param :(CCLabelTTF *)param1 :(void *)param2 {
-
 }
 
 - (void)loadWithLevel:(Level *)level l1:(CCLabelTTF *)l1 l2:(CCLabelTTF *)l2 l3:(CCLabelTTF *)l3{
@@ -98,6 +72,31 @@
         [labelForTool setString:[NSString stringWithFormat:@"X %d",
                                                            [(NSNumber*)[self.toolsCount objectAtIndex:i] intValue]]];
         labelForTool.visible = true;
+    }
+}
+
+- (void)restoreToolToBox:(Tool*)releasedTool {
+    //Check the tools to load array, find the correspondent tool and add the count.
+    for (int i = 0; i < [_toolsToLoad count]; ++i) {
+        if (releasedTool.toolType == ((Tool*)_toolsToLoad[i]).toolType) {
+            _toolsCount[i] = [NSNumber numberWithInt:[_toolsCount[i] intValue] + 1];
+            [self refreshLabels:i to:[_toolsCount[i] intValue]];
+            return;
+        }
+    }
+}
+
+- (void)refreshLabels:(int)pos to:(int)newCount {
+    CCLabelTTF * labelToChange = toolCountArr[pos];
+    Tool* toolToChange = _toolsToLoad[pos];
+    [labelToChange setString:[NSString stringWithFormat:@"X %d",
+                                                        newCount]];
+    if (newCount == 0) {
+        [labelToChange setVisible:false];
+        [toolToChange setVisible:false];
+    } else {
+        [labelToChange setVisible:true];
+        [toolToChange setVisible:true];
     }
 }
 @end

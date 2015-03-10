@@ -8,6 +8,7 @@
 
 #import "Tool.h"
 #import "UITouch+CC.h"
+#import "ToolBox.h"
 
 @implementation Tool
 
@@ -18,16 +19,26 @@
         self.inToolBox = true;
         self.userInteractionEnabled = YES;
         self.isTouchEnabled = YES;
+
+        //Set gesture recognizer : rotation and double tap
         UIRotationGestureRecognizer* rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
-        UITapGestureRecognizer* tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                 action:@selector(handleTap:)];
+        UITapGestureRecognizer* tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tapRec.numberOfTapsRequired = 2;
-        
         [rotRec setDelegate:self];
         [tapRec setDelegate:self];
         [self addGestureRecognizer:rotRec];
         [self addGestureRecognizer:tapRec];
     }
+    return self;
+}
+
+-(id)initWithToolBox:(ToolBox*)parentToolBox
+{
+    self = [self init];
+    if (self) {
+        self.toolBox = parentToolBox;
+    }
+
     return self;
 }
 
@@ -45,12 +56,10 @@
 {
     if (sender.state == UIGestureRecognizerStateEnded)
     {
+        [_toolBox restoreToolToBox:self];
         [self removeFromParent];
     }
 }
-
-
-
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLoc = [touch locationInNode:self.parent];

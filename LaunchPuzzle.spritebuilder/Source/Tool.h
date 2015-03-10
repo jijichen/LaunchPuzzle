@@ -9,6 +9,8 @@
 #import "CCSprite.h"
 #import "Constants.h"
 
+@class ToolBox;
+
 @interface Tool : CCSprite
 
 
@@ -16,5 +18,6 @@
 
 @property enum ToolType toolType;
 @property BOOL inToolBox;
+@property (weak) ToolBox* toolBox;
 
 @end

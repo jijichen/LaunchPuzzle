@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "927F6198196C771E000F43EF"
-               BuildableName = "LaunchPuzzle Android.app"
+               BuildableName = "Example"
                BlueprintName = "LaunchPuzzle Android"
                ReferencedContainer = "container:LaunchPuzzle.xcodeproj">
             </BuildableReference>
@@ -42,7 +42,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "927F6198196C771E000F43EF"
-            BuildableName = "LaunchPuzzle Android.app"
+            BuildableName = "Example"
             BlueprintName = "LaunchPuzzle Android"
             ReferencedContainer = "container:LaunchPuzzle.xcodeproj">
          </BuildableReference>

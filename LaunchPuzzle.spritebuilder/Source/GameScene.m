@@ -70,6 +70,8 @@ const double epsilon = 0.0000001f;
     _physicsNode.debugDraw = false;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
+
+    //Load level to game scene
     [self loadLevel:@"Levels/level1"];
 
     _plate.userInteractionEnabled = true;
@@ -139,6 +141,7 @@ const double epsilon = 0.0000001f;
         if (toolTouched != nil) {
             toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
             toolToPlace.inToolBox = false;
+            toolToPlace.toolBox = _toolBox;
             toolToPlace.position = [touch locationInNode:_contentNode];
             [_physicsNode addChild:toolToPlace];
         }
@@ -184,7 +187,7 @@ const double epsilon = 0.0000001f;
 }
 
 // -----------------------------------------------------------------------------
-// Level Utility class functions
+// Level and Utility class functions
 // -----------------------------------------------------------------------------
 + (Tool *)loadToolByType:(enum ToolType) type {
     NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:type]];
