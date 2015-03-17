@@ -10,6 +10,7 @@
 #import "Constants.h"
 
 @class ToolBox;
+@class GameScene;
 
 @interface Tool : CCSprite
 
@@ -19,5 +20,6 @@
 @property enum ToolType toolType;
 @property BOOL inToolBox;
 @property (weak) ToolBox* toolBox;
+@property (weak) GameScene* gameScene;
 
 @end

@@ -9,8 +9,9 @@
 #import "Target.h"
 
 @implementation Target
-
+//TODO find child by name
 - (void) didLoadFromCCB {
     self.physicsBody.collisionType = @"Target";
+    self.name = @"Target";
 }
 @end

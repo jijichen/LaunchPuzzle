@@ -15,20 +15,20 @@
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
 
-@interface GameScene()
+@interface GameScene ()
 
--(void) resetPlate;
+- (void)resetPlate;
 
 @end
 
 @implementation GameScene {
-    CCNode* _plate;
-    CCNode* _contentNode;
-    CCPhysicsNode* _physicsNode;
-    CCNode* _levelNode;
-    CCNode* _target;
-    ToolBox* _toolBox;
-    
+    CCNode *_plate;
+    CCNode *_contentNode;
+    CCPhysicsNode *_physicsNode;
+    CCNode *_levelNode;
+    CCNode *_target;
+    ToolBox *_toolBox;
+
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
     CGPoint touchEndLocation;
@@ -37,25 +37,24 @@ const double epsilon = 0.0000001f;
     CCTime timeEnd;
     Boolean launchStarted;
     Boolean launchGoing;
-    Tool* toolToPlace;
+    Tool *toolToPlace;
 
     //Code connection redundancy due to cocos2d owner
-    CCLabelTTF* _toolCount1;
-    CCLabelTTF* _toolCount2;
-    CCLabelTTF* _toolCount3;
+    CCLabelTTF *_toolCount1;
+    CCLabelTTF *_toolCount2;
+    CCLabelTTF *_toolCount3;
 }
 
 
 // -----------------------------------------------------------------------------
 // Initialize and loading
 // -----------------------------------------------------------------------------
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         //[self schedule:@selector(update:)];
         [self schedule:@selector(checkBoundary:) interval:(CCTime) 1];
-        timeCurrent = (CCTime)0;
+        timeCurrent = (CCTime) 0;
         toolToPlace = nil;
     }
     return self;
@@ -65,7 +64,7 @@ const double epsilon = 0.0000001f;
 - (void)didLoadFromCCB {
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
-    
+
     originalPlatePosition = _plate.position;
     _physicsNode.debugDraw = false;
     _physicsNode.collisionDelegate = self;
@@ -78,22 +77,23 @@ const double epsilon = 0.0000001f;
     _plate.userInteractionEnabled = true;
 }
 
-- (void)loadLevel:(NSString*)levelName {
-    Level* levelToLoad = (Level *)[CCBReader load:levelName];
+- (void)loadLevel:(NSString *)levelName {
+    Level *levelToLoad = (Level *) [CCBReader load:levelName];
+
     [_physicsNode addChild:levelToLoad];
-    
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
+    _levelNode = levelToLoad;
 }
 
 // -----------------------------------------------------------------------------
 // Update and state check
 // -----------------------------------------------------------------------------
--(void)update:(CCTime)delta {
+- (void)update:(CCTime)delta {
     timeCurrent += delta;
 }
 
--(void)checkBoundary:(CCTime)delta {
-    NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
+- (void)checkBoundary:(CCTime)delta {
+    //NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
     if (_plate.position.x > 1.0 || _plate.position.y > 1.0 || _plate.position.x < 0 || _plate.position.y < 0) {
         [self resetPlate];
     }
@@ -107,41 +107,40 @@ const double epsilon = 0.0000001f;
     }
 }
 
--(void)resetPlate {
+- (void)resetPlate {
     _plate.physicsBody.velocity = CGPointMake(0, 0);
     _plate.physicsNode.rotation = 0.0f;
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
 }
 
--(void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB{
+- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
         [self targetRemoved:nodeA];
-    } key:nodeA];
+    }                                  key:nodeA];
 }
 
--(void) targetRemoved:(CCNode *)target {
+- (void)targetRemoved:(CCNode *)target {
     [target removeFromParent];
 }
 
 // -----------------------------------------------------------------------------
 // UI touch to launch or place tool
 // -----------------------------------------------------------------------------
--(void) touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event
-{
+- (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
     prevTouchLocation = [touch locationInNode:_contentNode];
     prevTime = timeCurrent;
-    
+
     if (_plate.userInteractionEnabled && !launchStarted
-            && CGRectContainsPoint([_plate boundingBox], prevTouchLocation))
-    {
+            && CGRectContainsPoint([_plate boundingBox], prevTouchLocation)) {
         launchStarted = true;
         [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
         //_plate.position = touchStartLocation;
-    } else if (!launchStarted ) {
-        Tool* toolTouched = [_toolBox checkTouch:touch];
+    } else if (!launchStarted) {
+        Tool *toolTouched = [_toolBox checkTouch:touch];
         if (toolTouched != nil) {
             toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
+            toolToPlace.gameScene = self;
             toolToPlace.inToolBox = false;
             toolToPlace.toolBox = _toolBox;
             toolToPlace.position = [touch locationInNode:_contentNode];
@@ -150,11 +149,10 @@ const double epsilon = 0.0000001f;
     }
 }
 
--(void) touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event
-{
+- (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     CGPoint touchLocation = [touch locationInNode:_contentNode];
-    
-    if (_plate.userInteractionEnabled && launchStarted){
+
+    if (_plate.userInteractionEnabled && launchStarted) {
         //[_plate.physicsBody setVelocity:CGPointMake(0, 0)];
         //_plate.position = touchLocation;
         prevTouchLocation = touchLocation;
@@ -164,17 +162,17 @@ const double epsilon = 0.0000001f;
     }
 }
 
--(void) touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event
-{
+- (void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     touchEndLocation = [touch locationInNode:_contentNode];
     timeEnd = timeCurrent;
-    
+
     if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
-        CGPoint forceDirection = [GameScene getDirection:prevTouchLocation to: touchEndLocation];
+        //Launch finish
+        CGPoint forceDirection = [GameScene getDirection:prevTouchLocation to:touchEndLocation];
         double velocity =
-            [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double)(timeEnd - prevTime);
-        
-        
+                [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double) (timeEnd - prevTime);
+
+
         CGPoint launchForceVec = ccpMult(forceDirection, initialForce * velocity);
         NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
@@ -182,51 +180,68 @@ const double epsilon = 0.0000001f;
         launchGoing = true;
         [_plate setUserInteractionEnabled:NO];
     } else if (toolToPlace != nil) {
-        //toolToPlace.physicsBody = [CCPhysicsBody bodyWithRect:toolToPlace.boundingBox cornerRadius:0.0];
+        if ([self checkOverlap:toolToPlace]) {
+            toolToPlace.physicsBody.collisionMask = nil;
+        } else {
+            [toolToPlace.toolBox restoreToolToBox:toolToPlace];
+            [toolToPlace removeFromParent];
+        }
+
         toolToPlace = nil;
     }
-  
 }
 
 // -----------------------------------------------------------------------------
 // Level and Utility class functions
 // -----------------------------------------------------------------------------
-+ (Tool *)loadToolByType:(enum ToolType) type {
-    NSString* ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:type]];
++ (Tool *)loadToolByType:(enum ToolType)type {
+    NSString *ccbName = [[Constants getTypeToCCBNameDict] objectForKey:[NSNumber numberWithInt:type]];
 
     if (ccbName == nil) {
         [NSException raise:@"Failed load tool" format:@"Failed to load tool by type %d", type];
     }
-    Tool* tool = (Tool*)[CCBReader load:ccbName];
+    Tool *tool = (Tool *) [CCBReader load:ccbName];
     tool.toolType = type;
+    tool.physicsBody.collisionMask = @[];
     return tool;
 }
 
-+ (CCSprite *)loadToolSpriteByType:(enum ToolType) type {
-    NSString* imageName = [[Constants getTypeToImgNameDict] objectForKey:[NSNumber numberWithInt:type]];
++ (CCSprite *)loadToolSpriteByType:(enum ToolType)type {
+    NSString *imageName = [[Constants getTypeToImgNameDict] objectForKey:[NSNumber numberWithInt:type]];
     return [CCSprite spriteWithImageNamed:imageName];
 }
 
-+(CGPoint) getDirection:(CGPoint)p1 to:(CGPoint)p2
-{
++ (CGPoint)getDirection:(CGPoint)p1 to:(CGPoint)p2 {
     double length = [self distanceBetween:p1 and:p2];
     double xdiff = p2.x - p1.x;
     double ydiff = p2.y - p1.y;
-    
+
     if (length - 0 < epsilon) {
         return CGPointMake(0, 0);
     }
-    
+
     return CGPointMake(xdiff / length, ydiff / length);
 }
 
-+(double) distanceBetween:(CGPoint)p1 and:(CGPoint)p2
-{
++ (double)distanceBetween:(CGPoint)p1 and:(CGPoint)p2 {
     double xdiff = p2.x - p1.x;
     double ydiff = p2.y - p1.y;
     double length = sqrt(pow(xdiff, 2) + pow(ydiff, 2));
-    
+
     return length;
+}
+
+- (Boolean)checkOverlap:(CCNode *)target {
+    NSMutableArray *objectsToCheck = [[NSMutableArray alloc] initWithArray:_levelNode->_children];
+    [objectsToCheck addObject:_plate];
+
+    for (CCNode * obj in objectsToCheck) {
+        if (CGRectIntersectsRect([obj boundingBox], [target boundingBox])) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 @end

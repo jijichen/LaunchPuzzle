@@ -26,4 +26,11 @@
  Load a tool by its type.
  */
 + (Tool *)loadToolByType:(enum ToolType) type;
+
+/**
+* Check if object overlap with current scene objects (like plate, coin, preset objects, etc..)
+*/
+- (Boolean)checkOverlap:(CCNode *)target;
+
+@property NSArray* preSetObjs;
 @end

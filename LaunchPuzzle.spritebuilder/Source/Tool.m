@@ -9,8 +9,11 @@
 #import "Tool.h"
 #import "UITouch+CC.h"
 #import "ToolBox.h"
+#import "GameScene.h"
 
-@implementation Tool
+@implementation Tool{
+    CGPoint prevLocation;
+}
 
 -(id)init
 {
@@ -63,6 +66,7 @@
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLoc = [touch locationInNode:self.parent];
+    prevLocation = touchLoc;
     self.physicsBody.collisionMask = @[];
 }
 
@@ -72,7 +76,15 @@
 }
 
 -(void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
-    self.physicsBody.collisionMask = nil;
+    CGPoint touchLoc = [touch locationInNode:self.parent];
+    //TODO detect overlap with other objects in the scene
+    if ([self.gameScene checkOverlap:self]) {
+        //No overlap with predefined objects in the level
+        self.physicsBody.collisionMask = nil;
+    } else {
+        [[self toolBox] restoreToolToBox:self];
+        [self removeFromParent];
+    }
 }
 
 @end
