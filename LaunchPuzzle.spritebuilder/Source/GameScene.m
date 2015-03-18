@@ -15,6 +15,8 @@
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
 
+void levelSuccess();
+
 @interface GameScene ()
 
 - (void)resetPlate;
@@ -39,7 +41,8 @@ const double epsilon = 0.0000001f;
     Boolean launchStarted;
     Boolean launchGoing;
     Tool *toolToPlace;
-    int liveCount;
+    int remainLiveCount;
+    int remainTargetCount;
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -81,10 +84,11 @@ const double epsilon = 0.0000001f;
 - (void)loadLevel:(NSString *)levelName {
     Level *levelToLoad = (Level *) [CCBReader load:levelName];
 
-    [_physicsNode addChild:levelToLoad];
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
+    [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
-    liveCount = levelToLoad.liveCount;
+    remainLiveCount = levelToLoad.liveCount;
+    remainTargetCount = levelToLoad.targetCount;
 
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
@@ -134,19 +138,28 @@ const double epsilon = 0.0000001f;
     _plate.physicsNode.rotation = 0.0f;
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
-    liveCount -= 1;
-    [self updateLiveIndicator:liveCount];
+    remainLiveCount -= 1;
+    [self updateLiveIndicator:remainLiveCount];
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
         [self targetRemoved:nodeA];
-    }                                  key:nodeA];
+        remainTargetCount -= 1;
+        if (remainTargetCount == 0) {
+            [self levelSuccess];
+        }
+    } key:nodeA];
+}
+
+- (void)levelSuccess {
+    [self loadLevel:@"Levels/level2"];
 }
 
 - (void)targetRemoved:(CCNode *)target {
     [target removeFromParent];
 }
+
 
 // -----------------------------------------------------------------------------
 // UI touch to launch or place tool
@@ -226,6 +239,7 @@ const double epsilon = 0.0000001f;
     }
     Tool *tool = (Tool *) [CCBReader load:ccbName];
     tool.toolType = type;
+    tool.inToolBox = false;
     tool.physicsBody.collisionMask = @[];
     return tool;
 }

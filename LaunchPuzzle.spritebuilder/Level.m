@@ -10,9 +10,16 @@
 
 @implementation Level
 
-// is called when CCB file has completed loading
 - (void)didLoadFromCCB {
     self.presetObjs = self->_children;
+
+    int c = 0;
+    for (CCNode *preObj in self.presetObjs) {
+        if (preObj.name == @"Target"){
+            c += 1;
+        }
+    }
+    self.targetCount = c;
 }
 
 @end

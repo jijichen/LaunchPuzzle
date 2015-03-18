@@ -14,9 +14,6 @@
 
 @interface Tool : CCSprite
 
-
--(void) disableInteraction;
-
 @property enum ToolType toolType;
 @property BOOL inToolBox;
 @property (weak) ToolBox* toolBox;

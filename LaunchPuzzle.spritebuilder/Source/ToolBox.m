@@ -43,7 +43,11 @@
     self.toolsCount = [[NSMutableArray alloc] init];
 
     //Load three kinds of tools
-    toolCountArr = [[NSArray alloc] initWithObjects:l1,l2,l3,nil];
+    toolCountArr = [[NSMutableArray alloc] initWithObjects:l1,l2,l3,nil];
+    for (CCLabelTTF *labels in toolCountArr) {
+        [labels.physicsNode setPhysicsBody:nil];
+    }
+
     if (level.countToolStick > 0) {
         Tool *stick = [GameScene loadToolByType:Stick];
         [self addToToolBox:stick];
@@ -74,7 +78,9 @@
 }
 
 - (void)addToToolBox:(Tool *)tool {
+    tool.inToolBox = true;
     tool.userInteractionEnabled = NO;
+    [tool.physicsNode setPhysicsBody:nil];
     [self.toolsToLoad addObject:tool];
 }
 
@@ -102,4 +108,5 @@
         [toolToChange setVisible:true];
     }
 }
+
 @end

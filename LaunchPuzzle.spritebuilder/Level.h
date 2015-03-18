@@ -10,9 +10,10 @@
 
 @interface Level : CCScene
 
-@property int countToolStick;
-@property int countToolTri;
-@property int liveCount;
+@property (atomic, readonly) int countToolStick;
+@property (atomic, readonly) int countToolTri;
+@property (atomic, readonly) int liveCount;
 @property NSArray* presetObjs;
+@property (atomic) int targetCount;
 
 @end

@@ -33,4 +33,6 @@
 - (Boolean)checkOverlap:(CCNode *)target;
 
 @property NSArray* preSetObjs;
+@property (readonly) int remainTargetCount;
+
 @end

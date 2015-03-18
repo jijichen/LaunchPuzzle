@@ -57,7 +57,7 @@
 
 - (void)handleTap:(UITapGestureRecognizer *)sender
 {
-    if (sender.state == UIGestureRecognizerStateEnded)
+    if (sender.state == UIGestureRecognizerStateEnded && !self.inToolBox)
     {
         [_toolBox restoreToolToBox:self];
         [self removeFromParent];
@@ -76,8 +76,6 @@
 }
 
 -(void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
-    CGPoint touchLoc = [touch locationInNode:self.parent];
-    //TODO detect overlap with other objects in the scene
     if ([self.gameScene checkOverlap:self]) {
         //No overlap with predefined objects in the level
         self.physicsBody.collisionMask = nil;
