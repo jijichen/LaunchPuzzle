@@ -25,9 +25,10 @@ const double epsilon = 0.0000001f;
     CCNode *_plate;
     CCNode *_contentNode;
     CCPhysicsNode *_physicsNode;
-    CCNode *_levelNode;
+    Level *_levelNode;
     CCNode *_target;
     ToolBox *_toolBox;
+    CCNode *_livesIndicator;
 
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
@@ -38,7 +39,7 @@ const double epsilon = 0.0000001f;
     Boolean launchStarted;
     Boolean launchGoing;
     Tool *toolToPlace;
-
+    int liveCount;
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -83,6 +84,25 @@ const double epsilon = 0.0000001f;
     [_physicsNode addChild:levelToLoad];
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     _levelNode = levelToLoad;
+    liveCount = levelToLoad.liveCount;
+
+    //Setup live count
+    [self updateLiveIndicator:levelToLoad.liveCount];
+}
+
+- (void)updateLiveIndicator:(int)liveCount {
+    [_livesIndicator removeAllChildren];
+    for (int i = 0; i < liveCount; ++i) {
+        CCNode *plateInd = [CCBReader load:[Constants getPlateCCBName]];
+        plateInd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
+                CCPositionReferenceCornerBottomLeft);
+        plateInd.position = CGPointMake(0.2 * (i), 0.5);
+        plateInd.anchorPoint = CGPointMake(0.0, 0.5);
+        plateInd.scale = 0.6;
+        plateInd.opacity = 0.8;
+        [plateInd setPhysicsBody:nil];
+        [_livesIndicator addChild:plateInd];
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -96,6 +116,8 @@ const double epsilon = 0.0000001f;
     //NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
     if (_plate.position.x > 1.0 || _plate.position.y > 1.0 || _plate.position.x < 0 || _plate.position.y < 0) {
         [self resetPlate];
+        launchGoing = false;
+        return;
     }
 
     if (launchGoing) {
@@ -112,6 +134,8 @@ const double epsilon = 0.0000001f;
     _plate.physicsNode.rotation = 0.0f;
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
+    liveCount -= 1;
+    [self updateLiveIndicator:liveCount];
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
@@ -232,7 +256,7 @@ const double epsilon = 0.0000001f;
 }
 
 - (Boolean)checkOverlap:(CCNode *)target {
-    NSMutableArray *objectsToCheck = [[NSMutableArray alloc] initWithArray:_levelNode->_children];
+    NSMutableArray *objectsToCheck = [[NSMutableArray alloc] initWithArray:_levelNode.presetObjs];
     [objectsToCheck addObject:_plate];
 
     for (CCNode * obj in objectsToCheck) {

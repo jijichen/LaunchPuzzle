@@ -11,10 +11,14 @@ enum ToolType {
     Stick,Triangle,Spring
 };
 
+static NSString *plateCCBName = @"Sprites/plate";
+
 @interface Constants : NSObject
 
 +(NSDictionary*)getTypeToCCBNameDict;
 
 +(NSDictionary*)getTypeToImgNameDict;
+
++(NSString*)getPlateCCBName;
 
 @end

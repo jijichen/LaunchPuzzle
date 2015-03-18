@@ -133,8 +133,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.8242957592010498</real>
-							<real>0.3645833432674408</real>
+							<real>0.5</real>
+							<real>0.5</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -187,6 +187,16 @@
 				<integer>0</integer>
 				<key>value</key>
 				<string>1</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>liveCount</string>
+				<key>optimized</key>
+				<false/>
+				<key>type</key>
+				<integer>0</integer>
+				<key>value</key>
+				<string>5</string>
 			</dict>
 		</array>
 		<key>displayName</key>

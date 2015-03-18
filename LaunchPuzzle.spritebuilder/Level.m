@@ -10,4 +10,9 @@
 
 @implementation Level
 
+// is called when CCB file has completed loading
+- (void)didLoadFromCCB {
+    self.presetObjs = self->_children;
+}
+
 @end

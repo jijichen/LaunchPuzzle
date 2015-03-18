@@ -12,4 +12,7 @@
 
 @property int countToolStick;
 @property int countToolTri;
+@property int liveCount;
+@property NSArray* presetObjs;
+
 @end

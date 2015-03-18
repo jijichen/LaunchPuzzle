@@ -46,15 +46,13 @@
     toolCountArr = [[NSArray alloc] initWithObjects:l1,l2,l3,nil];
     if (level.countToolStick > 0) {
         Tool *stick = [GameScene loadToolByType:Stick];
-        stick.userInteractionEnabled = NO;
-        [self.toolsToLoad addObject:stick];
+        [self addToToolBox:stick];
         [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolStick]];
     }
 
     if (level.countToolTri > 0) {
         Tool *tri = [GameScene loadToolByType:Triangle];
-        tri.userInteractionEnabled = NO;
-        [self.toolsToLoad addObject:tri];
+        [self addToToolBox:tri];
         [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolTri]];
     }
 
@@ -73,6 +71,11 @@
                                                            [(NSNumber*)[self.toolsCount objectAtIndex:i] intValue]]];
         labelForTool.visible = true;
     }
+}
+
+- (void)addToToolBox:(Tool *)tool {
+    tool.userInteractionEnabled = NO;
+    [self.toolsToLoad addObject:tool];
 }
 
 - (void)restoreToolToBox:(Tool*)releasedTool {

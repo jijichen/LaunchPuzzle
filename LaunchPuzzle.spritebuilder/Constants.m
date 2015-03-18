@@ -40,4 +40,9 @@
     return dict;
 }
 
++ (NSString *)getPlateCCBName {
+    return plateCCBName;
+}
+
+
 @end
