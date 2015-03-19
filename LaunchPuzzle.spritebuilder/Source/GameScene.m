@@ -42,7 +42,7 @@ void levelSuccess();
     Boolean launchGoing;
     Tool *toolToPlace;
     int remainLiveCount;
-    int remainTargetCount;
+    int _remainTargetCount;
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -88,7 +88,7 @@ void levelSuccess();
     [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
     remainLiveCount = levelToLoad.liveCount;
-    remainTargetCount = levelToLoad.targetCount;
+    _remainTargetCount = levelToLoad.targetCount;
 
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
@@ -120,14 +120,12 @@ void levelSuccess();
     //NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
     if (_plate.position.x > 1.0 || _plate.position.y > 1.0 || _plate.position.x < 0 || _plate.position.y < 0) {
         [self resetPlate];
-        launchGoing = false;
         return;
     }
 
     if (launchGoing) {
         CGFloat velocityScalar = pow(_plate.physicsBody.velocity.x, 2.0) + pow(_plate.physicsBody.velocity.y, 2.0);
         if (velocityScalar <= 16) {
-            launchGoing = false;
             [self resetPlate];
         }
     }
@@ -138,15 +136,19 @@ void levelSuccess();
     _plate.physicsNode.rotation = 0.0f;
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
+    [_toolBox setVisible:true];
+
     remainLiveCount -= 1;
+    launchGoing = false;
+    launchStarted = false;
     [self updateLiveIndicator:remainLiveCount];
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
         [self targetRemoved:nodeA];
-        remainTargetCount -= 1;
-        if (remainTargetCount == 0) {
+        _remainTargetCount -= 1;
+        if (_remainTargetCount == 0) {
             [self levelSuccess];
         }
     } key:nodeA];
@@ -216,6 +218,7 @@ void levelSuccess();
         launchStarted = false;
         launchGoing = true;
         [_plate setUserInteractionEnabled:NO];
+        [_toolBox setVisible:false];
     } else if (toolToPlace != nil) {
         if ([self checkOverlap:toolToPlace]) {
             toolToPlace.physicsBody.collisionMask = nil;
