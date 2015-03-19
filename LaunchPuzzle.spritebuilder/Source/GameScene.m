@@ -15,11 +15,12 @@
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
 
-void levelSuccess();
+
 
 @interface GameScene ()
 
-- (void)resetPlate;
+- (void)afterOneTrial;
+- (void) levelSuccess;
 
 @end
 
@@ -32,6 +33,8 @@ void levelSuccess();
     ToolBox *_toolBox;
     CCNode *_livesIndicator;
 
+    CCNode *popUp;
+
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
     CGPoint touchEndLocation;
@@ -43,6 +46,8 @@ void levelSuccess();
     Tool *toolToPlace;
     int remainLiveCount;
     int _remainTargetCount;
+    int currentLevel;
+    NSString* nextLevelStr;
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -76,6 +81,7 @@ void levelSuccess();
 
     //Load level to game scene
     [self loadLevel:@"Levels/level1"];
+    currentLevel = 1;
 
     //Enable plate interaction
     _plate.userInteractionEnabled = true;
@@ -83,6 +89,12 @@ void levelSuccess();
 
 - (void)loadLevel:(NSString *)levelName {
     Level *levelToLoad = (Level *) [CCBReader load:levelName];
+    if(_levelNode != nil) {
+        [_levelNode removeFromParent];
+    }
+    if (popUp != nil) {
+        [popUp removeFromParent];
+    }
 
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     [_physicsNode addChild:levelToLoad];
@@ -90,8 +102,20 @@ void levelSuccess();
     remainLiveCount = levelToLoad.liveCount;
     _remainTargetCount = levelToLoad.targetCount;
 
+    [self resetPlate];
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
+    self.paused = NO;
+}
+
+-(void)loadNextLevel {
+    //GameScene* nextScene = (GameScene *)[CCBReader loadAsScene:@"GameScene"];
+    [self loadLevel:nextLevelStr];
+
+    /*
+    CCTransition *transition = [CCTransition transitionFadeWithDuration:0.8f];
+    [[CCDirector sharedDirector] presentScene:nextScene withTransition:transition];
+    */
 }
 
 - (void)updateLiveIndicator:(int)liveCount {
@@ -117,18 +141,27 @@ void levelSuccess();
 }
 
 - (void)checkBoundary:(CCTime)delta {
-    //NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
-    if (_plate.position.x > 1.0 || _plate.position.y > 1.0 || _plate.position.x < 0 || _plate.position.y < 0) {
-        [self resetPlate];
-        return;
-    }
-
     if (launchGoing) {
+        //NSLog(@"x : %f, y : %f", _plate.position.x, _plate.position.y);
+        if (_plate.position.x > 1.0 || _plate.position.y > 1.0 || _plate.position.x < 0 || _plate.position.y < 0) {
+            [self afterOneTrial];
+            return;
+        }
+
         CGFloat velocityScalar = pow(_plate.physicsBody.velocity.x, 2.0) + pow(_plate.physicsBody.velocity.y, 2.0);
-        if (velocityScalar <= 16) {
-            [self resetPlate];
+        if (velocityScalar <= 64) {
+            [self afterOneTrial];
         }
     }
+}
+
+- (void)afterOneTrial {
+    [self resetPlate];
+
+    remainLiveCount -= 1;
+    launchGoing = false;
+    launchStarted = false;
+    [self updateLiveIndicator:remainLiveCount];
 }
 
 - (void)resetPlate {
@@ -137,11 +170,6 @@ void levelSuccess();
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
     [_toolBox setVisible:true];
-
-    remainLiveCount -= 1;
-    launchGoing = false;
-    launchStarted = false;
-    [self updateLiveIndicator:remainLiveCount];
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
@@ -155,7 +183,21 @@ void levelSuccess();
 }
 
 - (void)levelSuccess {
-    [self loadLevel:@"Levels/level2"];
+    self.paused = YES;
+
+    launchGoing = NO;
+    if (currentLevel + 1 > Constants.totalLevelCount) {
+        //TODO pop up finish all levels window
+    } else {
+        nextLevelStr = [NSString stringWithFormat:@"Levels/level%d", currentLevel + 1];
+        //[self loadLevel:nextLevelStr];
+
+        popUp = [CCBReader load:@"Success" owner:self];
+        popUp.positionType = CCPositionTypeNormalized;
+        popUp.anchorPoint = ccp(0.5, 0.5);
+        popUp.position = ccp(0.5, 0.5);
+        [self addChild:popUp];
+    }
 }
 
 - (void)targetRemoved:(CCNode *)target {

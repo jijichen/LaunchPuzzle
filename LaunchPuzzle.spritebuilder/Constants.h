@@ -15,6 +15,8 @@ static NSString *plateCCBName = @"Sprites/plate";
 
 @interface Constants : NSObject
 
++(int)totalLevelCount;
+
 +(NSDictionary*)getTypeToCCBNameDict;
 
 +(NSDictionary*)getTypeToImgNameDict;

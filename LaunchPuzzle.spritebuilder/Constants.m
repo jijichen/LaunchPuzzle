@@ -10,6 +10,10 @@
 
 @implementation Constants
 
++(int)totalLevelCount {
+    return 3;
+}
+
 +(NSDictionary*)getTypeToCCBNameDict {
     static NSDictionary *dict = nil;
     static dispatch_once_t onceToken;
