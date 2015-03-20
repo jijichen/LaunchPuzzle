@@ -13,6 +13,7 @@
 @property (atomic, readonly) int countToolStick;
 @property (atomic, readonly) int countToolTri;
 @property (atomic, readonly) int liveCount;
+@property (atomic, readonly) int countToolPlate;
 @property NSArray* presetObjs;
 @property (atomic) int targetCount;
 

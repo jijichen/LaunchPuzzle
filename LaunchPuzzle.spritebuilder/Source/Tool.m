@@ -52,6 +52,8 @@
         float rotation = aRotationGestureRecognizer.rotation;
         node.rotation += CC_RADIANS_TO_DEGREES(rotation);
         aRotationGestureRecognizer.rotation = 0;
+
+        [self touchEnded:nil withEvent:nil];
     }
 }
 

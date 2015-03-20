@@ -20,6 +20,9 @@
 - (void)restoreToolToBox:(Tool*)releasedTool;
 
 @property NSMutableArray* toolsToLoad;
+
+- (void)emptyToolsToLoad;
+
 @property NSMutableArray* toolsCount;
 
 @end

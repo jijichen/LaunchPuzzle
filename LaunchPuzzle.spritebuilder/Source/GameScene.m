@@ -28,6 +28,7 @@ const double epsilon = 0.0000001f;
     CCNode *_plate;
     CCNode *_contentNode;
     CCPhysicsNode *_physicsNode;
+    CCNode *_userObjNode;
     Level *_levelNode;
     CCNode *_target;
     ToolBox *_toolBox;
@@ -48,6 +49,7 @@ const double epsilon = 0.0000001f;
     int _remainTargetCount;
     int currentLevel;
     NSString* nextLevelStr;
+    NSString* currentLevelStr;
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -79,22 +81,21 @@ const double epsilon = 0.0000001f;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
 
+    //[self loadLevel:currentLevel withPath:currentLevelStr];
+    /*
     //Load level to game scene
     [self loadLevel:@"Levels/level1"];
     currentLevel = 1;
 
     //Enable plate interaction
     _plate.userInteractionEnabled = true;
+    */
 }
 
-- (void)loadLevel:(NSString *)levelName {
+- (void)loadLevel:(int)level withPath:(NSString *)levelName {
+    currentLevel = level;
+
     Level *levelToLoad = (Level *) [CCBReader load:levelName];
-    if(_levelNode != nil) {
-        [_levelNode removeFromParent];
-    }
-    if (popUp != nil) {
-        [popUp removeFromParent];
-    }
 
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     [_physicsNode addChild:levelToLoad];
@@ -102,20 +103,24 @@ const double epsilon = 0.0000001f;
     remainLiveCount = levelToLoad.liveCount;
     _remainTargetCount = levelToLoad.targetCount;
 
-    [self resetPlate];
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
     self.paused = NO;
+
+    _plate.userInteractionEnabled = true;
 }
 
 -(void)loadNextLevel {
-    //GameScene* nextScene = (GameScene *)[CCBReader loadAsScene:@"GameScene"];
-    [self loadLevel:nextLevelStr];
+    CCScene *scene = [CCBReader loadAsScene:@"GameScene"];
+    //[gameScene setCurrentLevel:1];
+    GameScene *nextScene = (GameScene *)[scene.children objectAtIndex:0];
+    [nextScene loadLevel:currentLevel+1 withPath:nextLevelStr];
+    [nextScene setCurrentLevel:currentLevel + 1];
+    //[self loadLevel:currentLevel+1 withPath:nextLevelStr];
 
-    /*
+
     CCTransition *transition = [CCTransition transitionFadeWithDuration:0.8f];
-    [[CCDirector sharedDirector] presentScene:nextScene withTransition:transition];
-    */
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
 
 - (void)updateLiveIndicator:(int)liveCount {
@@ -190,7 +195,6 @@ const double epsilon = 0.0000001f;
         //TODO pop up finish all levels window
     } else {
         nextLevelStr = [NSString stringWithFormat:@"Levels/level%d", currentLevel + 1];
-        //[self loadLevel:nextLevelStr];
 
         popUp = [CCBReader load:@"Success" owner:self];
         popUp.positionType = CCPositionTypeNormalized;
@@ -225,7 +229,7 @@ const double epsilon = 0.0000001f;
             toolToPlace.inToolBox = false;
             toolToPlace.toolBox = _toolBox;
             toolToPlace.position = [touch locationInNode:_contentNode];
-            [_physicsNode addChild:toolToPlace];
+            [_userObjNode addChild:toolToPlace];
         }
     }
 }
@@ -327,4 +331,8 @@ const double epsilon = 0.0000001f;
     return true;
 }
 
+- (void)setCurrentLevel:(int)i {
+    currentLevel = i;
+    currentLevelStr = [NSString stringWithFormat:@"Levels/level%d", currentLevel];
+}
 @end
