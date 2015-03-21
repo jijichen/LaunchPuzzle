@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 enum ToolType {
-    Stick,Triangle, Plate
+    Stick,Triangle,Plate
 };
 
 static NSString *plateCCBName = @"Sprites/plate";

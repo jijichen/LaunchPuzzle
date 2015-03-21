@@ -94,9 +94,7 @@ const double epsilon = 0.0000001f;
 
 - (void)loadLevel:(int)level withPath:(NSString *)levelName {
     currentLevel = level;
-
     Level *levelToLoad = (Level *) [CCBReader load:levelName];
-
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
@@ -112,30 +110,12 @@ const double epsilon = 0.0000001f;
 
 -(void)loadNextLevel {
     CCScene *scene = [CCBReader loadAsScene:@"GameScene"];
-    //[gameScene setCurrentLevel:1];
     GameScene *nextScene = (GameScene *)[scene.children objectAtIndex:0];
     [nextScene loadLevel:currentLevel+1 withPath:nextLevelStr];
     [nextScene setCurrentLevel:currentLevel + 1];
-    //[self loadLevel:currentLevel+1 withPath:nextLevelStr];
-
 
     CCTransition *transition = [CCTransition transitionFadeWithDuration:0.8f];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
-}
-
-- (void)updateLiveIndicator:(int)liveCount {
-    [_livesIndicator removeAllChildren];
-    for (int i = 0; i < liveCount; ++i) {
-        CCNode *plateInd = [CCBReader load:[Constants getPlateCCBName]];
-        plateInd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
-                CCPositionReferenceCornerBottomLeft);
-        plateInd.position = CGPointMake(0.2 * (i), 0.5);
-        plateInd.anchorPoint = CGPointMake(0.0, 0.5);
-        plateInd.scale = 0.6;
-        plateInd.opacity = 0.8;
-        [plateInd setPhysicsBody:nil];
-        [_livesIndicator addChild:plateInd];
-    }
 }
 
 // -----------------------------------------------------------------------------
@@ -208,6 +188,20 @@ const double epsilon = 0.0000001f;
     [target removeFromParent];
 }
 
+- (void)updateLiveIndicator:(int)liveCount {
+    [_livesIndicator removeAllChildren];
+    for (int i = 0; i < liveCount; ++i) {
+        CCNode *plateInd = [CCBReader load:[Constants getPlateCCBName]];
+        plateInd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
+                CCPositionReferenceCornerBottomLeft);
+        plateInd.position = CGPointMake(0.2 * (i), 0.5);
+        plateInd.anchorPoint = CGPointMake(0.0, 0.5);
+        plateInd.scale = 0.6;
+        plateInd.opacity = 0.8;
+        [plateInd setPhysicsBody:nil];
+        [_livesIndicator addChild:plateInd];
+    }
+}
 
 // -----------------------------------------------------------------------------
 // UI touch to launch or place tool

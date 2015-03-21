@@ -50,14 +50,20 @@
 
     if (level.countToolStick > 0) {
         Tool *stick = [GameScene loadToolByType:Stick];
-        [self addToToolBox:stick];
+        [self addToToolsToLoad:stick];
         [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolStick]];
     }
 
     if (level.countToolTri > 0) {
         Tool *tri = [GameScene loadToolByType:Triangle];
-        [self addToToolBox:tri];
+        [self addToToolsToLoad:tri];
         [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolTri]];
+    }
+
+    if (level.countToolPlate > 0) {
+        Tool *plate = [GameScene loadToolByType:Plate];
+        [self addToToolsToLoad:plate];
+        [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolPlate]];
     }
 
     for (int i = 0; i < [self.toolsToLoad count]; i++) {
@@ -77,7 +83,7 @@
     }
 }
 
-- (void)addToToolBox:(Tool *)tool {
+- (void)addToToolsToLoad:(Tool *)tool {
     tool.inToolBox = true;
     tool.userInteractionEnabled = NO;
     [tool.physicsNode setPhysicsBody:nil];
