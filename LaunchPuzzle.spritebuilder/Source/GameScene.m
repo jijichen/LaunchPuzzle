@@ -165,21 +165,6 @@ const double epsilon = 0.0000001f;
     } key:nodeA];
 }
 
-- (void)levelSuccess {
-    self.paused = YES;
-
-    launchGoing = NO;
-    if (currentLevel + 1 > Constants.totalLevelCount) {
-        //TODO pop up finish all levels window
-    } else {
-        popUp = [CCBReader load:@"Success" owner:self];
-        popUp.positionType = CCPositionTypeNormalized;
-        popUp.anchorPoint = ccp(0.5, 0.5);
-        popUp.position = ccp(0.5, 0.5);
-        [self addChild:popUp];
-    }
-}
-
 - (void)targetRemoved:(CCNode *)target {
     [target removeFromParent];
 }
@@ -321,4 +306,27 @@ const double epsilon = 0.0000001f;
     return true;
 }
 
+// -----------------------------------------------------------------------------
+// State transition
+// -----------------------------------------------------------------------------
+- (void)levelSuccess {
+    self.paused = YES;
+
+    launchGoing = NO;
+    if (currentLevel + 1 > Constants.totalLevelCount) {
+        //TODO pop up finish all levels window
+    } else {
+        popUp = [CCBReader load:@"Success" owner:self];
+        popUp.positionType = CCPositionTypeNormalized;
+        popUp.anchorPoint = ccp(0.5, 0.5);
+        popUp.position = ccp(0.5, 0.5);
+        [self addChild:popUp];
+    }
+}
+
+- (void) levelRest {
+    self.paused = YES;
+    currentLevel -= 1;
+    [self loadNextLevel];
+}
 @end
