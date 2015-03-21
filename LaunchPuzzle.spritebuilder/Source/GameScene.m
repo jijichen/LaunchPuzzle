@@ -48,8 +48,6 @@ const double epsilon = 0.0000001f;
     int remainLiveCount;
     int _remainTargetCount;
     int currentLevel;
-    NSString* nextLevelStr;
-    NSString* currentLevelStr;
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -92,9 +90,10 @@ const double epsilon = 0.0000001f;
     */
 }
 
-- (void)loadLevel:(int)level withPath:(NSString *)levelName {
+- (void)loadLevel:(int)level {
     currentLevel = level;
-    Level *levelToLoad = (Level *) [CCBReader load:levelName];
+    NSString *levelPath = [NSString stringWithFormat:@"Levels/level%d", currentLevel];
+    Level *levelToLoad = (Level *) [CCBReader load:levelPath];
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
@@ -111,8 +110,7 @@ const double epsilon = 0.0000001f;
 -(void)loadNextLevel {
     CCScene *scene = [CCBReader loadAsScene:@"GameScene"];
     GameScene *nextScene = (GameScene *)[scene.children objectAtIndex:0];
-    [nextScene loadLevel:currentLevel+1 withPath:nextLevelStr];
-    [nextScene setCurrentLevel:currentLevel + 1];
+    [nextScene loadLevel:currentLevel+1];
 
     CCTransition *transition = [CCTransition transitionFadeWithDuration:0.8f];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
@@ -174,8 +172,6 @@ const double epsilon = 0.0000001f;
     if (currentLevel + 1 > Constants.totalLevelCount) {
         //TODO pop up finish all levels window
     } else {
-        nextLevelStr = [NSString stringWithFormat:@"Levels/level%d", currentLevel + 1];
-
         popUp = [CCBReader load:@"Success" owner:self];
         popUp.positionType = CCPositionTypeNormalized;
         popUp.anchorPoint = ccp(0.5, 0.5);
@@ -325,8 +321,4 @@ const double epsilon = 0.0000001f;
     return true;
 }
 
-- (void)setCurrentLevel:(int)i {
-    currentLevel = i;
-    currentLevelStr = [NSString stringWithFormat:@"Levels/level%d", currentLevel];
-}
 @end

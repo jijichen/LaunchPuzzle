@@ -21,8 +21,6 @@
 
 @property NSMutableArray* toolsToLoad;
 
-- (void)emptyToolsToLoad;
-
 @property NSMutableArray* toolsCount;
 
 @end

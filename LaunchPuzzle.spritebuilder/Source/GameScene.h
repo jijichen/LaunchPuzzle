@@ -32,7 +32,7 @@
 */
 - (Boolean)checkOverlap:(CCNode *)target;
 
-- (void)loadLevel:(int)level withPath:(NSString *)levelName;
+- (void)loadLevel:(int)level;
 
 @property NSArray* preSetObjs;
 
