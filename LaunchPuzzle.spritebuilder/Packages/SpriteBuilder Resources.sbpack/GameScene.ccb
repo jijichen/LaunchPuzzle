@@ -1427,7 +1427,7 @@
 						<string>Block</string>
 						<key>value</key>
 						<array>
-							<string>levelRest</string>
+							<string>levelReset</string>
 							<integer>1</integer>
 						</array>
 					</dict>

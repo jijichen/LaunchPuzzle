@@ -145,6 +145,10 @@ const double epsilon = 0.0000001f;
     launchGoing = false;
     launchStarted = false;
     [self updateLiveIndicator:remainLiveCount];
+
+    if (remainLiveCount == 0) {
+        [self levelFail];
+    }
 }
 
 - (void)resetPlate {
@@ -324,7 +328,18 @@ const double epsilon = 0.0000001f;
     }
 }
 
-- (void) levelRest {
+- (void)levelFail {
+    self.paused = YES;
+
+    launchGoing = NO;
+    popUp = [CCBReader load:@"Fail" owner:self];
+    popUp.positionType = CCPositionTypeNormalized;
+    popUp.anchorPoint = ccp(0.5, 0.5);
+    popUp.position = ccp(0.5, 0.5);
+    [self addChild:popUp];
+}
+
+- (void)levelReset {
     self.paused = YES;
     currentLevel -= 1;
     [self loadNextLevel];
