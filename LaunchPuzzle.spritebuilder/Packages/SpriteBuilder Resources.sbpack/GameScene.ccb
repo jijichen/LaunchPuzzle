@@ -251,6 +251,8 @@
 										</array>
 									</dict>
 								</array>
+								<key>selected</key>
+								<true/>
 							</dict>
 							<dict>
 								<key>UUID</key>
@@ -1810,7 +1812,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>Resources/reset.png</string>
+							<string>Resources/next.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -2008,8 +2010,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>
