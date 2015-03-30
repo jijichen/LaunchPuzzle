@@ -25,18 +25,17 @@ const double epsilon = 0.0000001f;
 @end
 
 @implementation GameScene {
+    //Code connection with spriteBuilder CCB file for game scene
     CCNode *_plate;
     CCNode *_contentNode;
-    CCPhysicsNode *_physicsNode;
-    CCNode *_userObjNode;
-    Level *_levelNode;
-    CCNode *_target;
-    ToolBox *_toolBox;
-    CCNode *_livesIndicator;
-    NSArray* _presetBombs;
-
+        CCPhysicsNode *_physicsNode;
+        Level *_levelNode;
+        ToolBox *_toolBox;
+        CCNode *_livesIndicator;
+        NSArray* _presetBombs;
     CCNode *popUp;
 
+    //State data for internal use
     CGPoint originalPlatePosition;
     CGPoint prevTouchLocation;
     CGPoint touchEndLocation;
@@ -45,10 +44,11 @@ const double epsilon = 0.0000001f;
     CCTime timeEnd;
     Boolean launchStarted;
     Boolean launchGoing;
-    Tool *toolToPlace;
-    int remainLiveCount;
-    int _remainTargetCount;
     int currentLevel;
+
+    //Temporary data cross methods
+    Tool *toolToPlace;
+
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -98,8 +98,6 @@ const double epsilon = 0.0000001f;
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
-    remainLiveCount = levelToLoad.liveCount;
-    _remainTargetCount = levelToLoad.targetCount;
     _presetBombs = levelToLoad.presetBombs;
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
@@ -142,12 +140,12 @@ const double epsilon = 0.0000001f;
 - (void)afterOneTrial {
     [self resetPlate];
 
-    remainLiveCount -= 1;
+    _levelNode.liveCount -= 1;
     launchGoing = false;
     launchStarted = false;
-    [self updateLiveIndicator:remainLiveCount];
+    [self updateLiveIndicator:_levelNode.liveCount];
 
-    if (remainLiveCount == 0) {
+    if (_levelNode.liveCount == 0) {
         [self levelFail];
     }
 }
@@ -158,16 +156,6 @@ const double epsilon = 0.0000001f;
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
     [_toolBox setVisible:true];
-}
-
-- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
-    [[_physicsNode space] addPostStepBlock:^{
-        [self targetRemoved:nodeA];
-        _remainTargetCount -= 1;
-        if (_remainTargetCount == 0) {
-            [self levelSuccess];
-        }
-    } key:nodeA];
 }
 
 - (void)targetRemoved:(CCNode *)target {
@@ -189,6 +177,17 @@ const double epsilon = 0.0000001f;
     }
 }
 
+- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
+    [[_physicsNode space] addPostStepBlock:^{
+        [self targetRemoved:nodeA];
+        _levelNode.targetCount -= 1;
+        if (_levelNode.targetCount == 0) {
+            [self levelSuccess];
+        }
+    } key:nodeA];
+}
+
+
 // -----------------------------------------------------------------------------
 // UI touch to launch or place tool
 // -----------------------------------------------------------------------------
@@ -209,7 +208,6 @@ const double epsilon = 0.0000001f;
             toolToPlace.inToolBox = false;
             toolToPlace.toolBox = _toolBox;
             toolToPlace.position = [touch locationInNode:_contentNode];
-            [_userObjNode addChild:toolToPlace];
         }
     }
 }

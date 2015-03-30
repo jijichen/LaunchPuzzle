@@ -12,11 +12,12 @@
 
 @property (atomic, readonly) int countToolStick;
 @property (atomic, readonly) int countToolTri;
-@property (atomic, readonly) int liveCount;
 @property (atomic, readonly) int countToolPlate;
-@property NSArray* presetObjs;
-@property NSArray* presetBombs;
+
+@property (atomic) int liveCount;
 @property (atomic) int targetCount;
 
+@property NSArray* presetObjs;
+@property NSArray* presetBombs;
 - (NSArray *)getBombs;
 @end

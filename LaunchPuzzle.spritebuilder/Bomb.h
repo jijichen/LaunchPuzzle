@@ -6,5 +6,5 @@
 #import <Foundation/Foundation.h>
 
 
-@interface Bomb : CCSprite 
+@interface Bomb : CCSprite
 @end

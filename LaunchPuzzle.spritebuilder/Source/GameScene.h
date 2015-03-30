@@ -35,6 +35,5 @@
 - (void)loadLevel:(int)level;
 
 @property NSArray* preSetObjs;
-@property (readonly) int remainTargetCount;
 
 @end
