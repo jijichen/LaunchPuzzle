@@ -101,6 +101,7 @@
 		BC5399DA1A44DCC90063F482 /* GLActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D51A44DCC90063F482 /* GLActivityKit.framework */; };
 		BC5399DB1A44DCC90063F482 /* JavaFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D61A44DCC90063F482 /* JavaFoundation.framework */; };
 		BC5399DC1A44DCC90063F482 /* JavaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D71A44DCC90063F482 /* JavaKit.framework */; };
+		E25CB25B46E4EE60C4E23741 /* Bomb.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB6C545E9D7FBA042C5F1 /* Bomb.m */; };
 		E25CBCBBD28310556420AB24 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */; };
 /* End PBXBuildFile section */
 
@@ -237,6 +238,8 @@
 		D352B48019EC608A00829775 /* MetalShaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MetalShaders; path = Source/MetalShaders; sourceTree = "<group>"; };
 		E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
 		E25CB4AD1FDD22C460A932CF /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
+		E25CB6C545E9D7FBA042C5F1 /* Bomb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bomb.m; sourceTree = "<group>"; };
+		E25CB6D79D14094316CFC882 /* Bomb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bomb.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -471,6 +474,8 @@
 				A1F6C3671A98B8C6008C2390 /* Tool.m */,
 				A127CC561A9AD51500F093EF /* ToolBox.h */,
 				A127CC571A9AD51500F093EF /* ToolBox.m */,
+				E25CB6C545E9D7FBA042C5F1 /* Bomb.m */,
+				E25CB6D79D14094316CFC882 /* Bomb.h */,
 			);
 			name = Elements;
 			sourceTree = "<group>";
@@ -883,6 +888,7 @@
 				A1C1C0E41A9813BE0084EC93 /* Plate.m in Sources */,
 				A1F6C3741A98E506008C2390 /* Constants.m in Sources */,
 				E25CBCBBD28310556420AB24 /* CCNode+SFGestureRecognizers.m in Sources */,
+				E25CB25B46E4EE60C4E23741 /* Bomb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

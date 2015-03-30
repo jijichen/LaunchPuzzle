@@ -12,14 +12,17 @@
 
 - (void)didLoadFromCCB {
     self.presetObjs = self->_children;
-
+    NSMutableArray *bombs = [[NSMutableArray alloc] init];
     int c = 0;
     for (CCNode *preObj in self.presetObjs) {
         if (preObj.name == @"Target"){
             c += 1;
+        } else if (preObj.name == @"Bomb") {
+            [bombs addObject:preObj];
         }
     }
     self.targetCount = c;
+    self.presetBombs = [bombs copy];
 }
 
 @end

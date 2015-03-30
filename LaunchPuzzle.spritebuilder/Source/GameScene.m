@@ -19,7 +19,7 @@ const double epsilon = 0.0000001f;
 
 @interface GameScene ()
 
-- (void)afterOneTrial;
+- (void) afterOneTrial;
 - (void) levelSuccess;
 
 @end
@@ -33,6 +33,7 @@ const double epsilon = 0.0000001f;
     CCNode *_target;
     ToolBox *_toolBox;
     CCNode *_livesIndicator;
+    NSArray* _presetBombs;
 
     CCNode *popUp;
 
@@ -75,7 +76,7 @@ const double epsilon = 0.0000001f;
     self.userInteractionEnabled = TRUE;
 
     originalPlatePosition = _plate.position;
-    _physicsNode.debugDraw = false;
+    _physicsNode.debugDraw = true;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
 
@@ -99,7 +100,7 @@ const double epsilon = 0.0000001f;
     _levelNode = levelToLoad;
     remainLiveCount = levelToLoad.liveCount;
     _remainTargetCount = levelToLoad.targetCount;
-
+    _presetBombs = levelToLoad.presetBombs;
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
     self.paused = NO;

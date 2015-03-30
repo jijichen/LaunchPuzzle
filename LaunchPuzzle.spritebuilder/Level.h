@@ -15,6 +15,8 @@
 @property (atomic, readonly) int liveCount;
 @property (atomic, readonly) int countToolPlate;
 @property NSArray* presetObjs;
+@property NSArray* presetBombs;
 @property (atomic) int targetCount;
 
+- (NSArray *)getBombs;
 @end
