@@ -60,7 +60,7 @@
 			<key>collisionMask</key>
 			<array/>
 			<key>collisionType</key>
-			<string></string>
+			<string>Plate</string>
 			<key>cornerRadius</key>
 			<real>21.1953125</real>
 			<key>density</key>

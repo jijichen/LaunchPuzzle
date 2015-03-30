@@ -61,7 +61,7 @@
     }
 
     if (level.countToolPlate > 0) {
-        Tool *plate = [GameScene loadToolByType:Plate];
+        Tool *plate = [GameScene loadToolByType:PlateTool];
         [self addToToolsToLoad:plate];
         [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolPlate]];
     }

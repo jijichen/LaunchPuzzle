@@ -11,6 +11,10 @@
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
 #import "ToolBox.h"
+#import "Bomb.h"
+#import "Target.h"
+#import "Plate.h"
+
 
 const float initialForce = 5.0f;
 const double epsilon = 0.0000001f;
@@ -76,7 +80,7 @@ const double epsilon = 0.0000001f;
     self.userInteractionEnabled = TRUE;
 
     originalPlatePosition = _plate.position;
-    _physicsNode.debugDraw = true;
+    _physicsNode.debugDraw = false;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
 
@@ -177,7 +181,7 @@ const double epsilon = 0.0000001f;
     }
 }
 
-- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(CCNode *)nodeA wildcard:(CCNode *)nodeB {
+- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(Target *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
         [self targetRemoved:nodeA];
         _levelNode.targetCount -= 1;
@@ -187,6 +191,16 @@ const double epsilon = 0.0000001f;
     } key:nodeA];
 }
 
+- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Bomb:(Bomb *)nodeA Plate:(Plate *)nodeB {
+    [[_physicsNode space] addPostStepBlock:^{
+        CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"Sprites/bombExplosion"];
+        explosion.autoRemoveOnFinish = TRUE;
+        explosion.position = nodeA.position;
+        [nodeA.parent addChild:explosion];
+        [self targetRemoved:nodeA];
+        [self afterOneTrial];
+    } key:nodeA];
+}
 
 // -----------------------------------------------------------------------------
 // UI touch to launch or place tool
@@ -204,6 +218,7 @@ const double epsilon = 0.0000001f;
         Tool *toolTouched = [_toolBox checkTouch:touch];
         if (toolTouched != nil) {
             toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
+            [_physicsNode addChild:toolToPlace];
             toolToPlace.gameScene = self;
             toolToPlace.inToolBox = false;
             toolToPlace.toolBox = _toolBox;
@@ -216,12 +231,11 @@ const double epsilon = 0.0000001f;
     CGPoint touchLocation = [touch locationInNode:_contentNode];
 
     if (_plate.userInteractionEnabled && launchStarted) {
-        //[_plate.physicsBody setVelocity:CGPointMake(0, 0)];
-        //_plate.position = touchLocation;
         prevTouchLocation = touchLocation;
         prevTime = timeCurrent;
     } else if (toolToPlace != nil) {
         toolToPlace.position = touchLocation;
+        //NSLog(@"Position : %lf, %lf",toolToPlace.position.x, toolToPlace.position.y);
     }
 }
 

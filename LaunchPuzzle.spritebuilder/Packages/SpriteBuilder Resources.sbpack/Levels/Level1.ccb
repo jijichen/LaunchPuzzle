@@ -134,7 +134,7 @@
 						<key>value</key>
 						<array>
 							<real>294</real>
-							<real>243</real>
+							<real>302</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -162,6 +162,8 @@
 						<string>Sprites/bomb.ccb</string>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -196,7 +198,7 @@
 						<key>value</key>
 						<array>
 							<real>294</real>
-							<real>141</real>
+							<real>84</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -329,8 +331,6 @@
 				</array>
 			</dict>
 		</array>
-		<key>selected</key>
-		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>

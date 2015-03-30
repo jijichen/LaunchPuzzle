@@ -11,4 +11,5 @@
 @interface Target : CCSprite
 
 @property (nonatomic, strong) NSString *name;
+
 @end

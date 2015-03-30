@@ -1,5 +1,5 @@
 //
-//  Plate.m
+//  PlateTool.m
 //  LaunchPuzzle
 //
 //  Created by Yizhe Chen on 2/20/15.

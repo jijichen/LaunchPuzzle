@@ -1,5 +1,5 @@
 //
-//  Plate.h
+//  PlateTool.h
 //  LaunchPuzzle
 //
 //  Created by Yizhe Chen on 2/20/15.
@@ -9,5 +9,7 @@
 #import "CCSprite.h"
 
 @interface Plate : CCSprite
+
+@property (nonatomic, strong) NSString *name;
 
 @end

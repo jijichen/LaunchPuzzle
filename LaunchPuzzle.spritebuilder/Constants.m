@@ -22,7 +22,7 @@
         dict = @{
                  [NSNumber numberWithInt:Stick]: @"Sprites/tool_stick",
                  [NSNumber numberWithInt:Triangle]: @"Sprites/tool_tri",
-                 [NSNumber numberWithInt:Plate]: @"Sprites/tool_plate"
+                [NSNumber numberWithInt:PlateTool]: @"Sprites/tool_plate"
         };
     });
     
@@ -36,7 +36,7 @@
         dict = @{
                 [NSNumber numberWithInt:Stick]: @"Resources/stick_wood_short.png",
                 [NSNumber numberWithInt:Triangle]: @"Sprites/tool_tri",
-                [NSNumber numberWithInt:Plate]: @"Sprites/tool_plate"
+                [NSNumber numberWithInt:PlateTool]: @"Sprites/tool_plate"
         };
     });
 
