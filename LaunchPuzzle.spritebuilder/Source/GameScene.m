@@ -16,7 +16,7 @@
 #import "Plate.h"
 
 
-const float initialForce = 5.0f;
+const float initialForce = 50.0f;
 const double epsilon = 0.0000001f;
 
 
@@ -83,21 +83,11 @@ const double epsilon = 0.0000001f;
     _physicsNode.debugDraw = false;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
-
-    //[self loadLevel:currentLevel withPath:currentLevelStr];
-    /*
-    //Load level to game scene
-    [self loadLevel:@"Levels/level1"];
-    currentLevel = 1;
-
-    //Enable plate interaction
-    _plate.userInteractionEnabled = true;
-    */
 }
 
 - (void)loadLevel:(int)level {
     currentLevel = level;
-    NSString *levelPath = [NSString stringWithFormat:@"Levels/level%d", currentLevel];
+    NSString *levelPath = [NSString stringWithFormat:@"Levels/Level%d", currentLevel];
     Level *levelToLoad = (Level *) [CCBReader load:levelPath];
     [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
     [_physicsNode addChild:levelToLoad];
@@ -216,6 +206,9 @@ const double epsilon = 0.0000001f;
             && CGRectContainsPoint([_plate boundingBox], prevTouchLocation)) {
         launchStarted = true;
         [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
+
+        prevTouchLocation = [_plate positionInPoints];
+        NSLog(@"Touch start position : %lf , %lf", prevTouchLocation.x, prevTouchLocation.y);
         //_plate.position = touchStartLocation;
     } else if (!launchStarted) {
         Tool *toolTouched = [_toolBox checkTouch:touch];
@@ -234,8 +227,8 @@ const double epsilon = 0.0000001f;
     CGPoint touchLocation = [touch locationInNode:_contentNode];
 
     if (_plate.userInteractionEnabled && launchStarted) {
-        prevTouchLocation = touchLocation;
-        prevTime = timeCurrent;
+        //prevTouchLocation = touchLocation;
+        //prevTime = timeCurrent;
     } else if (toolToPlace != nil) {
         toolToPlace.position = touchLocation;
         //NSLog(@"Position : %lf, %lf",toolToPlace.position.x, toolToPlace.position.y);
@@ -247,13 +240,15 @@ const double epsilon = 0.0000001f;
     timeEnd = timeCurrent;
 
     if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
+        NSLog(@"Touch end position : %lf , %lf", touchEndLocation.x, touchEndLocation.y);
         //Launch finish
         CGPoint forceDirection = [GameScene getDirection:prevTouchLocation to:touchEndLocation];
         double velocity =
-                [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double) (timeEnd - prevTime);
+                [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double) ((timeEnd - prevTime) / 10);
 
+        NSLog(@"Launch target velocity %lf", velocity);
 
-        CGPoint launchForceVec = ccpMult(forceDirection, initialForce * velocity);
+        CGPoint launchForceVec = ccpMult(forceDirection, [[_plate physicsBody] mass] * velocity );
         NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
         launchStarted = false;

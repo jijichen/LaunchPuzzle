@@ -19,5 +19,5 @@
 
 @property NSArray* presetObjs;
 @property NSArray* presetBombs;
-- (NSArray *)getBombs;
+
 @end

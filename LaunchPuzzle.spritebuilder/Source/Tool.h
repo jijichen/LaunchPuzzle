@@ -12,7 +12,7 @@
 @class ToolBox;
 @class GameScene;
 
-@interface Tool : CCSprite
+@interface Tool : CCSprite <UIGestureRecognizerDelegate>
 
 @property enum ToolType toolType;
 @property BOOL inToolBox;

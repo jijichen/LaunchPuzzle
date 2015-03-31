@@ -15,9 +15,9 @@
     NSMutableArray *bombs = [[NSMutableArray alloc] init];
     int c = 0;
     for (CCNode *preObj in self.presetObjs) {
-        if (preObj.name == @"Target"){
+        if ([preObj.name  isEqual: @"Target"]){
             c += 1;
-        } else if (preObj.name == @"Bomb") {
+        } else if ([preObj.name  isEqual: @"Bomb"]) {
             [bombs addObject:preObj];
         }
     }
