@@ -34,6 +34,11 @@
 
 - (void)loadLevel:(int)level;
 
-@property NSArray* preSetObjs;
+/**
+* Add object to physic node
+*/
+- (void) addObjToPhysicNode:(CCNode*)obj;
+
+@property (readonly) CCNode* contentNode;
 
 @end

@@ -8,6 +8,8 @@
 
 #import "CCNode.h"
 #import "Tool.h"
+#import "GameScene.h"
+#import "Level.h"
 
 @class Level;
 
@@ -15,7 +17,7 @@
 
 - (Tool*) checkTouch:(CCTouch*) touch;
 
-- (void)loadWithLevel:(Level *)level l1:(CCLabelTTF *)l1 l2:(CCLabelTTF *)l2 l3:(CCLabelTTF *)l3;
+- (void)loadWithLevel:(Level *)level l1:(CCLabelTTF *)l1 l2:(CCLabelTTF *)l2 l3:(CCLabelTTF *)l3 withScene:(GameScene *)scene;
 
 - (void)restoreToolToBox:(Tool*)releasedTool;
 

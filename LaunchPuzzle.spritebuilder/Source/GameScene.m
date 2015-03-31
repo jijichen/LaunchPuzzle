@@ -41,7 +41,7 @@ const double epsilon = 0.0000001f;
 
     //State data for internal use
     CGPoint originalPlatePosition;
-    CGPoint prevTouchLocation;
+    CGPoint touchStartLocation;
     CGPoint touchEndLocation;
     CCTime timeCurrent;
     CCTime prevTime;
@@ -89,7 +89,8 @@ const double epsilon = 0.0000001f;
     currentLevel = level;
     NSString *levelPath = [NSString stringWithFormat:@"Levels/Level%d", currentLevel];
     Level *levelToLoad = (Level *) [CCBReader load:levelPath];
-    [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3];
+    [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3 withScene: self];
+    [_toolBox setUserInteractionEnabled:YES];
     [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
     _presetBombs = levelToLoad.presetBombs;
@@ -99,6 +100,11 @@ const double epsilon = 0.0000001f;
 
     _plate.userInteractionEnabled = true;
 }
+
+- (void)addObjToPhysicNode:(CCNode *)obj {
+    [_physicsNode addChild:obj];
+}
+
 
 -(void)loadNextLevel {
     CCScene *scene = [CCBReader loadAsScene:@"GameScene"];
@@ -199,39 +205,22 @@ const double epsilon = 0.0000001f;
 // UI touch to launch or place tool
 // -----------------------------------------------------------------------------
 - (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
-    prevTouchLocation = [touch locationInNode:_contentNode];
     prevTime = timeCurrent;
+    touchStartLocation = [touch locationInNode:_contentNode];
 
     if (_plate.userInteractionEnabled && !launchStarted
-            && CGRectContainsPoint([_plate boundingBox], prevTouchLocation)) {
+            && CGRectContainsPoint([_plate boundingBox], touchStartLocation)) {
         launchStarted = true;
-        [_plate.physicsBody setVelocity:CGPointMake(0, 0)];
-
-        prevTouchLocation = [_plate positionInPoints];
-        NSLog(@"Touch start position : %lf , %lf", prevTouchLocation.x, prevTouchLocation.y);
-        //_plate.position = touchStartLocation;
-    } else if (!launchStarted) {
-        Tool *toolTouched = [_toolBox checkTouch:touch];
-        if (toolTouched != nil) {
-            toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
-            [_physicsNode addChild:toolToPlace];
-            toolToPlace.gameScene = self;
-            toolToPlace.inToolBox = false;
-            toolToPlace.toolBox = _toolBox;
-            toolToPlace.position = [touch locationInNode:_contentNode];
-        }
+        touchStartLocation = [_plate positionInPoints];
+        [[_plate physicsBody] setVelocity:CGPointMake(0, 0)];
+        NSLog(@"Touch start position : %lf , %lf", touchStartLocation.x, touchStartLocation.y);
     }
 }
 
 - (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     CGPoint touchLocation = [touch locationInNode:_contentNode];
-
-    if (_plate.userInteractionEnabled && launchStarted) {
-        //prevTouchLocation = touchLocation;
-        //prevTime = timeCurrent;
-    } else if (toolToPlace != nil) {
-        toolToPlace.position = touchLocation;
-        //NSLog(@"Position : %lf, %lf",toolToPlace.position.x, toolToPlace.position.y);
+    if (toolToPlace != nil) {
+        [toolToPlace setPosition:touchLocation];
     }
 }
 
@@ -242,9 +231,9 @@ const double epsilon = 0.0000001f;
     if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
         NSLog(@"Touch end position : %lf , %lf", touchEndLocation.x, touchEndLocation.y);
         //Launch finish
-        CGPoint forceDirection = [GameScene getDirection:prevTouchLocation to:touchEndLocation];
+        CGPoint forceDirection = [GameScene getDirection:touchStartLocation to:touchEndLocation];
         double velocity =
-                [GameScene distanceBetween:prevTouchLocation and:touchEndLocation] / (double) ((timeEnd - prevTime) / 10);
+                [GameScene distanceBetween:touchStartLocation and:touchEndLocation] / (double) ((timeEnd - prevTime) / 10);
 
         NSLog(@"Launch target velocity %lf", velocity);
 
@@ -255,15 +244,6 @@ const double epsilon = 0.0000001f;
         launchGoing = true;
         [_plate setUserInteractionEnabled:NO];
         [_toolBox setVisible:false];
-    } else if (toolToPlace != nil) {
-        if ([self checkOverlap:toolToPlace]) {
-            toolToPlace.physicsBody.collisionMask = nil;
-        } else {
-            [toolToPlace.toolBox restoreToolToBox:toolToPlace];
-            [toolToPlace removeFromParent];
-        }
-
-        toolToPlace = nil;
     }
 }
 

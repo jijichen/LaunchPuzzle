@@ -8,17 +8,19 @@
 
 #import <SSZipArchive/unzip.h>
 #import "ToolBox.h"
-#import "Level.h"
-#import "GameScene.h"
 
-@implementation ToolBox{
-    NSMutableArray* toolCountArr;
+
+@implementation ToolBox {
+    NSMutableArray *toolCountArr;
+    Tool *toolToPlace;
+    GameScene *gameScene;
 };
 
-- (Tool*) checkTouch:(CCTouch*) touch {
+
+- (Tool *)checkTouch:(CCTouch *)touch {
     CGPoint touchLocation = [touch locationInNode:self];
     for (int i = 0; i < [_toolsToLoad count]; ++i) {
-        Tool* tool = [_toolsToLoad objectAtIndex:i];
+        Tool *tool = [_toolsToLoad objectAtIndex:i];
         if (CGRectContainsPoint([tool boundingBox], touchLocation)) {
             //If the touch location is within a tool
             int oldCount = [[_toolsCount objectAtIndex:i] intValue];
@@ -37,37 +39,38 @@
     return nil;
 }
 
-- (void)loadWithLevel:(Level *)level l1:(CCLabelTTF *)l1 l2:(CCLabelTTF *)l2 l3:(CCLabelTTF *)l3{
+- (void)loadWithLevel:(Level *)level l1:(CCLabelTTF *)l1 l2:(CCLabelTTF *)l2 l3:(CCLabelTTF *)l3
+    withScene:(GameScene *)scene {
     //Initialize Tool box
     self.toolsToLoad = [[NSMutableArray alloc] init];
     self.toolsCount = [[NSMutableArray alloc] init];
 
     //Load three kinds of tools
-    toolCountArr = [[NSMutableArray alloc] initWithObjects:l1,l2,l3,nil];
+    toolCountArr = [[NSMutableArray alloc] initWithObjects:l1, l2, l3, nil];
     for (CCLabelTTF *labels in toolCountArr) {
         [labels.physicsNode setPhysicsBody:nil];
     }
 
-    if (level.countToolStick > 0) {
+    if ([level countToolStick] > 0) {
         Tool *stick = [GameScene loadToolByType:Stick];
         [self addToToolsToLoad:stick];
-        [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolStick]];
+        [self.toolsCount addObject:[NSNumber numberWithInt:[level countToolStick]]];
     }
 
-    if (level.countToolTri > 0) {
+    if ([level countToolTri] > 0) {
         Tool *tri = [GameScene loadToolByType:Triangle];
         [self addToToolsToLoad:tri];
-        [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolTri]];
+        [self.toolsCount addObject:[NSNumber numberWithInt:[level countToolTri]]];
     }
 
-    if (level.countToolPlate > 0) {
+    if ([level countToolPlate] > 0) {
         Tool *plate = [GameScene loadToolByType:PlateTool];
         [self addToToolsToLoad:plate];
-        [self.toolsCount addObject:[NSNumber numberWithInt:level.countToolPlate]];
+        [self.toolsCount addObject:[NSNumber numberWithInt:[level countToolPlate]]];
     }
 
     for (int i = 0; i < [self.toolsToLoad count]; i++) {
-        Tool* toolToAdd = [self.toolsToLoad objectAtIndex:i];
+        Tool *toolToAdd = [self.toolsToLoad objectAtIndex:i];
         toolToAdd.positionType = CCPositionTypeMake(CCPositionUnitNormalized, CCPositionUnitNormalized,
                 CCPositionReferenceCornerBottomRight);
         toolToAdd.position = CGPointMake(0.05 + 0.3 * (i + 1), 0.5);
@@ -75,12 +78,14 @@
         toolToAdd.scale = 0.7f;
         [self addChild:toolToAdd];
 
-        CCLabelTTF* labelForTool = [toolCountArr objectAtIndex:i];
+        CCLabelTTF *labelForTool = [toolCountArr objectAtIndex:i];
 
         [labelForTool setString:[NSString stringWithFormat:@"X %d",
-                                                           [(NSNumber*)[self.toolsCount objectAtIndex:i] intValue]]];
+                                                           [(NSNumber *) [self.toolsCount objectAtIndex:i] intValue]]];
         labelForTool.visible = true;
     }
+
+    gameScene = scene;
 }
 
 - (void)addToToolsToLoad:(Tool *)tool {
@@ -90,10 +95,10 @@
     [self.toolsToLoad addObject:tool];
 }
 
-- (void)restoreToolToBox:(Tool*)releasedTool {
+- (void)restoreToolToBox:(Tool *)releasedTool {
     //Check the tools to load array, find the correspondent tool and add the count.
     for (int i = 0; i < [_toolsToLoad count]; ++i) {
-        if (releasedTool.toolType == ((Tool*)_toolsToLoad[i]).toolType) {
+        if (releasedTool.toolType == ((Tool *) _toolsToLoad[i]).toolType) {
             _toolsCount[i] = [NSNumber numberWithInt:[_toolsCount[i] intValue] + 1];
             [self refreshLabels:i to:[_toolsCount[i] intValue]];
             return;
@@ -102,8 +107,8 @@
 }
 
 - (void)refreshLabels:(int)pos to:(int)newCount {
-    CCLabelTTF * labelToChange = toolCountArr[pos];
-    Tool* toolToChange = _toolsToLoad[pos];
+    CCLabelTTF *labelToChange = toolCountArr[pos];
+    Tool *toolToChange = _toolsToLoad[pos];
     [labelToChange setString:[NSString stringWithFormat:@"X %d",
                                                         newCount]];
     if (newCount == 0) {
@@ -114,5 +119,46 @@
         [toolToChange setVisible:true];
     }
 }
+
+// -----------------------------------------------------------------------------
+// UI touch to launch or place tool
+// -----------------------------------------------------------------------------
+- (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
+    NSLog(@"Touch inside toolbox!");
+    Tool *toolTouched = [self checkTouch:touch];
+
+    if (toolTouched != nil) {
+        toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
+        [gameScene addObjToPhysicNode:toolToPlace];
+        toolToPlace.gameScene = gameScene;
+        toolToPlace.inToolBox = false;
+        toolToPlace.toolBox = self;
+        toolToPlace.position = [touch locationInNode:[self parent]];
+    }
+}
+
+- (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    CGPoint touchLocation = [touch locationInNode:[self parent]];
+
+    NSLog(@"Move to position : %lf,%lf", touchLocation.x, touchLocation.y);
+    if (toolToPlace != nil) {
+        [toolToPlace setPosition:touchLocation];
+    }
+}
+
+- (void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    NSLog(@"touch ends!");
+    if (toolToPlace != nil) {
+        if ([gameScene checkOverlap:toolToPlace]) {
+            toolToPlace.physicsBody.collisionMask = nil;
+        } else {
+            [self restoreToolToBox:toolToPlace];
+            [toolToPlace removeFromParent];
+        }
+
+        toolToPlace = nil;
+    }
+}
+
 
 @end
