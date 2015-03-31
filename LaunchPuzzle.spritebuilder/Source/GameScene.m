@@ -162,10 +162,6 @@ const double epsilon = 0.0000001f;
     [_toolBox setVisible:true];
 }
 
-- (void)targetRemoved:(CCNode *)target {
-    [target removeFromParent];
-}
-
 - (void)updateLiveIndicator:(int)liveCount {
     [_livesIndicator removeAllChildren];
     for (int i = 0; i < liveCount; ++i) {
@@ -183,7 +179,7 @@ const double epsilon = 0.0000001f;
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(Target *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
-        [self targetRemoved:nodeA];
+        [nodeA removeFromParent];
         _levelNode.targetCount -= 1;
         if (_levelNode.targetCount == 0) {
             [self levelSuccess];
@@ -193,12 +189,19 @@ const double epsilon = 0.0000001f;
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Bomb:(Bomb *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
+        CGPoint bombPosition = nodeA.position;
+        CGPoint bodyPosition = nodeB.position;
+
+        float factor = 20000.0f;
+        CGPoint forceDirection = [GameScene getDirection:bombPosition to:bodyPosition];
+        CGPoint launchForceVec = ccpMult(forceDirection, factor);
+        [nodeB.physicsBody applyForce:launchForceVec];
+
         CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"Sprites/bombExplosion"];
         explosion.autoRemoveOnFinish = TRUE;
         explosion.position = nodeA.position;
         [nodeA.parent addChild:explosion];
-        [self targetRemoved:nodeA];
-        [self afterOneTrial];
+        [nodeA removeFromParent];
     } key:nodeA];
 }
 
