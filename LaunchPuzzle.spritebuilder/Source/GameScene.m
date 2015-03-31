@@ -263,11 +263,6 @@ const double epsilon = 0.0000001f;
     return tool;
 }
 
-+ (CCSprite *)loadToolSpriteByType:(enum ToolType)type {
-    NSString *imageName = [[Constants getTypeToImgNameDict] objectForKey:[NSNumber numberWithInt:type]];
-    return [CCSprite spriteWithImageNamed:imageName];
-}
-
 + (CGPoint)getDirection:(CGPoint)p1 to:(CGPoint)p2 {
     double length = [self distanceBetween:p1 and:p2];
     double xdiff = p2.x - p1.x;
@@ -335,4 +330,5 @@ const double epsilon = 0.0000001f;
     currentLevel -= 1;
     [self loadNextLevel];
 }
+
 @end
