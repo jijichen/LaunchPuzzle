@@ -6,5 +6,5 @@
 #import <Foundation/Foundation.h>
 
 
-@interface PlateTool : NSObject
+@interface PlateTool : CCSprite
 @end

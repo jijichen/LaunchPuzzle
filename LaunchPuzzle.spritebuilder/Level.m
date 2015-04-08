@@ -13,16 +13,20 @@
 - (void)didLoadFromCCB {
     self.presetObjs = self->_children;
     NSMutableArray *bombs = [[NSMutableArray alloc] init];
+    NSMutableArray *plates = [[NSMutableArray alloc] init];
     int c = 0;
     for (CCNode *preObj in self.presetObjs) {
         if ([preObj.name  isEqual: @"Target"]){
             c += 1;
         } else if ([preObj.name  isEqual: @"Bomb"]) {
             [bombs addObject:preObj];
+        } else if ([[preObj name] isEqual:@"toolPlate"]) {
+            [plates addObject:preObj];
         }
     }
     self.targetCount = c;
     self.presetBombs = [bombs copy];
+    self.presetPlate = [plates copy];
 }
 
 @end

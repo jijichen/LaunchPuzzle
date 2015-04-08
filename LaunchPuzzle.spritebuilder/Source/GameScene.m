@@ -7,6 +7,7 @@
 //
 
 #import <math.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "GameScene.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
@@ -16,15 +17,13 @@
 #import "Plate.h"
 
 
-const float initialForce = 50.0f;
 const double epsilon = 0.0000001f;
-
-
 
 @interface GameScene ()
 
-- (void) afterOneTrial;
-- (void) levelSuccess;
+- (void)afterOneTrial;
+
+- (void)levelSuccess;
 
 @end
 
@@ -32,11 +31,10 @@ const double epsilon = 0.0000001f;
     //Code connection with spriteBuilder CCB file for game scene
     CCNode *_plate;
     CCNode *_contentNode;
-        CCPhysicsNode *_physicsNode;
-        Level *_levelNode;
-        ToolBox *_toolBox;
-        CCNode *_livesIndicator;
-        NSArray* _presetBombs;
+    CCPhysicsNode *_physicsNode;
+    Level *_levelNode;
+    ToolBox *_toolBox;
+    CCNode *_livesIndicator;
     CCNode *popUp;
 
     //State data for internal use
@@ -89,11 +87,10 @@ const double epsilon = 0.0000001f;
     currentLevel = level;
     NSString *levelPath = [NSString stringWithFormat:@"Levels/Level%d", currentLevel];
     Level *levelToLoad = (Level *) [CCBReader load:levelPath];
-    [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3 withScene: self];
+    [_toolBox loadWithLevel:levelToLoad l1:_toolCount1 l2:_toolCount2 l3:_toolCount3 withScene:self];
     [_toolBox setUserInteractionEnabled:YES];
     [_physicsNode addChild:levelToLoad];
     _levelNode = levelToLoad;
-    _presetBombs = levelToLoad.presetBombs;
     //Setup live count
     [self updateLiveIndicator:levelToLoad.liveCount];
     self.paused = NO;
@@ -105,14 +102,48 @@ const double epsilon = 0.0000001f;
     [_physicsNode addChild:obj];
 }
 
-
--(void)loadNextLevel {
+- (void)loadNextLevel {
     CCScene *scene = [CCBReader loadAsScene:@"GameScene"];
-    GameScene *nextScene = (GameScene *)[scene.children objectAtIndex:0];
-    [nextScene loadLevel:currentLevel+1];
+    GameScene *nextScene = (GameScene *) [scene.children objectAtIndex:0];
+    [nextScene loadLevel:currentLevel + 1];
 
     CCTransition *transition = [CCTransition transitionFadeWithDuration:0.8f];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+}
+
+// -----------------------------------------------------------------------------
+// State transition
+// -----------------------------------------------------------------------------
+- (void)levelSuccess {
+    self.paused = YES;
+
+    launchGoing = NO;
+    if (currentLevel + 1 > Constants.totalLevelCount) {
+        //TODO pop up finish all levels window
+    } else {
+        popUp = [CCBReader load:@"Success" owner:self];
+        popUp.positionType = CCPositionTypeNormalized;
+        popUp.anchorPoint = ccp(0.5, 0.5);
+        popUp.position = ccp(0.5, 0.5);
+        [self addChild:popUp];
+    }
+}
+
+- (void)levelFail {
+    self.paused = YES;
+
+    launchGoing = NO;
+    popUp = [CCBReader load:@"Fail" owner:self];
+    popUp.positionType = CCPositionTypeNormalized;
+    popUp.anchorPoint = ccp(0.5, 0.5);
+    popUp.position = ccp(0.5, 0.5);
+    [self addChild:popUp];
+}
+
+- (void)levelReset {
+    self.paused = YES;
+    currentLevel -= 1;
+    [self loadNextLevel];
 }
 
 // -----------------------------------------------------------------------------
@@ -176,11 +207,12 @@ const double epsilon = 0.0000001f;
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(Target *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
         [nodeA removeFromParent];
+        NSLog(@"collisiontype : %s", [[nodeB physicsBody] collisionType]);
         _levelNode.targetCount -= 1;
         if (_levelNode.targetCount == 0) {
             [self levelSuccess];
         }
-    } key:nodeA];
+    }                                  key:nodeA];
 }
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Bomb:(Bomb *)nodeA Plate:(Plate *)nodeB {
@@ -188,21 +220,38 @@ const double epsilon = 0.0000001f;
         CGPoint bombPosition = nodeA.position;
         CGPoint bodyPosition = nodeB.position;
 
+        for (CCNode* node in [_levelNode presetObjs]) {
+            if ([[[node physicsBody] collisionType] isEqual:@"Plate"]) {
+                float factor = 20000.0f;
+                float distance = [GameScene getDistance:[nodeA positionInPoints] to:[node positionInPoints]];
+                factor /= (distance / 10);
+                CGPoint forceDirection = [GameScene getDirection:bombPosition to:[node position]];
+                CGPoint launchForceVec = ccpMult(forceDirection, factor);
+                [node.physicsBody applyForce:launchForceVec];
+            }
+        }
+
+        /*
         float factor = 20000.0f;
         CGPoint forceDirection = [GameScene getDirection:bombPosition to:bodyPosition];
         CGPoint launchForceVec = ccpMult(forceDirection, factor);
         [nodeB.physicsBody applyForce:launchForceVec];
-
-        CCParticleSystem *explosion = (CCParticleSystem *)[CCBReader load:@"Sprites/bombExplosion"];
+        */
+        CCParticleSystem *explosion = (CCParticleSystem *) [CCBReader load:@"Sprites/bombExplosion"];
         explosion.autoRemoveOnFinish = TRUE;
+        [explosion setPositionType:[nodeA positionType]];
         explosion.position = nodeA.position;
         [nodeA.parent addChild:explosion];
         [nodeA removeFromParent];
-    } key:nodeA];
+    }                                  key:nodeA];
+}
+
++ (float)getDistance:(CGPoint)pA to:(CGPoint)pB {
+    return sqrt(pow((pA.x - pB.x), 2) + pow((pA.y - pB.y), 2));
 }
 
 // -----------------------------------------------------------------------------
-// UI touch to launch or place tool
+// UI touch to launch
 // -----------------------------------------------------------------------------
 - (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
     prevTime = timeCurrent;
@@ -237,7 +286,7 @@ const double epsilon = 0.0000001f;
 
         NSLog(@"Launch target velocity %lf", velocity);
 
-        CGPoint launchForceVec = ccpMult(forceDirection, [[_plate physicsBody] mass] * velocity );
+        CGPoint launchForceVec = ccpMult(forceDirection, [[_plate physicsBody] mass] * velocity);
         NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
         launchStarted = false;
@@ -287,7 +336,7 @@ const double epsilon = 0.0000001f;
     NSMutableArray *objectsToCheck = [[NSMutableArray alloc] initWithArray:_levelNode.presetObjs];
     [objectsToCheck addObject:_plate];
 
-    for (CCNode * obj in objectsToCheck) {
+    for (CCNode *obj in objectsToCheck) {
         if (CGRectIntersectsRect([obj boundingBox], [target boundingBox])) {
             return false;
         }
@@ -296,39 +345,5 @@ const double epsilon = 0.0000001f;
     return true;
 }
 
-// -----------------------------------------------------------------------------
-// State transition
-// -----------------------------------------------------------------------------
-- (void)levelSuccess {
-    self.paused = YES;
-
-    launchGoing = NO;
-    if (currentLevel + 1 > Constants.totalLevelCount) {
-        //TODO pop up finish all levels window
-    } else {
-        popUp = [CCBReader load:@"Success" owner:self];
-        popUp.positionType = CCPositionTypeNormalized;
-        popUp.anchorPoint = ccp(0.5, 0.5);
-        popUp.position = ccp(0.5, 0.5);
-        [self addChild:popUp];
-    }
-}
-
-- (void)levelFail {
-    self.paused = YES;
-
-    launchGoing = NO;
-    popUp = [CCBReader load:@"Fail" owner:self];
-    popUp.positionType = CCPositionTypeNormalized;
-    popUp.anchorPoint = ccp(0.5, 0.5);
-    popUp.position = ccp(0.5, 0.5);
-    [self addChild:popUp];
-}
-
-- (void)levelReset {
-    self.paused = YES;
-    currentLevel -= 1;
-    [self loadNextLevel];
-}
 
 @end

@@ -9,4 +9,10 @@
 @implementation PlateTool {
 
 }
+
+- (void) didLoadFromCCB {
+    self.physicsBody.collisionType = @"toolPlate";
+    self.name = @"toolPlate";
+}
+
 @end

@@ -32,13 +32,16 @@
 */
 - (Boolean)checkOverlap:(CCNode *)target;
 
++ (float)getDistance:(CGPoint)point to:(CGPoint)to;
+
+/**
+* Load current scene with level
+*/
 - (void)loadLevel:(int)level;
 
 /**
 * Add object to physic node
 */
 - (void) addObjToPhysicNode:(CCNode*)obj;
-
-@property (readonly) CCNode* contentNode;
 
 @end

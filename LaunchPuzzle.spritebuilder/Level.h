@@ -19,5 +19,6 @@
 
 @property NSArray* presetObjs;
 @property NSArray* presetBombs;
+@property NSArray* presetPlate;
 
 @end

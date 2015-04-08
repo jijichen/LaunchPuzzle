@@ -89,7 +89,7 @@
 				<key>type</key>
 				<string>StringSimple</string>
 				<key>value</key>
-				<string></string>
+				<string>Bomb</string>
 			</dict>
 			<dict>
 				<key>name</key>

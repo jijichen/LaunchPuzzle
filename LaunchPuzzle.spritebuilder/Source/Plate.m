@@ -10,4 +10,8 @@
 
 @implementation Plate
 
+- (void) didLoadFromCCB {
+    self.physicsBody.collisionType = @"Plate";
+    self.name = @"Plate";
+}
 @end

@@ -13,4 +13,5 @@
 - (void) didLoadFromCCB {
     self.name = @"Bomb";
 }
+
 @end
