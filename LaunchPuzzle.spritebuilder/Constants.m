@@ -11,7 +11,7 @@
 @implementation Constants
 
 +(int)totalLevelCount {
-    return 3;
+    return 4;
 }
 
 +(NSDictionary*)getTypeToCCBNameDict {
@@ -48,4 +48,7 @@
 }
 
 
++ (int)startLevel {
+    return 1;
+}
 @end

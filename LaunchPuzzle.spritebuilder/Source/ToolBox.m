@@ -124,7 +124,6 @@
 // UI touch to launch or place tool
 // -----------------------------------------------------------------------------
 - (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"Touch inside toolbox!");
     Tool *toolTouched = [self checkTouch:touch];
 
     if (toolTouched != nil) {

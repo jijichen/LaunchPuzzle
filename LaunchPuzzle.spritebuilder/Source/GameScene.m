@@ -217,18 +217,21 @@ const double epsilon = 0.0000001f;
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Bomb:(Bomb *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
-        CGPoint bombPosition = nodeA.position;
-        CGPoint bodyPosition = nodeB.position;
 
-        for (CCNode* node in [_levelNode presetObjs]) {
+        NSMutableArray * movableObject = [[NSMutableArray alloc] initWithArray:[[_levelNode presetPlate] copy]];
+        for (CCNode* node in [_physicsNode children]) {
             if ([[[node physicsBody] collisionType] isEqual:@"Plate"]) {
+                [movableObject addObject:node];
+            }
+        }
+
+        for (CCNode* node in movableObject) {
                 float factor = 20000.0f;
                 float distance = [GameScene getDistance:[nodeA positionInPoints] to:[node positionInPoints]];
                 factor /= (distance / 10);
-                CGPoint forceDirection = [GameScene getDirection:bombPosition to:[node position]];
+                CGPoint forceDirection = [GameScene getDirection:[nodeA positionInPoints] to:[node positionInPoints]];
                 CGPoint launchForceVec = ccpMult(forceDirection, factor);
                 [node.physicsBody applyForce:launchForceVec];
-            }
         }
 
         /*
@@ -344,6 +347,5 @@ const double epsilon = 0.0000001f;
 
     return true;
 }
-
 
 @end

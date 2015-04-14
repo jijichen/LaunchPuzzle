@@ -11,9 +11,7 @@
 #import "ToolBox.h"
 #import "GameScene.h"
 
-@implementation Tool{
-    CGPoint prevLocation;
-}
+@implementation Tool
 
 -(id)init
 {
@@ -32,16 +30,6 @@
         [self addGestureRecognizer:rotRec];
         [self addGestureRecognizer:tapRec];
     }
-    return self;
-}
-
--(id)initWithToolBox:(ToolBox*)parentToolBox
-{
-    self = [self init];
-    if (self) {
-        self.toolBox = parentToolBox;
-    }
-
     return self;
 }
 
@@ -68,7 +56,6 @@
 
 -(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLoc = [touch locationInNode:self.parent];
-    prevLocation = touchLoc;
     self.physicsBody.collisionMask = @[];
 }
 

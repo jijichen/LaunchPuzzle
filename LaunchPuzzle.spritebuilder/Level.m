@@ -18,10 +18,10 @@
     for (CCNode *preObj in self.presetObjs) {
         if ([preObj.name  isEqual: @"Target"]){
             c += 1;
-        } else if ([preObj.name  isEqual: @"Bomb"]) {
-            [bombs addObject:preObj];
-        } else if ([[preObj name] isEqual:@"toolPlate"]) {
+        } else if ([[[preObj physicsBody] collisionType] isEqual:@"Plate"]) {
             [plates addObject:preObj];
+        } else if ([[[preObj physicsBody] collisionType] isEqual:@"Bomb"]) {
+            [bombs addObject:preObj];
         }
     }
     self.targetCount = c;

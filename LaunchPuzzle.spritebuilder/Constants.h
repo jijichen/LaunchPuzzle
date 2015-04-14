@@ -23,4 +23,6 @@ static NSString *plateCCBName = @"Sprites/plate";
 
 +(NSString*)getPlateCCBName;
 
+
++ (int)startLevel;
 @end
