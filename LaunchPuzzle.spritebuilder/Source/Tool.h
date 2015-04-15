@@ -14,6 +14,10 @@
 
 @interface Tool : CCSprite <UIGestureRecognizerDelegate>
 
+-(void) secondTouchBegin:(CCTouch *) touch;
+-(void) secondTouchMoved:(CCTouch *) touch;
+-(void) secondTouchEnded:(CCTouch *) touch;
+
 @property enum ToolType toolType;
 @property BOOL inToolBox;
 @property (weak) ToolBox* toolBox;

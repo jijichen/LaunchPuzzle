@@ -16,9 +16,6 @@
 #import "Target.h"
 #import "Plate.h"
 
-
-const double epsilon = 0.0000001f;
-
 @interface GameScene ()
 
 - (void)afterOneTrial;
@@ -55,6 +52,9 @@ const double epsilon = 0.0000001f;
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
     CCLabelTTF *_toolCount3;
+
+    //Tool Rotation handler
+    Tool* toolToRotate;
 }
 
 
@@ -100,6 +100,14 @@ const double epsilon = 0.0000001f;
 
 - (void)addObjToPhysicNode:(CCNode *)obj {
     [_physicsNode addChild:obj];
+}
+
+- (void)oneTouchOnTool:(bool)toggle atTool:(Tool *)tool {
+    if (toggle) {
+        toolToRotate = tool;
+    } else if (tool == toolToRotate) {
+        toolToRotate = nil;
+    }
 }
 
 - (void)loadNextLevel {
@@ -207,7 +215,6 @@ const double epsilon = 0.0000001f;
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(Target *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
         [nodeA removeFromParent];
-        NSLog(@"collisiontype : %s", [[nodeB physicsBody] collisionType]);
         _levelNode.targetCount -= 1;
         if (_levelNode.targetCount == 0) {
             [self levelSuccess];
@@ -260,7 +267,9 @@ const double epsilon = 0.0000001f;
     prevTime = timeCurrent;
     touchStartLocation = [touch locationInNode:_contentNode];
 
-    if (_plate.userInteractionEnabled && !launchStarted
+    if (toolToRotate != nil) {
+        [toolToRotate secondTouchBegin:touch];
+    } else if (_plate.userInteractionEnabled && !launchStarted
             && CGRectContainsPoint([_plate boundingBox], touchStartLocation)) {
         launchStarted = true;
         touchStartLocation = [_plate positionInPoints];
@@ -273,6 +282,8 @@ const double epsilon = 0.0000001f;
     CGPoint touchLocation = [touch locationInNode:_contentNode];
     if (toolToPlace != nil) {
         [toolToPlace setPosition:touchLocation];
+    } else if (toolToRotate != nil ) {
+        [toolToRotate secondTouchMoved:touch];
     }
 }
 
@@ -280,7 +291,9 @@ const double epsilon = 0.0000001f;
     touchEndLocation = [touch locationInNode:_contentNode];
     timeEnd = timeCurrent;
 
-    if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
+    if (toolToRotate != nil) {
+        [toolToRotate secondTouchEnded:touch];
+    } else if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
         NSLog(@"Touch end position : %lf , %lf", touchEndLocation.x, touchEndLocation.y);
         //Launch finish
         CGPoint forceDirection = [GameScene getDirection:touchStartLocation to:touchEndLocation];
@@ -320,7 +333,7 @@ const double epsilon = 0.0000001f;
     double xdiff = p2.x - p1.x;
     double ydiff = p2.y - p1.y;
 
-    if (length - 0 < epsilon) {
+    if (length - 0 < [Constants epsilon]) {
         return CGPointMake(0, 0);
     }
 

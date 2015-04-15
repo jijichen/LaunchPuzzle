@@ -11,10 +11,11 @@
 #import "ToolBox.h"
 #import "GameScene.h"
 
-@implementation Tool
+@implementation Tool {
+    CGPoint sFingerPosition;
+}
 
--(id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         self.inToolBox = true;
@@ -22,8 +23,8 @@
         self.isTouchEnabled = YES;
 
         //Set gesture recognizer : rotation and double tap
-        UIRotationGestureRecognizer* rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
-        UITapGestureRecognizer* tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        UIRotationGestureRecognizer *rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
+        UITapGestureRecognizer *tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tapRec.numberOfTapsRequired = 2;
         [rotRec setDelegate:self];
         [tapRec setDelegate:self];
@@ -33,8 +34,7 @@
     return self;
 }
 
-- (void)handleRotationGestureRecognizer:(UIRotationGestureRecognizer*)aRotationGestureRecognizer
-{
+- (void)handleRotationGestureRecognizer:(UIRotationGestureRecognizer *)aRotationGestureRecognizer {
     if (aRotationGestureRecognizer.state == UIGestureRecognizerStateBegan || aRotationGestureRecognizer.state == UIGestureRecognizerStateChanged) {
         CCNode *node = aRotationGestureRecognizer.node;
         float rotation = aRotationGestureRecognizer.rotation;
@@ -45,26 +45,25 @@
     }
 }
 
-- (void)handleTap:(UITapGestureRecognizer *)sender
-{
-    if (sender.state == UIGestureRecognizerStateEnded && !self.inToolBox)
-    {
+- (void)handleTap:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateEnded && !self.inToolBox) {
         [_toolBox restoreToolToBox:self];
         [self removeFromParent];
     }
 }
 
--(void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    CGPoint touchLoc = [touch locationInNode:self.parent];
+- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    NSLog(@"Tool touch begins");
     self.physicsBody.collisionMask = @[];
+    [[self gameScene] oneTouchOnTool:true atTool:self];
 }
 
--(void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
-    CGPoint touchLoc = [touch locationInNode:self.parent];
-    self.position = touchLoc;
+- (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    self.position = [touch locationInNode:self.parent];
 }
 
--(void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+- (void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    NSLog(@"Tool touch ends");
     if ([self.gameScene checkOverlap:self]) {
         //No overlap with predefined objects in the level
         self.physicsBody.collisionMask = nil;
@@ -72,6 +71,31 @@
         [[self toolBox] restoreToolToBox:self];
         [self removeFromParent];
     }
+    [[self gameScene] oneTouchOnTool:false atTool:self];
 }
+
+- (void)secondTouchBegin:(CCTouch *)touch {
+    NSLog(@"Second touch on tool begins");
+    sFingerPosition = [touch locationInNode:self.parent];
+}
+
+- (void)secondTouchMoved:(CCTouch *)touch {
+    sFingerPosition = [touch locationInNode:self.parent];
+    CGPoint selfLocation = [self positionInPoints];
+    CGPoint fVec = {0, -1};
+    CGPoint sVec = {sFingerPosition.x - selfLocation.x,
+            sFingerPosition.y - selfLocation.y};
+
+    double dot = fVec.x * sVec.x + fVec.y * sVec.y;
+    double det = fVec.x * sVec.y - fVec.y * sVec.x;
+    double angle = CC_RADIANS_TO_DEGREES(atan2(det, dot));
+    NSLog(@"angle : %lf", angle);
+    self.rotation = -angle;
+}
+
+- (void)secondTouchEnded:(CCTouch *)touch {
+    NSLog(@"Second touch on tool ends");
+}
+
 
 @end

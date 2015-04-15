@@ -25,4 +25,6 @@ static NSString *plateCCBName = @"Sprites/plate";
 
 
 + (int)startLevel;
++ (double) epsilon;
+
 @end

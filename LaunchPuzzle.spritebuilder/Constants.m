@@ -10,33 +10,41 @@
 
 @implementation Constants
 
-+(int)totalLevelCount {
++ (int)startLevel {
+    return 1;
+}
+
++ (double)epsilon {
+    return 0.0000001f;
+}
+
++ (int)totalLevelCount {
     return 4;
 }
 
-+(NSDictionary*)getTypeToCCBNameDict {
++ (NSDictionary *)getTypeToCCBNameDict {
     static NSDictionary *dict = nil;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{
         dict = @{
-                 [NSNumber numberWithInt:Stick]: @"Sprites/tool_stick",
-                 [NSNumber numberWithInt:Triangle]: @"Sprites/tool_tri",
-                [NSNumber numberWithInt:PlateTool]: @"Sprites/tool_plate"
+                [NSNumber numberWithInt:Stick] : @"Sprites/tool_stick",
+                [NSNumber numberWithInt:Triangle] : @"Sprites/tool_tri",
+                [NSNumber numberWithInt:PlateTool] : @"Sprites/tool_plate"
         };
     });
-    
+
     return dict;
 }
 
-+(NSDictionary*)getTypeToImgNameDict {
++ (NSDictionary *)getTypeToImgNameDict {
     static NSDictionary *dict = nil;
-    static dispatch_once_t  onceToken;
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         dict = @{
-                [NSNumber numberWithInt:Stick]: @"Resources/stick_wood_short.png",
-                [NSNumber numberWithInt:Triangle]: @"Sprites/tool_tri",
-                [NSNumber numberWithInt:PlateTool]: @"Sprites/tool_plate"
+                [NSNumber numberWithInt:Stick] : @"Resources/stick_wood_short.png",
+                [NSNumber numberWithInt:Triangle] : @"Sprites/tool_tri",
+                [NSNumber numberWithInt:PlateTool] : @"Sprites/tool_plate"
         };
     });
 
@@ -48,7 +56,4 @@
 }
 
 
-+ (int)startLevel {
-    return 1;
-}
 @end

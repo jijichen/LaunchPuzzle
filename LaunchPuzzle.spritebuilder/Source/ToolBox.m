@@ -124,6 +124,7 @@
 // UI touch to launch or place tool
 // -----------------------------------------------------------------------------
 - (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
+    NSLog(@"ToolBox touch begins");
     Tool *toolTouched = [self checkTouch:touch];
 
     if (toolTouched != nil) {
@@ -139,14 +140,13 @@
 - (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     CGPoint touchLocation = [touch locationInNode:[self parent]];
 
-    NSLog(@"Move to position : %lf,%lf", touchLocation.x, touchLocation.y);
     if (toolToPlace != nil) {
         [toolToPlace setPosition:touchLocation];
     }
 }
 
 - (void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
-    NSLog(@"touch ends!");
+    NSLog(@"Toolbox touch ends!");
     if (toolToPlace != nil) {
         if ([gameScene checkOverlap:toolToPlace]) {
             toolToPlace.physicsBody.collisionMask = nil;
