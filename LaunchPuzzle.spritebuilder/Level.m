@@ -16,6 +16,7 @@
     NSMutableArray *plates = [[NSMutableArray alloc] init];
     int c = 0;
     for (CCNode *preObj in self.presetObjs) {
+        [preObj setUserInteractionEnabled:NO];
         if ([preObj.name  isEqual: @"Target"]){
             c += 1;
         } else if ([[[preObj physicsBody] collisionType] isEqual:@"Plate"]) {
