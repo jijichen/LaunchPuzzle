@@ -45,9 +45,6 @@
     Boolean launchGoing;
     int currentLevel;
 
-    //Temporary data cross methods
-    Tool *toolToPlace;
-
     //Code connection redundancy due to cocos2d owner
     CCLabelTTF *_toolCount1;
     CCLabelTTF *_toolCount2;
@@ -67,7 +64,6 @@
         //[self schedule:@selector(update:)];
         [self schedule:@selector(checkBoundary:) interval:(CCTime) 1];
         timeCurrent = (CCTime) 0;
-        toolToPlace = nil;
     }
     return self;
 }
@@ -100,14 +96,6 @@
 
 - (void)addObjToPhysicNode:(CCNode *)obj {
     [_physicsNode addChild:obj];
-}
-
-- (void)oneTouchOnTool:(bool)toggle atTool:(Tool *)tool {
-    if (toggle) {
-        toolToRotate = tool;
-    } else if (tool == toolToRotate) {
-        toolToRotate = nil;
-    }
 }
 
 - (void)loadNextLevel {
@@ -256,10 +244,6 @@
     }                                  key:nodeA];
 }
 
-+ (float)getDistance:(CGPoint)pA to:(CGPoint)pB {
-    return sqrt(pow((pA.x - pB.x), 2) + pow((pA.y - pB.y), 2));
-}
-
 // -----------------------------------------------------------------------------
 // UI touch to launch
 // -----------------------------------------------------------------------------
@@ -267,8 +251,8 @@
     prevTime = timeCurrent;
     touchStartLocation = [touch locationInNode:_contentNode];
 
-    if (toolToRotate != nil) {
-        [toolToRotate secondTouchBegin:touch];
+    if (_toolBox.toolSelected != nil) {
+        [_toolBox.toolSelected secondTouchBegin:touch];
     } else if (_plate.userInteractionEnabled && !launchStarted
             && CGRectContainsPoint([_plate boundingBox], touchStartLocation)) {
         launchStarted = true;
@@ -279,11 +263,8 @@
 }
 
 - (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
-    CGPoint touchLocation = [touch locationInNode:_contentNode];
-    if (toolToPlace != nil) {
-        [toolToPlace setPosition:touchLocation];
-    } else if (toolToRotate != nil ) {
-        [toolToRotate secondTouchMoved:touch];
+    if (_toolBox.toolSelected != nil ) {
+        [_toolBox.toolSelected secondTouchMoved:touch];
     }
 }
 
@@ -291,8 +272,8 @@
     touchEndLocation = [touch locationInNode:_contentNode];
     timeEnd = timeCurrent;
 
-    if (toolToRotate != nil) {
-        [toolToRotate secondTouchEnded:touch];
+    if (_toolBox.toolSelected != nil) {
+        [_toolBox.toolSelected secondTouchEnded:touch];
     } else if (_plate.userInteractionEnabled && launchStarted && timeEnd != prevTime) {
         NSLog(@"Touch end position : %lf , %lf", touchEndLocation.x, touchEndLocation.y);
         //Launch finish
@@ -346,6 +327,10 @@
     double length = sqrt(pow(xdiff, 2) + pow(ydiff, 2));
 
     return length;
+}
+
++ (float)getDistance:(CGPoint)pA to:(CGPoint)pB {
+    return sqrt(pow((pA.x - pB.x), 2) + pow((pA.y - pB.y), 2));
 }
 
 - (Boolean)checkOverlap:(CCNode *)target {

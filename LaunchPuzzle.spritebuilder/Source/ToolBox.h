@@ -21,8 +21,10 @@
 
 - (void)restoreToolToBox:(Tool*)releasedTool;
 
-@property NSMutableArray* toolsToLoad;
+- (void)toolSelected:(Tool *) tool;
 
+@property NSMutableArray* toolsToLoad;
 @property NSMutableArray* toolsCount;
+@property Tool* toolSelected;
 
 @end

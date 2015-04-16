@@ -22,5 +22,6 @@
 @property BOOL inToolBox;
 @property (weak) ToolBox* toolBox;
 @property (weak) GameScene* gameScene;
+@property double rotationAngle;
 
 @end

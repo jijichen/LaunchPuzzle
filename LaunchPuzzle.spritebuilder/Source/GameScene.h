@@ -44,5 +44,4 @@
 */
 - (void) addObjToPhysicNode:(CCNode*)obj;
 
-- (void) oneTouchOnTool:(bool) toggle atTool:(Tool*) tool;
 @end

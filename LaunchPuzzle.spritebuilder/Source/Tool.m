@@ -11,9 +11,7 @@
 #import "ToolBox.h"
 #import "GameScene.h"
 
-@implementation Tool {
-    CGPoint sFingerPosition;
-}
+@implementation Tool
 
 - (id)init {
     self = [super init];
@@ -24,41 +22,28 @@
 
         //Set gesture recognizer : rotation and double tap
         UIRotationGestureRecognizer *rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
-        UITapGestureRecognizer *tapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        tapRec.numberOfTapsRequired = 2;
+        UITapGestureRecognizer *doubleTapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        doubleTapRec.numberOfTapsRequired = 2;
+
         [rotRec setDelegate:self];
-        [tapRec setDelegate:self];
+        [doubleTapRec setDelegate:self];
         [self addGestureRecognizer:rotRec];
-        [self addGestureRecognizer:tapRec];
+        [self addGestureRecognizer:doubleTapRec];
     }
     return self;
 }
 
-- (void)handleRotationGestureRecognizer:(UIRotationGestureRecognizer *)aRotationGestureRecognizer {
-    if (aRotationGestureRecognizer.state == UIGestureRecognizerStateBegan || aRotationGestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CCNode *node = aRotationGestureRecognizer.node;
-        float rotation = aRotationGestureRecognizer.rotation;
-        node.rotation += CC_RADIANS_TO_DEGREES(rotation);
-        aRotationGestureRecognizer.rotation = 0;
-
-        [self touchEnded:nil withEvent:nil];
-    }
-}
-
-- (void)handleTap:(UITapGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateEnded && !self.inToolBox) {
-        [_toolBox restoreToolToBox:self];
-        [self removeFromParent];
-    }
-}
-
+// -----------------------------------------------------------------------------
+// UI touch to select , place and rotate tool
+// -----------------------------------------------------------------------------
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"Tool touch begins");
     self.physicsBody.collisionMask = @[];
-    [[self gameScene] oneTouchOnTool:true atTool:self];
+    [[self toolBox] toolSelected:self];
 }
 
 - (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
+    self.physicsBody.collisionMask = @[];
     self.position = [touch locationInNode:self.parent];
 }
 
@@ -71,16 +56,18 @@
         [[self toolBox] restoreToolToBox:self];
         [self removeFromParent];
     }
-    [[self gameScene] oneTouchOnTool:false atTool:self];
 }
+
 
 - (void)secondTouchBegin:(CCTouch *)touch {
     NSLog(@"Second touch on tool begins");
-    sFingerPosition = [touch locationInNode:self.parent];
+    CGPoint sFingerPosition = [touch locationInNode:self.parent];
+    self.physicsBody.collisionMask = @[];
 }
 
 - (void)secondTouchMoved:(CCTouch *)touch {
-    sFingerPosition = [touch locationInNode:self.parent];
+    self.physicsBody.collisionMask = @[];
+    CGPoint sFingerPosition = [touch locationInNode:self.parent];
     CGPoint selfLocation = [self positionInPoints];
     CGPoint fVec = {0, -1};
     CGPoint sVec = {sFingerPosition.x - selfLocation.x,
@@ -97,5 +84,25 @@
     NSLog(@"Second touch on tool ends");
 }
 
+// -----------------------------------------------------------------------------
+// Gesture recognizer
+// -----------------------------------------------------------------------------
+- (void)handleRotationGestureRecognizer:(UIRotationGestureRecognizer *)aRotationGestureRecognizer {
+    if (aRotationGestureRecognizer.state == UIGestureRecognizerStateBegan || aRotationGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        CCNode *node = aRotationGestureRecognizer.node;
+        float rotation = aRotationGestureRecognizer.rotation;
+        node.rotation += CC_RADIANS_TO_DEGREES(rotation);
+        aRotationGestureRecognizer.rotation = 0;
+
+        [self touchEnded:nil withEvent:nil];
+    }
+}
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateEnded && !self.inToolBox) {
+        [_toolBox restoreToolToBox:self];
+        [self removeFromParent];
+    }
+}
 
 @end

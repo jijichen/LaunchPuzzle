@@ -14,6 +14,8 @@
     NSMutableArray *toolCountArr;
     Tool *toolToPlace;
     GameScene *gameScene;
+    NSMutableArray* toolsOnScene;
+    Tool*_toolSelected;
 };
 
 
@@ -44,7 +46,7 @@
     //Initialize Tool box
     self.toolsToLoad = [[NSMutableArray alloc] init];
     self.toolsCount = [[NSMutableArray alloc] init];
-
+    toolsOnScene = [[NSMutableArray alloc] init];
     //Load three kinds of tools
     toolCountArr = [[NSMutableArray alloc] initWithObjects:l1, l2, l3, nil];
     for (CCLabelTTF *labels in toolCountArr) {
@@ -150,6 +152,7 @@
     if (toolToPlace != nil) {
         if ([gameScene checkOverlap:toolToPlace]) {
             toolToPlace.physicsBody.collisionMask = nil;
+            [toolsOnScene addObject:toolToPlace];
         } else {
             [self restoreToolToBox:toolToPlace];
             [toolToPlace removeFromParent];
@@ -159,5 +162,40 @@
     }
 }
 
+- (void)toolSelected:(Tool *) tool {
+    if (tool == _toolSelected) {
+        self.toolSelected = nil;
+        [tool removeAllChildren];
+    } else {
+        if (_toolSelected != nil) {
+            [_toolSelected removeAllChildren];
+        }
+        _toolSelected = tool;
+        [ToolBox addGlowEffect:tool color:[CCColor darkGrayColor]];
+    }
+}
 
++ (void)addGlowEffect:(Tool *)tool color:(CCColor *)colour {
+
+    CGPoint pos = ccp(tool.contentSize.width / 2, tool.contentSize.height / 2);
+
+    CCSprite* glowSprite = [CCSprite spriteWithImageNamed:@"ccbResources/ccbParticleFire.png"];
+
+    [glowSprite setColor:colour];
+    [glowSprite setPosition:pos];
+
+    [glowSprite setScaleX:(tool.contentSize.width/glowSprite.contentSize.width * 2.5)];
+    [glowSprite setScaleY:(tool.contentSize.height/glowSprite.contentSize.height * 2.5)];
+
+
+
+    [tool addChild:glowSprite z:tool.zOrder - 1 name:@"shield"];
+
+    // Run some animation which scales a bit the glow
+//    CCActionSequence * s1 = [CCActionSequence actionOne:[CCActionScaleTo actionWithDuration:0.9f scale:1.0f]
+//                                                    two:[CCActionScaleTo actionWithDuration:0.9f scale:0.75f]];
+//    CCActionRepeatForever *r = [CCActionRepeatForever actionWithAction:s1];
+//    [glowSprite runAction:r];
+
+}
 @end
