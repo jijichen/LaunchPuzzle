@@ -16,5 +16,6 @@
 @property CCNode* star1;
 @property CCNode* star2;
 @property CCNode* star3;
+@property CCNode* locker;
 
 @end

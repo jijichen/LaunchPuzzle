@@ -16,6 +16,7 @@
 #import "Target.h"
 #import "Plate.h"
 #import "MainScene.h"
+#import "GameStateSingleton.h"
 
 @interface GameScene ()
 
@@ -126,6 +127,20 @@
         popUp.anchorPoint = ccp(0.5, 0.5);
         popUp.position = ccp(0.5, 0.5);
         [self addChild:popUp];
+    }
+
+    GameStateSingleton * state = [GameStateSingleton getInstance];
+    if (state.unlockedTo < currentLevel + 1) {
+        state.unlockedTo = currentLevel + 1;
+    }
+
+
+    if (_levelNode.liveCount > 2) {
+        [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
+    } else if (_levelNode.liveCount > 1) {
+        [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
+    } else {
+        [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
     }
 }
 

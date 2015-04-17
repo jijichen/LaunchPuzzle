@@ -102,6 +102,7 @@
 		BC5399DB1A44DCC90063F482 /* JavaFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D61A44DCC90063F482 /* JavaFoundation.framework */; };
 		BC5399DC1A44DCC90063F482 /* JavaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5399D71A44DCC90063F482 /* JavaKit.framework */; };
 		E25CB25B46E4EE60C4E23741 /* Bomb.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB6C545E9D7FBA042C5F1 /* Bomb.m */; };
+		E25CB80CD35888DC71BC4024 /* GameStateSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB1443139436564FBE858 /* GameStateSingleton.m */; };
 		E25CB8537C127FE3F809A802 /* LevelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CBAD257EA601EA3DE5129 /* LevelButton.m */; };
 		E25CB985FCC53C90EE2AF30F /* PlateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CBE9B2D28CD61F2706E8A /* PlateTool.m */; };
 		E25CBA4813F5F87BFDEC46B1 /* LevelSelectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB0332A5CBE56C28CA077 /* LevelSelectionScene.m */; };
@@ -240,9 +241,11 @@
 		BC5399D71A44DCC90063F482 /* JavaKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaKit.framework; path = "../../../../Library/Application Support/Developer/Shared/Xcode/Platforms/Android.platform/Developer/SDKs/SBAndroid.sdk/System/Library/Frameworks/JavaKit.framework"; sourceTree = "<group>"; };
 		D352B48019EC608A00829775 /* MetalShaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MetalShaders; path = Source/MetalShaders; sourceTree = "<group>"; };
 		E25CB0332A5CBE56C28CA077 /* LevelSelectionScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelSelectionScene.m; sourceTree = "<group>"; };
+		E25CB1443139436564FBE858 /* GameStateSingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStateSingleton.m; sourceTree = "<group>"; };
 		E25CB19FCCD7A41B8D164BE8 /* LevelSelectionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectionScene.h; sourceTree = "<group>"; };
 		E25CB39B6C5CEDFCEA3F2A35 /* PlateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlateTool.h; sourceTree = "<group>"; };
 		E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
+		E25CB428BAC6247B9A9A9749 /* GameStateSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateSingleton.h; sourceTree = "<group>"; };
 		E25CB4AD1FDD22C460A932CF /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
 		E25CB6C545E9D7FBA042C5F1 /* Bomb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bomb.m; sourceTree = "<group>"; };
 		E25CB6D79D14094316CFC882 /* Bomb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bomb.h; sourceTree = "<group>"; };
@@ -507,6 +510,8 @@
 				E25CBFDF4128F9289E1A8ABD /* CCNode+SFGestureRecognizers */,
 				E25CB0332A5CBE56C28CA077 /* LevelSelectionScene.m */,
 				E25CB19FCCD7A41B8D164BE8 /* LevelSelectionScene.h */,
+				E25CB1443139436564FBE858 /* GameStateSingleton.m */,
+				E25CB428BAC6247B9A9A9749 /* GameStateSingleton.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -908,6 +913,7 @@
 				E25CB985FCC53C90EE2AF30F /* PlateTool.m in Sources */,
 				E25CBA4813F5F87BFDEC46B1 /* LevelSelectionScene.m in Sources */,
 				E25CB8537C127FE3F809A802 /* LevelButton.m in Sources */,
+				E25CB80CD35888DC71BC4024 /* GameStateSingleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

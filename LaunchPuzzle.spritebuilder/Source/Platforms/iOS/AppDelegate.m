@@ -27,6 +27,7 @@
 
 #import "AppDelegate.h"
 #import "CCBuilderReader.h"
+#import "GameStateSingleton.h"
 
 @implementation AppController
 
@@ -53,7 +54,10 @@
     //[cocos2dSetup setObject:kEAGLColorFormatRGB565 forKey:CCConfigPixelFormat];
     
     [self setupCocos2dWithOptions:cocos2dSetup];
-    
+
+    GameStateSingleton * gameState = [GameStateSingleton getInstance];
+    [gameState loadFromDefault];
+
     return YES;
 }
 
@@ -62,4 +66,9 @@
     return [CCBReader loadAsScene:@"MainScene"];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application {
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    GameStateSingleton* itemsSingleton = [GameStateSingleton getInstance];
+    [itemsSingleton saveToDefault];
+}
 @end
