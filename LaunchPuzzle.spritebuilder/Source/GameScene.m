@@ -15,6 +15,7 @@
 #import "Bomb.h"
 #import "Target.h"
 #import "Plate.h"
+#import "MainScene.h"
 
 @interface GameScene ()
 
@@ -107,6 +108,9 @@
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
 
+-(void) playMenu {
+    [MainScene playMenu];
+}
 // -----------------------------------------------------------------------------
 // State transition
 // -----------------------------------------------------------------------------

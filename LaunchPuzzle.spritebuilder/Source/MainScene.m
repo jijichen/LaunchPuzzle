@@ -3,11 +3,12 @@
 
 @implementation MainScene
 
--(void)play {
-    CCScene *scene = [CCBReader loadAsScene:@"GameScene"];
-    //[gameScene setCurrentLevel:1];
-    GameScene *gameScene = (GameScene *)[scene.children objectAtIndex:0];
-    [gameScene loadLevel:[Constants startLevel]];
+-(void) play {
+    [MainScene playMenu];
+}
+
++(void) playMenu {
+    CCScene *scene = [CCBReader loadAsScene:@"SelectLevelScene"];
     [[CCDirector sharedDirector] replaceScene:scene];
 }
 
