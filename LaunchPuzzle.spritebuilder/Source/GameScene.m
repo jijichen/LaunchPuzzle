@@ -8,6 +8,7 @@
 
 #import <math.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 #import "GameScene.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "Level.h"
@@ -17,6 +18,8 @@
 #import "Plate.h"
 #import "MainScene.h"
 #import "GameStateSingleton.h"
+#import "PopUpManager.h"
+#import "AppDelegate.h"
 
 @interface GameScene ()
 
@@ -34,7 +37,7 @@
     Level *_levelNode;
     ToolBox *_toolBox;
     CCNode *_livesIndicator;
-    CCNode *popUp;
+    CCNode* popUp;
 
     //State data for internal use
     CGPoint originalPlatePosition;
@@ -54,6 +57,12 @@
 
     //Tool Rotation handler
     Tool* toolToRotate;
+
+    //Popup window code connection (owner bug on spritebuiler)
+    CCNode* popStar1;
+    CCNode* popStar2;
+    CCNode* popStar3;
+    CCLabelTTF* popLabel;
 }
 
 
@@ -117,8 +126,13 @@
 // -----------------------------------------------------------------------------
 - (void)levelSuccess {
     self.paused = YES;
-
     launchGoing = NO;
+
+    GameStateSingleton * state = [GameStateSingleton getInstance];
+    if (state.unlockedTo < currentLevel + 1) {
+        state.unlockedTo = currentLevel + 1;
+    }
+
     if (currentLevel + 1 > Constants.totalLevelCount) {
         //TODO pop up finish all levels window
     } else {
@@ -126,22 +140,26 @@
         popUp.positionType = CCPositionTypeNormalized;
         popUp.anchorPoint = ccp(0.5, 0.5);
         popUp.position = ccp(0.5, 0.5);
+
+
         [self addChild:popUp];
     }
 
-    GameStateSingleton * state = [GameStateSingleton getInstance];
-    if (state.unlockedTo < currentLevel + 1) {
-        state.unlockedTo = currentLevel + 1;
-    }
-
-
     if (_levelNode.liveCount > 2) {
         [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
+        [popLabel setString:@"Awesome!"];
     } else if (_levelNode.liveCount > 1) {
         [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
+        [popStar3 setVisible:NO];
+        [popLabel setString:@"Nice job!"];
     } else {
         [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
+        [popStar3 setVisible:NO];
+        [popStar2 setVisible:NO];
+        [popLabel setString:@"Good!"];
     }
+
+
 }
 
 - (void)levelFail {
@@ -352,6 +370,21 @@
     return sqrt(pow((pA.x - pB.x), 2) + pow((pA.y - pB.y), 2));
 }
 
++(UIImage*) screenshotWithStartNode:(CCNode*)stNode
+{
+    [CCDirector sharedDirector].nextDeltaTimeZero = YES;
+
+    CGSize winSize = [[CCDirector sharedDirector] viewSize];
+    CCRenderTexture* renTxture =
+            [CCRenderTexture renderTextureWithWidth:winSize.width
+                                             height:winSize.height];
+    [renTxture begin];
+    [stNode visit];
+    [renTxture end];
+
+    return [renTxture getUIImage];
+}
+
 - (Boolean)checkOverlap:(CCNode *)target {
     NSMutableArray *objectsToCheck = [[NSMutableArray alloc] initWithArray:_levelNode.presetObjs];
     [objectsToCheck addObject:_plate];
@@ -363,6 +396,33 @@
     }
 
     return true;
+}
+
+- (void)shareOnFacebook {
+
+
+
+
+    CCScene *myScene = [[CCDirector sharedDirector] runningScene];
+    CCNode *node = [myScene.children objectAtIndex:0];
+    UIImage *image = [GameScene screenshotWithStartNode:node];
+
+    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
+    photo.image = image;
+    photo.userGenerated = YES;
+    [photo setImageURL:[NSURL URLWithString:@"http://launchpuzzle.yizhe-chen.com"]];
+    FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
+    content.photos = @[photo];
+    [content setContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"I've break the %d level of Launch Puzzle!", currentLevel]]];
+
+
+
+    FBSDKShareDialog *dialog = [[FBSDKShareDialog alloc] init];
+    dialog.fromViewController = [CCDirector sharedDirector];
+    [dialog setShareContent:content];
+    dialog.mode = FBSDKShareDialogModeShareSheet;
+    [dialog show];
+
 }
 
 @end

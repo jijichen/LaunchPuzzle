@@ -29,6 +29,8 @@
 #import "CCBuilderReader.h"
 #import "GameStateSingleton.h"
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 @implementation AppController
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -54,11 +56,15 @@
     //[cocos2dSetup setObject:kEAGLColorFormatRGB565 forKey:CCConfigPixelFormat];
     
     [self setupCocos2dWithOptions:cocos2dSetup];
-
+    
+    //Load saved status
     GameStateSingleton * gameState = [GameStateSingleton getInstance];
     [gameState loadFromDefault];
-
-    return YES;
+    
+    
+    
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                    didFinishLaunchingWithOptions:launchOptions];
 }
 
 - (CCScene*) startScene
@@ -71,4 +77,20 @@
     GameStateSingleton* itemsSingleton = [GameStateSingleton getInstance];
     [itemsSingleton saveToDefault];
 }
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [FBSDKAppEvents activateApp];
+}
+
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
+}
+
 @end

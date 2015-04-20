@@ -65,6 +65,10 @@
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		A127CC581A9AD51500F093EF /* ToolBox.m in Sources */ = {isa = PBXBuildFile; fileRef = A127CC571A9AD51500F093EF /* ToolBox.m */; };
 		A16C637F1A96A8BD008C1BA7 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C637E1A96A8BD008C1BA7 /* GameScene.m */; };
+		A1B630F21AE4350D00F2BAC2 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B630F11AE4350D00F2BAC2 /* FBSDKCoreKit.framework */; };
+		A1B631011AE436C100F2BAC2 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B630FF1AE436C100F2BAC2 /* FBSDKLoginKit.framework */; };
+		A1B631021AE436C100F2BAC2 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B631001AE436C100F2BAC2 /* FBSDKShareKit.framework */; };
+		A1B631051AE43EF500F2BAC2 /* FBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B631041AE43EF500F2BAC2 /* FBViewController.m */; };
 		A1C1C0E41A9813BE0084EC93 /* Plate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C1C0E31A9813BE0084EC93 /* Plate.m */; };
 		A1C1C0E91A9813CE0084EC93 /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C1C0E81A9813CE0084EC93 /* Target.m */; };
 		A1F6C3681A98B8C6008C2390 /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F6C3671A98B8C6008C2390 /* Tool.m */; };
@@ -107,6 +111,7 @@
 		E25CB985FCC53C90EE2AF30F /* PlateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CBE9B2D28CD61F2706E8A /* PlateTool.m */; };
 		E25CBA4813F5F87BFDEC46B1 /* LevelSelectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB0332A5CBE56C28CA077 /* LevelSelectionScene.m */; };
 		E25CBCBBD28310556420AB24 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */; };
+		E25CBF922B83B4F882727372 /* PopUpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CBC5EF307A8711EFBDAF0 /* PopUpManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +195,11 @@
 		A127CC571A9AD51500F093EF /* ToolBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ToolBox.m; path = Source/ToolBox.m; sourceTree = "<group>"; };
 		A16C637D1A96A8BD008C1BA7 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = Source/GameScene.h; sourceTree = "<group>"; };
 		A16C637E1A96A8BD008C1BA7 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameScene.m; path = Source/GameScene.m; sourceTree = "<group>"; };
+		A1B630F11AE4350D00F2BAC2 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		A1B630FF1AE436C100F2BAC2 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		A1B631001AE436C100F2BAC2 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
+		A1B631031AE43EF500F2BAC2 /* FBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBViewController.h; path = Source/Platforms/iOS/FBViewController.h; sourceTree = "<group>"; };
+		A1B631041AE43EF500F2BAC2 /* FBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBViewController.m; path = Source/Platforms/iOS/FBViewController.m; sourceTree = "<group>"; };
 		A1C1C0E21A9813BE0084EC93 /* Plate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plate.h; path = Source/Plate.h; sourceTree = "<group>"; };
 		A1C1C0E31A9813BE0084EC93 /* Plate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Plate.m; path = Source/Plate.m; sourceTree = "<group>"; };
 		A1C1C0E71A9813CE0084EC93 /* Target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Target.h; path = Source/Target.h; sourceTree = "<group>"; };
@@ -251,6 +261,8 @@
 		E25CB6D79D14094316CFC882 /* Bomb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bomb.h; sourceTree = "<group>"; };
 		E25CBA36AD41B8B2313BA299 /* LevelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelButton.h; sourceTree = "<group>"; };
 		E25CBAD257EA601EA3DE5129 /* LevelButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelButton.m; sourceTree = "<group>"; };
+		E25CBC5EF307A8711EFBDAF0 /* PopUpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpManager.m; sourceTree = "<group>"; };
+		E25CBE79CAFD6C6F31289823 /* PopUpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpManager.h; sourceTree = "<group>"; };
 		E25CBE9B2D28CD61F2706E8A /* PlateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlateTool.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -302,8 +314,11 @@
 				B77F1B3617B978D7009739AE /* OpenAL.framework in Frameworks */,
 				B77F1B3817B978D7009739AE /* AudioToolbox.framework in Frameworks */,
 				B77F1B3A17B978D7009739AE /* AVFoundation.framework in Frameworks */,
+				A1B631011AE436C100F2BAC2 /* FBSDKLoginKit.framework in Frameworks */,
 				B77F1B3C17B978D7009739AE /* UIKit.framework in Frameworks */,
 				B77F1B3E17B978D7009739AE /* Foundation.framework in Frameworks */,
+				A1B631021AE436C100F2BAC2 /* FBSDKShareKit.framework in Frameworks */,
+				A1B630F21AE4350D00F2BAC2 /* FBSDKCoreKit.framework in Frameworks */,
 				B77F1B4017B978D7009739AE /* CoreGraphics.framework in Frameworks */,
 				B77F1B4217B978D7009739AE /* CoreText.framework in Frameworks */,
 			);
@@ -371,6 +386,8 @@
 			children = (
 				B737893D1807617C0076A88C /* AppDelegate.h */,
 				B737893E1807617C0076A88C /* AppDelegate.m */,
+				A1B631031AE43EF500F2BAC2 /* FBViewController.h */,
+				A1B631041AE43EF500F2BAC2 /* FBViewController.m */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -492,6 +509,8 @@
 				E25CB39B6C5CEDFCEA3F2A35 /* PlateTool.h */,
 				E25CBAD257EA601EA3DE5129 /* LevelButton.m */,
 				E25CBA36AD41B8B2313BA299 /* LevelButton.h */,
+				E25CBC5EF307A8711EFBDAF0 /* PopUpManager.m */,
+				E25CBE79CAFD6C6F31289823 /* PopUpManager.h */,
 			);
 			name = Elements;
 			sourceTree = "<group>";
@@ -562,6 +581,9 @@
 		B77F1B3017B978D7009739AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A1B630FF1AE436C100F2BAC2 /* FBSDKLoginKit.framework */,
+				A1B631001AE436C100F2BAC2 /* FBSDKShareKit.framework */,
+				A1B630F11AE4350D00F2BAC2 /* FBSDKCoreKit.framework */,
 				BC5399D31A44DCC90063F482 /* AndroidKit.framework */,
 				BC5399D41A44DCC90063F482 /* CoreJava.framework */,
 				BC5399D51A44DCC90063F482 /* GLActivityKit.framework */,
@@ -686,7 +708,7 @@
 		B77F1B2617B978D7009739AE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Apportable;
 				TargetAttributes = {
 					7A4035FE19DDEE84007B6E8F = {
@@ -899,6 +921,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B73789871807631A0076A88C /* main.m in Sources */,
+				A1B631051AE43EF500F2BAC2 /* FBViewController.m in Sources */,
 				A127CC581A9AD51500F093EF /* ToolBox.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,
 				A1F6C3711A98C1AD008C2390 /* Level.m in Sources */,
@@ -914,6 +937,7 @@
 				E25CBA4813F5F87BFDEC46B1 /* LevelSelectionScene.m in Sources */,
 				E25CB8537C127FE3F809A802 /* LevelButton.m in Sources */,
 				E25CB80CD35888DC71BC4024 /* GameStateSingleton.m in Sources */,
+				E25CBF922B83B4F882727372 /* PopUpManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1140,6 +1164,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
@@ -1173,6 +1198,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					"NS_BLOCK_ASSERTIONS=1",
@@ -1199,6 +1225,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jay_chen/Documents/FacebookSDK,
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/Prefix.pch;
@@ -1235,6 +1265,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jay_chen/Documents/FacebookSDK,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/Prefix.pch;
 				HEADER_SEARCH_PATHS = (

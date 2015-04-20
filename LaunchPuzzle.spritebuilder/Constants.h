@@ -11,6 +11,10 @@ enum ToolType {
     Stick,Triangle, PlateTool
 };
 
+enum PopUpSceneType {
+    LevelSuccess, LevelFail, AllLevelSuccess
+};
+
 static NSString *plateCCBName = @"Sprites/plate";
 
 @interface Constants : NSObject
