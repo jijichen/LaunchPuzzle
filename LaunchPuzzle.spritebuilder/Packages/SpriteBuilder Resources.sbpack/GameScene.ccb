@@ -1278,7 +1278,7 @@
 				<key>displayName</key>
 				<string>ResetLevel</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>buttonResetLevel</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -1604,7 +1604,7 @@
 				<key>displayName</key>
 				<string>ResetLive</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>buttonResetLive</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -1754,7 +1754,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>Resources/reset.png</string>
+							<string>Resources/next.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -1773,7 +1773,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>Resources/reset.png</string>
+							<string>Resources/next.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -1917,6 +1917,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -2243,8 +2245,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>

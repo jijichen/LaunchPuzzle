@@ -38,6 +38,8 @@
     ToolBox *_toolBox;
     CCNode *_livesIndicator;
     CCNode* popUp;
+    CCButton* buttonResetLevel;
+    CCButton* buttonResetLive;
 
     //State data for internal use
     CGPoint originalPlatePosition;
@@ -128,11 +130,17 @@
     self.paused = YES;
     launchGoing = NO;
 
+    //Update game state
     GameStateSingleton * state = [GameStateSingleton getInstance];
     if (state.unlockedTo < currentLevel + 1) {
         state.unlockedTo = currentLevel + 1;
     }
 
+    //Pause all interaction
+    [buttonResetLevel setEnabled:NO];
+    [buttonResetLive setEnabled:NO];
+
+    //Popup window
     if (currentLevel + 1 > Constants.totalLevelCount) {
         //TODO pop up finish all levels window
     } else {
@@ -141,25 +149,24 @@
         popUp.anchorPoint = ccp(0.5, 0.5);
         popUp.position = ccp(0.5, 0.5);
 
+        if (_levelNode.liveCount > 2) {
+            [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
+            [popLabel setString:@"Awesome!"];
+        } else if (_levelNode.liveCount > 1) {
+            [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
+            [popStar3 setVisible:NO];
+            [popLabel setString:@"Nice job!"];
+        } else {
+            [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
+            [popStar3 setVisible:NO];
+            [popStar2 setVisible:NO];
+            [popLabel setString:@"Good!"];
+        }
 
+
+        [state saveToDefault];
         [self addChild:popUp];
     }
-
-    if (_levelNode.liveCount > 2) {
-        [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
-        [popLabel setString:@"Awesome!"];
-    } else if (_levelNode.liveCount > 1) {
-        [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
-        [popStar3 setVisible:NO];
-        [popLabel setString:@"Nice job!"];
-    } else {
-        [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
-        [popStar3 setVisible:NO];
-        [popStar2 setVisible:NO];
-        [popLabel setString:@"Good!"];
-    }
-
-
 }
 
 - (void)levelFail {
@@ -399,10 +406,6 @@
 }
 
 - (void)shareOnFacebook {
-
-
-
-
     CCScene *myScene = [[CCDirector sharedDirector] runningScene];
     CCNode *node = [myScene.children objectAtIndex:0];
     UIImage *image = [GameScene screenshotWithStartNode:node];
@@ -422,7 +425,6 @@
     [dialog setShareContent:content];
     dialog.mode = FBSDKShareDialogModeShareSheet;
     [dialog show];
-
 }
 
 @end
