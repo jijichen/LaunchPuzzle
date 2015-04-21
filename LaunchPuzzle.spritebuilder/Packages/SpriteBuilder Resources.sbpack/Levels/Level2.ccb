@@ -71,7 +71,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.89999997615814209</real>
+							<real>0.80000001192092896</real>
 							<real>0.75</real>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -133,7 +133,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.89999997615814209</real>
+							<real>0.80000001192092896</real>
 							<real>0.25</real>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -162,6 +162,8 @@
 						<string>Sprites/target.ccb</string>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -260,7 +262,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.69999998807907104</real>
+							<real>0.60000002384185791</real>
 							<real>0.80000001192092896</real>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -433,7 +435,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.69999998807907104</real>
+							<real>0.60000002384185791</real>
 							<real>0.20000000298023224</real>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -675,8 +677,6 @@
 				</array>
 			</dict>
 		</array>
-		<key>selected</key>
-		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>

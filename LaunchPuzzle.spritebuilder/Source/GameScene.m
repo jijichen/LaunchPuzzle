@@ -120,7 +120,7 @@
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
 
--(void) playMenu {
+- (void) playMenu {
     [MainScene playMenu];
 }
 // -----------------------------------------------------------------------------
@@ -142,31 +142,34 @@
 
     //Popup window
     if (currentLevel + 1 > Constants.totalLevelCount) {
-        //TODO pop up finish all levels window
+        popUp = [CCBReader load:@"AllLevelPass" owner:self];
     } else {
         popUp = [CCBReader load:@"Success" owner:self];
-        popUp.positionType = CCPositionTypeNormalized;
-        popUp.anchorPoint = ccp(0.5, 0.5);
-        popUp.position = ccp(0.5, 0.5);
-
-        if (_levelNode.liveCount > 2) {
-            [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
-            [popLabel setString:@"Awesome!"];
-        } else if (_levelNode.liveCount > 1) {
-            [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
-            [popStar3 setVisible:NO];
-            [popLabel setString:@"Nice job!"];
-        } else {
-            [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
-            [popStar3 setVisible:NO];
-            [popStar2 setVisible:NO];
-            [popLabel setString:@"Good!"];
-        }
-
-
-        [state saveToDefault];
-        [self addChild:popUp];
     }
+
+
+    if (_levelNode.liveCount > 2) {
+        [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
+        [popLabel setString:@"Awesome!"];
+    } else if (_levelNode.liveCount > 1) {
+        [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
+        [popStar3 setVisible:NO];
+        [popLabel setString:@"Nice job!"];
+    } else {
+        [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
+        [popStar3 setVisible:NO];
+        [popStar2 setVisible:NO];
+        [popLabel setString:@"Good!"];
+    }
+    [state saveToDefault];
+
+    if (currentLevel + 1 > Constants.totalLevelCount) {
+        [popLabel setString:@"Puzzle\nMaster!"];
+    }
+    popUp.positionType = CCPositionTypeNormalized;
+    popUp.anchorPoint = ccp(0.5, 0.5);
+    popUp.position = ccp(0.5, 0.5);
+    [self addChild:popUp];
 }
 
 - (void)levelFail {
