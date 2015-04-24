@@ -419,7 +419,6 @@
     [photo setImageURL:[NSURL URLWithString:@"http://launchpuzzle.yizhe-chen.com"]];
     FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
     content.photos = @[photo];
-    [content setContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"I've break the %d level of Launch Puzzle!", currentLevel]]];
 
 
 
