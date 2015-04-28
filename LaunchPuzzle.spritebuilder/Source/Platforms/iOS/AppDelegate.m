@@ -79,6 +79,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    [[CCDirector sharedDirector] resume];
     [FBSDKAppEvents activateApp];
 }
 

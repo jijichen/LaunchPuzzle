@@ -98,6 +98,9 @@
 }
 
 - (void)restoreToolToBox:(Tool *)releasedTool {
+    if (_toolSelected == releasedTool) {
+        _toolSelected = nil;
+    }
     //Check the tools to load array, find the correspondent tool and add the count.
     for (int i = 0; i < [_toolsToLoad count]; ++i) {
         if (releasedTool.toolType == ((Tool *) _toolsToLoad[i]).toolType) {

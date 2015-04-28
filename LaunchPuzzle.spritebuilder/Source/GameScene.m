@@ -416,7 +416,7 @@
     FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
     photo.image = image;
     photo.userGenerated = YES;
-    [photo setImageURL:[NSURL URLWithString:@"http://launchpuzzle.yizhe-chen.com"]];
+    [photo setImageURL:[NSURL URLWithString:@"http://www.yizhe-chen.com"]];
     FBSDKSharePhotoContent *content = [[FBSDKSharePhotoContent alloc] init];
     content.photos = @[photo];
 
