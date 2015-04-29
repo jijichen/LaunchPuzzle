@@ -21,5 +21,6 @@
 
 @property(atomic) NSInteger unlockedTo;
 @property(atomic) NSMutableDictionary * levelStars;
+@property(atomic) Boolean tutorialShown;
 
 @end

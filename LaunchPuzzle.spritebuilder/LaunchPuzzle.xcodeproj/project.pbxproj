@@ -112,6 +112,7 @@
 		E25CBA4813F5F87BFDEC46B1 /* LevelSelectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB0332A5CBE56C28CA077 /* LevelSelectionScene.m */; };
 		E25CBCBBD28310556420AB24 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CB4008E981F1F885BE119 /* CCNode+SFGestureRecognizers.m */; };
 		E25CBF922B83B4F882727372 /* PopUpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CBC5EF307A8711EFBDAF0 /* PopUpManager.m */; };
+		E25CBFE6AA32151A598BBD3D /* TutorialScene.m in Sources */ = {isa = PBXBuildFile; fileRef = E25CBBF1CD3AF7EDCFCF41EA /* TutorialScene.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +262,8 @@
 		E25CB6D79D14094316CFC882 /* Bomb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bomb.h; sourceTree = "<group>"; };
 		E25CBA36AD41B8B2313BA299 /* LevelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelButton.h; sourceTree = "<group>"; };
 		E25CBAD257EA601EA3DE5129 /* LevelButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelButton.m; sourceTree = "<group>"; };
+		E25CBAFBE7CA058AF50BAFF6 /* TutorialScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialScene.h; sourceTree = "<group>"; };
+		E25CBBF1CD3AF7EDCFCF41EA /* TutorialScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialScene.m; sourceTree = "<group>"; };
 		E25CBC5EF307A8711EFBDAF0 /* PopUpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpManager.m; sourceTree = "<group>"; };
 		E25CBE79CAFD6C6F31289823 /* PopUpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpManager.h; sourceTree = "<group>"; };
 		E25CBE9B2D28CD61F2706E8A /* PlateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlateTool.m; sourceTree = "<group>"; };
@@ -511,6 +514,8 @@
 				E25CBA36AD41B8B2313BA299 /* LevelButton.h */,
 				E25CBC5EF307A8711EFBDAF0 /* PopUpManager.m */,
 				E25CBE79CAFD6C6F31289823 /* PopUpManager.h */,
+				E25CBBF1CD3AF7EDCFCF41EA /* TutorialScene.m */,
+				E25CBAFBE7CA058AF50BAFF6 /* TutorialScene.h */,
 			);
 			name = Elements;
 			sourceTree = "<group>";
@@ -938,6 +943,7 @@
 				E25CB8537C127FE3F809A802 /* LevelButton.m in Sources */,
 				E25CB80CD35888DC71BC4024 /* GameStateSingleton.m in Sources */,
 				E25CBF922B83B4F882727372 /* PopUpManager.m in Sources */,
+				E25CBFE6AA32151A598BBD3D /* TutorialScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

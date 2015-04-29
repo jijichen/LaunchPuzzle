@@ -1,7 +1,7 @@
 #import "MainScene.h"
 #import "GameScene.h"
 #import "FBViewController.h"
-
+#import "TutorialScene.h"
 
 
 @implementation MainScene

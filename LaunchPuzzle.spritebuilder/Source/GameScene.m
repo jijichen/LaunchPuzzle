@@ -38,6 +38,7 @@
     ToolBox *_toolBox;
     CCNode *_livesIndicator;
     CCNode* popUp;
+    CCNode* tutorialContentNode;
     CCButton* buttonResetLevel;
     CCButton* buttonResetLive;
 
@@ -50,6 +51,7 @@
     CCTime timeEnd;
     Boolean launchStarted;
     Boolean launchGoing;
+    Boolean inTutorial;
     int currentLevel;
 
     //Code connection redundancy due to cocos2d owner
@@ -90,6 +92,14 @@
     _physicsNode.debugDraw = false;
     _physicsNode.collisionDelegate = self;
     [_physicsNode.space setDamping:1.0f];
+    
+    GameStateSingleton * stateInstance = [GameStateSingleton getInstance];
+    if (stateInstance.tutorialShown == NO) {
+        tutorialContentNode = [CCBReader load:@"Tutorial"];
+        [self addChild:tutorialContentNode];
+        inTutorial = YES;
+        [stateInstance setTutorialShown:YES];
+    }
 }
 
 - (void)loadLevel:(int)level {
@@ -297,7 +307,13 @@
 - (void)touchBegan:(CCTouch *)touch withEvent:(UIEvent *)event {
     prevTime = timeCurrent;
     touchStartLocation = [touch locationInNode:_contentNode];
-
+    
+    if (inTutorial) {
+        [tutorialContentNode removeFromParent];
+        inTutorial = NO;
+        return;
+    }
+    
     if (_toolBox.toolSelected != nil) {
         [_toolBox.toolSelected secondTouchBegin:touch];
     } else if (_plate.userInteractionEnabled && !launchStarted

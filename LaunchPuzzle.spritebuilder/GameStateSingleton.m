@@ -13,10 +13,10 @@
 static GameStateSingleton* singletonInstance;
 static NSString* const STARS_KEY = @"levelStar";
 static NSString* const UNLOCKINT_KEY = @"unlockUpto";
+static NSString* const TUTORIALSHOWN_KEY = @"tutorialShown";
 
 
 + (GameStateSingleton*) getInstance {
-
     if (singletonInstance == NULL) {
         singletonInstance = [[self alloc] init];
     }
@@ -36,6 +36,7 @@ static NSString* const UNLOCKINT_KEY = @"unlockUpto";
     NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:_levelStars];
     [userDefault setObject:encodedObject forKey:STARS_KEY];
     [userDefault setInteger:_unlockedTo forKey:UNLOCKINT_KEY];
+    [userDefault setBool:_tutorialShown forKey:TUTORIALSHOWN_KEY];
     [userDefault synchronize];
 }
 
@@ -49,6 +50,11 @@ static NSString* const UNLOCKINT_KEY = @"unlockUpto";
     _unlockedTo = [userDefault integerForKey:UNLOCKINT_KEY];
     if (_unlockedTo == nil) {
         _unlockedTo = 1;
+    }
+
+    _tutorialShown = [userDefault boolForKey:TUTORIALSHOWN_KEY];
+    if (_tutorialShown == nil) {
+        _tutorialShown = NO;
     }
 }
 

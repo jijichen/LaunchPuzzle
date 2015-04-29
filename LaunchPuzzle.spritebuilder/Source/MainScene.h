@@ -1,4 +1,4 @@
-@interface MainScene : CCNode
+@interface MainScene : CCNode <CCScrollViewDelegate>
 
 +(void) playMenu;
 @end
