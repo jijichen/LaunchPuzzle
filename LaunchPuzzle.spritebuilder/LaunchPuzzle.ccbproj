@@ -80,8 +80,6 @@
 		</dict>
 		<key>Resources</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
@@ -89,8 +87,6 @@
 		<dict/>
 		<key>ccbResources</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>

@@ -14,7 +14,7 @@
     NSMutableArray *toolCountArr;
     Tool *toolToPlace;
     GameScene *gameScene;
-    NSMutableArray* toolsOnScene;
+    NSMutableArray* _toolsOnScene;
     Tool*_toolSelected;
 };
 
@@ -46,7 +46,7 @@
     //Initialize Tool box
     self.toolsToLoad = [[NSMutableArray alloc] init];
     self.toolsCount = [[NSMutableArray alloc] init];
-    toolsOnScene = [[NSMutableArray alloc] init];
+    _toolsOnScene = [[NSMutableArray alloc] init];
     //Load three kinds of tools
     toolCountArr = [[NSMutableArray alloc] initWithObjects:l1, l2, l3, nil];
     for (CCLabelTTF *labels in toolCountArr) {
@@ -155,7 +155,7 @@
     if (toolToPlace != nil) {
         if ([gameScene checkOverlap:toolToPlace]) {
             toolToPlace.physicsBody.collisionMask = nil;
-            [toolsOnScene addObject:toolToPlace];
+            [_toolsOnScene addObject:toolToPlace];
         } else {
             [self restoreToolToBox:toolToPlace];
             [toolToPlace removeFromParent];

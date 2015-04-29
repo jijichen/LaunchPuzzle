@@ -17,6 +17,8 @@
 -(void) secondTouchBegin:(CCTouch *) touch;
 -(void) secondTouchMoved:(CCTouch *) touch;
 -(void) secondTouchEnded:(CCTouch *) touch;
+-(void) setAllGestureEnabled:(Boolean) on;
+
 
 @property enum ToolType toolType;
 @property BOOL inToolBox;

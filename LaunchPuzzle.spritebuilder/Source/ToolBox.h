@@ -25,6 +25,7 @@
 
 @property NSMutableArray* toolsToLoad;
 @property NSMutableArray* toolsCount;
+@property NSMutableArray* toolsOnScene;
 @property Tool* toolSelected;
 
 @end

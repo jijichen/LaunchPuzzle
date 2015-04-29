@@ -240,6 +240,12 @@
     _plate.position = originalPlatePosition;
     _plate.userInteractionEnabled = YES;
     [_toolBox setVisible:true];
+    launchGoing = false;
+    launchStarted = false;
+    for(Tool* tool in _toolBox.toolsOnScene) {
+        [tool setUserInteractionEnabled:YES];
+        [tool setAllGestureEnabled:YES];
+    }
 }
 
 - (void)updateLiveIndicator:(int)liveCount {
@@ -353,6 +359,10 @@
         launchGoing = true;
         [_plate setUserInteractionEnabled:NO];
         [_toolBox setVisible:false];
+        for( Tool* tool in _toolBox.toolsOnScene ) {
+            [tool setUserInteractionEnabled:NO];
+            [tool setAllGestureEnabled:NO];
+        }
     }
 }
 

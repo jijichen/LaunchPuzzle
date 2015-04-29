@@ -11,7 +11,10 @@
 #import "ToolBox.h"
 #import "GameScene.h"
 
-@implementation Tool
+@implementation Tool {
+    UIRotationGestureRecognizer *rotRec;
+    UITapGestureRecognizer *doubleTapRec;
+}
 
 - (id)init {
     self = [super init];
@@ -21,8 +24,8 @@
         self.isTouchEnabled = YES;
 
         //Set gesture recognizer : rotation and double tap
-        UIRotationGestureRecognizer *rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
-        UITapGestureRecognizer *doubleTapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
+        doubleTapRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
         doubleTapRec.numberOfTapsRequired = 2;
 
         [rotRec setDelegate:self];
@@ -57,7 +60,6 @@
         [self removeFromParent];
     }
 }
-
 
 - (void)secondTouchBegin:(CCTouch *)touch {
     NSLog(@"Second touch on tool begins");
@@ -103,6 +105,11 @@
         [_toolBox restoreToolToBox:self];
         [self removeFromParent];
     }
+}
+
+- (void)setAllGestureEnabled:(Boolean) on {
+    [rotRec setEnabled:on];
+    [doubleTapRec setEnabled:on];
 }
 
 @end
