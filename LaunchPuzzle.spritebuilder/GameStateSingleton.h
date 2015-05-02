@@ -18,6 +18,7 @@
 - (void) saveToDefault;
 - (void) loadFromDefault;
 - (NSInteger) count;
+- (void) updateScore:(int) score forLevel:(int) level;
 
 @property(atomic) NSInteger unlockedTo;
 @property(atomic) NSMutableDictionary * levelStars;

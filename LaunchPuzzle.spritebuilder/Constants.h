@@ -27,6 +27,7 @@ static NSString *plateCCBName = @"Sprites/plate";
 
 +(NSString*)getPlateCCBName;
 
++(void) preLoadEffects;
 
 + (int)startLevel;
 + (double) epsilon;

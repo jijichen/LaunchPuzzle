@@ -32,6 +32,8 @@
     for (int i = 1; i <= [Constants totalLevelCount]; i++) {
         [self loadLevel:i];
     }
+
+    [[OALSimpleAudio sharedInstance] playBg:@"Musics/LevelBG1.m4a" loop:YES];
 }
 
 - (void) loadLevel:(int) l {

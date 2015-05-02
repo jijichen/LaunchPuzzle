@@ -3,6 +3,7 @@
 // Copyright (c) 2015 Apportable. All rights reserved.
 //
 
+#import <SSZipArchive/unzip.h>
 #import "GameStateSingleton.h"
 
 
@@ -57,5 +58,17 @@ static NSString* const TUTORIALSHOWN_KEY = @"tutorialShown";
         _tutorialShown = NO;
     }
 }
+
+- (void)updateScore:(int)score forLevel:(int)level {
+    NSNumber *levelNumber = [NSNumber numberWithInt:level];
+    int oldScore = [[self levelStars] objectForKey:levelNumber];
+
+    if (score > oldScore) {
+        [[self levelStars] setObject:[NSNumber numberWithInt:score] forKey:levelNumber];
+    }
+
+
+}
+
 
 @end

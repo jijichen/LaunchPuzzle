@@ -55,5 +55,12 @@
     return plateCCBName;
 }
 
++(void) preLoadEffects {
+    [[OALSimpleAudio sharedInstance] preloadEffect:@"Musics/BombSmall.mp3"];
+    [[OALSimpleAudio sharedInstance] preloadEffect:@"Musics/Sweep.caf"];
+    [[OALSimpleAudio sharedInstance] preloadEffect:@"Musics/hit.caf"];
+    [[OALSimpleAudio sharedInstance] preloadEffect:@"Musics/ding.caf"];
+}
+
 
 @end

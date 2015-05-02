@@ -100,6 +100,8 @@
         inTutorial = YES;
         [stateInstance setTutorialShown:YES];
     }
+
+    [Constants preLoadEffects];
 }
 
 - (void)loadLevel:(int)level {
@@ -159,14 +161,14 @@
 
 
     if (_levelNode.liveCount > 2) {
-        [state.levelStars setObject:[NSNumber numberWithInt:3] forKey:[NSNumber numberWithInt:currentLevel]];
+        [state updateScore:3 forLevel:currentLevel];
         [popLabel setString:@"Awesome!"];
     } else if (_levelNode.liveCount > 1) {
-        [state.levelStars setObject:[NSNumber numberWithInt:2] forKey:[NSNumber numberWithInt:currentLevel]];
+        [state updateScore:2 forLevel:currentLevel];
         [popStar3 setVisible:NO];
         [popLabel setString:@"Nice job!"];
     } else {
-        [state.levelStars setObject:[NSNumber numberWithInt:1] forKey:[NSNumber numberWithInt:currentLevel]];
+        [state updateScore:1 forLevel:currentLevel];
         [popStar3 setVisible:NO];
         [popStar2 setVisible:NO];
         [popLabel setString:@"Good!"];
@@ -266,7 +268,7 @@
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(Target *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
-        NSLog(@"Plate collide with target");
+        [[OALSimpleAudio sharedInstance] playEffect:@"Musics/ding.caf"];
         [nodeA removeFromParent];
         _levelNode.targetCount -= 1;
         if (_levelNode.targetCount == 0) {
@@ -277,7 +279,8 @@
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Bomb:(Bomb *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
-        NSLog(@"Plate collide bomb");
+        [[OALSimpleAudio sharedInstance] playEffect:@"Musics/BombSmall.mp3"];
+
         NSMutableArray * movableObject = [[NSMutableArray alloc] initWithArray:[[_levelNode presetPlate] copy]];
         for (CCNode* node in [_physicsNode children]) {
             if ([[[node physicsBody] collisionType] isEqual:@"Plate"]) {
@@ -286,7 +289,7 @@
         }
 
         for (CCNode* node in movableObject) {
-                float factor = 20000.0f;
+                float factor = 25000.0f;
                 float distance = [GameScene getDistance:[nodeA positionInPoints] to:[node positionInPoints]];
                 factor /= (distance / 10);
                 CGPoint forceDirection = [GameScene getDirection:[nodeA positionInPoints] to:[node positionInPoints]];
@@ -309,14 +312,18 @@
     } key:nodeA];
 }
 
+- (void)ccPhysicsCollisionSeparate:(CCPhysicsCollisionPair *)pair Plate:(CCNode *)plate wildcard:(CCNode *)nodeB {
+    if (launchGoing) {
+        [[OALSimpleAudio sharedInstance] playEffect:@"Musics/hit.caf"];
+    }
+}
+
 -(BOOL) ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair ToolToPlace:(Tool *)tool wildcard:(CCNode *)nodeB {
-    NSLog(@"begin : Collision for tooltoplace");
     [tool setPlaceColliding:YES];
     return NO;
 }
 
 - (void)ccPhysicsCollisionSeparate:(CCPhysicsCollisionPair *)pair ToolToPlace:(Tool *)tool wildcard:(CCNode *)nodeB {
-    NSLog(@"End : Collision for tooltoplace");
     [tool setPlaceColliding:NO];
 }
 
@@ -368,6 +375,7 @@
         CGPoint launchForceVec = ccpMult(forceDirection, [[_plate physicsBody] mass] * velocity);
         NSLog(@"Lauch with force : (%lf, %lf)", launchForceVec.x, launchForceVec.y);
         [_plate.physicsBody applyForce:launchForceVec];
+        [[OALSimpleAudio sharedInstance] playEffect:@"Musics/Sweep.caf"];
         launchStarted = false;
         launchGoing = true;
         [_plate setUserInteractionEnabled:NO];

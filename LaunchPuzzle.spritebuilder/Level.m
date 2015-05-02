@@ -28,6 +28,9 @@
     self.targetCount = c;
     self.presetBombs = [bombs copy];
     self.presetPlate = [plates copy];
+
+
+
 }
 
 @end
