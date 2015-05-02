@@ -78,6 +78,11 @@
 			<key>previewFolderHidden</key>
 			<true/>
 		</dict>
+		<key>Musics/LevelBG1.wav</key>
+		<dict>
+			<key>format_ios_sound</key>
+			<integer>1</integer>
+		</dict>
 		<key>Resources</key>
 		<dict>
 			<key>isSmartSpriteSheet</key>
