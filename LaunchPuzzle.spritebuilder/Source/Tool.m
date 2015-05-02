@@ -34,6 +34,7 @@
         [doubleTapRec setDelegate:self];
         [self addGestureRecognizer:rotRec];
         [self addGestureRecognizer:doubleTapRec];
+
     }
     return self;
 }

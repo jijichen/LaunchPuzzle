@@ -143,6 +143,8 @@
         toolToPlace.inToolBox = false;
         toolToPlace.toolBox = self;
         toolToPlace.position = [touch locationInNode:[self parent]];
+    } else {
+        [super touchBegan:touch withEvent:event];
     }
 }
 
