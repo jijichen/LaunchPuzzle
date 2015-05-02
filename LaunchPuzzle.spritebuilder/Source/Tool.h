@@ -25,5 +25,5 @@
 @property (weak) ToolBox* toolBox;
 @property (weak) GameScene* gameScene;
 @property double rotationAngle;
-
+@property BOOL placeColliding;
 @end

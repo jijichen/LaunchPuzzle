@@ -13,7 +13,7 @@
 
 @class Level;
 
-@interface ToolBox : CCNode
+@interface ToolBox : CCNode <CCPhysicsCollisionDelegate>
 
 - (Tool*) checkTouch:(CCTouch*) touch;
 
