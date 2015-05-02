@@ -60,11 +60,11 @@ static NSString* const TUTORIALSHOWN_KEY = @"tutorialShown";
 }
 
 - (void)updateScore:(int)score forLevel:(int)level {
-    NSNumber *levelNumber = [NSNumber numberWithInt:level];
-    int oldScore = [[self levelStars] objectForKey:levelNumber];
+    NSNumber *levelNumber = @(level);
+    NSNumber *oldScore = [self levelStars][levelNumber];
 
-    if (score > oldScore) {
-        [[self levelStars] setObject:[NSNumber numberWithInt:score] forKey:levelNumber];
+    if (score > [oldScore intValue]) {
+        [self levelStars][levelNumber] = @(score);
     }
 
 
