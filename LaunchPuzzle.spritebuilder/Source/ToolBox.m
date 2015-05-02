@@ -16,6 +16,7 @@
     GameScene *gameScene;
     NSMutableArray* _toolsOnScene;
     Tool*_toolSelected;
+    NSString *oriToolToPlaceCollisionType;
 };
 
 
@@ -134,6 +135,9 @@
 
     if (toolTouched != nil) {
         toolToPlace = [GameScene loadToolByType:toolTouched.toolType];
+        oriToolToPlaceCollisionType = [[toolToPlace physicsBody] collisionType];
+        [[toolToPlace physicsBody] setCollisionMask:nil];
+        [[toolToPlace physicsBody] setCollisionType:@"ToolToPlace"];
         [gameScene addObjToPhysicNode:toolToPlace];
         toolToPlace.gameScene = gameScene;
         toolToPlace.inToolBox = false;
@@ -153,14 +157,14 @@
 - (void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     NSLog(@"Toolbox touch ends!");
     if (toolToPlace != nil) {
-        if ([gameScene checkOverlap:toolToPlace]) {
-            toolToPlace.physicsBody.collisionMask = nil;
-            [_toolsOnScene addObject:toolToPlace];
-        } else {
+        if (toolToPlace.placeColliding) {
             [self restoreToolToBox:toolToPlace];
             [toolToPlace removeFromParent];
+        } else {
+            [[toolToPlace physicsBody] setCollisionMask:nil];
+            [[toolToPlace physicsBody] setCollisionType:oriToolToPlaceCollisionType];
+            [_toolsOnScene addObject:toolToPlace];
         }
-
         toolToPlace = nil;
     }
 }
@@ -201,4 +205,6 @@
 //    [glowSprite runAction:r];
 
 }
+
+
 @end

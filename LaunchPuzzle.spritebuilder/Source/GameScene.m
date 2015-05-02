@@ -265,6 +265,7 @@
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Target:(Target *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
+        NSLog(@"Plate collide with target");
         [nodeA removeFromParent];
         _levelNode.targetCount -= 1;
         if (_levelNode.targetCount == 0) {
@@ -275,7 +276,7 @@
 
 - (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair Bomb:(Bomb *)nodeA Plate:(Plate *)nodeB {
     [[_physicsNode space] addPostStepBlock:^{
-
+        NSLog(@"Plate collide bomb");
         NSMutableArray * movableObject = [[NSMutableArray alloc] initWithArray:[[_levelNode presetPlate] copy]];
         for (CCNode* node in [_physicsNode children]) {
             if ([[[node physicsBody] collisionType] isEqual:@"Plate"]) {
@@ -304,7 +305,18 @@
         explosion.position = nodeA.position;
         [nodeA.parent addChild:explosion];
         [nodeA removeFromParent];
-    }                                  key:nodeA];
+    } key:nodeA];
+}
+
+-(BOOL) ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair ToolToPlace:(Tool *)tool wildcard:(CCNode *)nodeB {
+    NSLog(@"begin : Collision for tooltoplace");
+    [tool setPlaceColliding:YES];
+    return NO;
+}
+
+- (void)ccPhysicsCollisionSeparate:(CCPhysicsCollisionPair *)pair ToolToPlace:(Tool *)tool wildcard:(CCNode *)nodeB {
+    NSLog(@"End : Collision for tooltoplace");
+    [tool setPlaceColliding:NO];
 }
 
 // -----------------------------------------------------------------------------

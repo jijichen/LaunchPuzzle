@@ -14,6 +14,7 @@
 @implementation Tool {
     UIRotationGestureRecognizer *rotRec;
     UITapGestureRecognizer *doubleTapRec;
+    NSString *oriCollisionType;
 }
 
 - (id)init {
@@ -22,6 +23,7 @@
         self.inToolBox = true;
         self.userInteractionEnabled = YES;
         self.isTouchEnabled = YES;
+        self.placeColliding = NO;
 
         //Set gesture recognizer : rotation and double tap
         rotRec = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGestureRecognizer:)];
@@ -41,23 +43,24 @@
 // -----------------------------------------------------------------------------
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"Tool touch begins");
-    self.physicsBody.collisionMask = @[];
+    oriCollisionType = [[self physicsBody] collisionType];
+    [[self physicsBody] setCollisionMask:nil];
+    [[self physicsBody] setCollisionType:@"ToolToPlace"];
     [[self toolBox] toolSelected:self];
 }
 
 - (void)touchMoved:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
-    self.physicsBody.collisionMask = @[];
     self.position = [touch locationInNode:self.parent];
 }
 
 - (void)touchEnded:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     NSLog(@"Tool touch ends");
-    if ([self.gameScene checkOverlap:self]) {
-        //No overlap with predefined objects in the level
-        self.physicsBody.collisionMask = nil;
-    } else {
+    if (self.placeColliding) {
         [[self toolBox] restoreToolToBox:self];
         [self removeFromParent];
+    } else {
+        [[self physicsBody] setCollisionType:oriCollisionType];
+        [[self physicsBody] setCollisionMask:nil];
     }
 }
 
