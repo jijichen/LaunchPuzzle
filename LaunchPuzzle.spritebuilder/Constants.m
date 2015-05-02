@@ -19,7 +19,7 @@
 }
 
 + (int)totalLevelCount {
-    return 7;
+    return 8;
 }
 
 + (NSDictionary *)getTypeToCCBNameDict {

@@ -162,8 +162,6 @@
 						<string>Sprites/target.ccb</string>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -606,7 +604,7 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>value</key>
-				<string>2</string>
+				<string>4</string>
 			</dict>
 		</array>
 		<key>displayName</key>
@@ -677,6 +675,8 @@
 				</array>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>

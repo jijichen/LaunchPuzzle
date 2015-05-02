@@ -257,6 +257,7 @@
         plateInd.position = CGPointMake(0.2 * (i), 0.5);
         plateInd.anchorPoint = CGPointMake(0.0, 0.5);
         plateInd.scale = 0.6;
+        [plateInd setCascadeColorEnabled:YES];
         plateInd.opacity = 0.8;
         [plateInd setPhysicsBody:nil];
         [_livesIndicator addChild:plateInd];
